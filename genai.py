@@ -31,9 +31,13 @@ class GenAIChat:
         self,
         conversation_id: str = DEFAULT_CONVERSATION_ID,
         storage_root: Optional[Path] = None,
+        verbose: bool = False,
+        json_logs: bool = False,
     ) -> None:
         self.conversation_id = conversation_id or DEFAULT_CONVERSATION_ID
         self.storage_root = storage_root or Path(__file__).resolve().parent / ".pkbook" / "_genai"
+        self.verbose = verbose
+        self.json_logs = json_logs
         self.history_dir = self.storage_root / "history"
         self.cache_dir = self.storage_root / "cache"
         self.history_dir.mkdir(parents=True, exist_ok=True)
@@ -61,6 +65,10 @@ class GenAIChat:
         if not normalized_prompt:
             raise ValueError("Prompt cannot be empty.")
 
+        self._verbose_print(
+            f"Sending prompt in conversation '{self.conversation_id}' (cache={'on' if use_cache else 'off'})"
+        )
+
         request_payload = {
             "conversationId": self.conversation_id,
             "messages": [asdict(message) for message in self._messages],
@@ -70,12 +78,14 @@ class GenAIChat:
 
         if use_cache and cache_file.exists():
             cached_response = self._load_cached_response(cache_file)
+            self._verbose_print(f"Cache hit for conversation '{self.conversation_id}'")
             self._append_turn(normalized_prompt, cached_response)
             return cached_response
 
         response = await self._request_model(self._build_prompt(normalized_prompt))
         self._write_cache(cache_file, request_payload, response)
         self._append_turn(normalized_prompt, response)
+        self._verbose_print(f"Received response for conversation '{self.conversation_id}'")
         return response
 
     def _append_turn(self, prompt: str, response: str) -> None:
@@ -167,6 +177,20 @@ class GenAIChat:
     def _utc_now(self) -> str:
         return datetime.now(timezone.utc).isoformat()
 
+    def _verbose_print(self, message: str) -> None:
+        if self.verbose:
+            if self.json_logs:
+                payload = {
+                    "timestamp": self._utc_now(),
+                    "component": "genai",
+                    "event": "trace",
+                    "message": message,
+                    "conversation_id": self.conversation_id,
+                }
+                print(json.dumps(payload, ensure_ascii=False))
+                return
+            print(f"[verbose][genai] {message}")
+
 
 async def generate_async(
     text: str,
@@ -174,10 +198,14 @@ async def generate_async(
     use_cache: bool = True,
     storage_root: Optional[Path] = None,
     client: Optional[GenAIChat] = None,
+    verbose: bool = False,
+    json_logs: bool = False,
 ) -> str:
     chat_client = client or GenAIChat(
         conversation_id=conversation_id,
         storage_root=storage_root,
+        verbose=verbose,
+        json_logs=json_logs,
     )
     return await chat_client.send(text, use_cache=use_cache)
 
@@ -188,6 +216,8 @@ def chat(
     use_cache: bool = True,
     storage_root: Optional[Path] = None,
     client: Optional[GenAIChat] = None,
+    verbose: bool = False,
+    json_logs: bool = False,
 ) -> str:
     try:
         asyncio.get_running_loop()
@@ -199,6 +229,8 @@ def chat(
                 use_cache=use_cache,
                 storage_root=storage_root,
                 client=client,
+                verbose=verbose,
+                json_logs=json_logs,
             )
         )
 

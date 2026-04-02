@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
@@ -32,6 +33,23 @@ def _write_json(path: Path, content: Any, *, encoding: str) -> None:
 def _write_text(path: Path, content: str, *, encoding: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding=encoding)
+
+
+def _verbose_print(verbose: bool, json_logs: bool, message: str, event: str = "trace") -> None:
+    if not verbose:
+        return
+
+    if json_logs:
+        payload = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "component": "write",
+            "event": event,
+            "message": message,
+        }
+        print(json.dumps(payload, ensure_ascii=False))
+        return
+
+    print(f"[verbose][write] {message}")
 
 
 def _read_text(path: Path, *, encoding: str) -> str:
@@ -248,10 +266,23 @@ def _build_chapter_prompt(
     )
 
 
-def _call_genai(prompt: str, *, conversation_id: str, use_cache: bool) -> str:
+def _call_genai(
+    prompt: str,
+    *,
+    conversation_id: str,
+    use_cache: bool,
+    verbose: bool = False,
+    json_logs: bool = False,
+) -> str:
     from genai import chat
 
-    return chat(prompt, conversation_id=conversation_id, use_cache=use_cache)
+    return chat(
+        prompt,
+        conversation_id=conversation_id,
+        use_cache=use_cache,
+        verbose=verbose,
+        json_logs=json_logs,
+    )
 
 
 def _chapter_sort_key(chapter_payload: dict[str, Any], fallback_index: int) -> int:
@@ -330,16 +361,21 @@ def write_dummy_content(
     config_path: str | Path,
     encoding: str = "utf-8",
     content_provider: Callable[[Path], Any] | None = None,
+    verbose: bool = False,
+    json_logs: bool = False,
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
-    manager = SnapshotManager(config, encoding=encoding)
+    manager = SnapshotManager(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
     book_path = manager.initialize_workspace(workspace_root, book_name)
+    _verbose_print(verbose, json_logs, f"Writing dummy content under: {book_path}", "dummy.start")
 
     provider = content_provider or _prompt_content_for_file
 
     for path in _iter_configured_files(book_path, config):
         content = provider(path)
         _write_dummy_file(path, content, encoding=encoding)
+
+    _verbose_print(verbose, json_logs, f"Dummy content write completed for: {book_name}", "dummy.done")
 
     return book_path
 
@@ -352,12 +388,20 @@ def write_generated_content(
     encoding: str = "utf-8",
     gist: str | None = None,
     use_cache: bool = True,
+    verbose: bool = False,
+    json_logs: bool = False,
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
-    manager = SnapshotManager(config, encoding=encoding)
+    manager = SnapshotManager(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
     book_path = Path(workspace_root) / book_name
 
     settings = _load_project_settings(book_path, encoding=encoding)
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Loaded Settings.json for {settings.book_name} with chapter_count={settings.chapter_count}",
+        "settings.loaded",
+    )
     manager.initialize_workspace(
         workspace_root,
         book_name,
@@ -369,15 +413,19 @@ def write_generated_content(
 
     novel_template = _load_template_payload("book.json", encoding=encoding)
     chapter_template = _load_template_payload("chapter.json", encoding=encoding)
+    _verbose_print(verbose, json_logs, "Loaded book and chapter JSON templates", "templates.loaded")
 
     book_prompt = _build_novel_prompt(settings=settings, gist=novel_gist, template_payload=novel_template)
     book_prompt_path = book_path / "BookPrompt.txt"
     _write_text(book_prompt_path, book_prompt, encoding=encoding)
+    _verbose_print(verbose, json_logs, f"Saved novel prompt to: {book_prompt_path}", "prompt.novel.saved")
 
     outline_response = _call_genai(
         book_prompt,
         conversation_id=f"{book_name}-novel-outline",
         use_cache=use_cache,
+        verbose=verbose,
+        json_logs=json_logs,
     )
     outline_payload = _extract_json_payload(outline_response)
     if not isinstance(outline_payload, dict):
@@ -385,6 +433,7 @@ def write_generated_content(
 
     outline_path = book_path / "BookOutline.json"
     _write_json(outline_path, outline_payload, encoding=encoding)
+    _verbose_print(verbose, json_logs, f"Saved novel outline to: {outline_path}", "outline.saved")
 
     chapters = outline_payload.get("chapters", [])
     if not isinstance(chapters, list):
@@ -393,6 +442,12 @@ def write_generated_content(
     sorted_chapters = sorted(
         (chapter for chapter in chapters if isinstance(chapter, dict)),
         key=lambda chapter: _chapter_sort_key(chapter, 0),
+    )
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Generating chapter prompts and parameters for {len(sorted_chapters)} chapters",
+        "chapters.start",
     )
 
     for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
@@ -408,13 +463,28 @@ def write_generated_content(
             template_payload=chapter_template,
         )
         _write_text(prompt_path, chapter_prompt, encoding=encoding)
+        _verbose_print(
+            verbose,
+            json_logs,
+            f"Saved chapter {chapter_number} prompt to: {prompt_path}",
+            "prompt.chapter.saved",
+        )
 
         chapter_response = _call_genai(
             chapter_prompt,
             conversation_id=f"{book_name}-chapter-{chapter_number}",
             use_cache=use_cache,
+            verbose=verbose,
+            json_logs=json_logs,
         )
         chapter_json = _extract_json_payload(chapter_response)
         _write_json(parameter_path, chapter_json, encoding=encoding)
+        _verbose_print(
+            verbose,
+            json_logs,
+            f"Saved chapter {chapter_number} parameters to: {parameter_path}",
+            "chapter.parameters.saved",
+        )
 
+    _verbose_print(verbose, json_logs, f"Generated content write completed for: {book_name}", "generated.done")
     return book_path
