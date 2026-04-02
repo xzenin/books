@@ -145,6 +145,17 @@ class SnapshotManager:
         self.write_snapshot_json(snapshot, snapshot_path)
         return snapshot
 
+    def clone_workspace(
+        self,
+        workspace_root: str | Path,
+        source_book_name: str,
+        target_book_name: str,
+    ) -> WorkspaceSnapshot:
+        snapshot = self.read_from_workspace(workspace_root, source_book_name)
+        snapshot.bookName = target_book_name
+        self.restore_to_workspace(snapshot, workspace_root, book_name=target_book_name)
+        return snapshot
+
     def refresh_snapshot_json_from_workspace(
         self,
         workspace_root: str | Path,

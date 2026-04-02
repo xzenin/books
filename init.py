@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 from snapshot_lib import SnapshotManager
@@ -11,12 +12,14 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="init.py",
-        description="Create book folder/file structure from init.json template.",
+        description="Initialize, export, import, or clone book workspaces.",
         epilog=(
             "Examples:\n"
             "  python init.py --book-name Ramayan\n"
-            "  python init.py --book-name Sita --workspace-root .\\_workspace\n"
-            "  python init.py --book-name Demo --config-path .\\init.json"
+            "  python init.py init --book-name Sita --workspace-root .\\_workspace\n"
+            "  python init.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
+            "  python init.py import --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
+            "  python init.py clone --source-book-name Ramayan --target-book-name Mahabharat"
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
@@ -26,27 +29,110 @@ def parse_args() -> argparse.Namespace:
         help="Optional. Root directory where the book folder will be created.",
     )
     parser.add_argument(
-        "--book-name",
-        required=True,
-        help="Mandatory. Book folder name to create under workspace root.",
-    )
-    parser.add_argument(
         "--config-path",
         default=str(script_dir / "init.json"),
         help="Optional. Path to JSON config template.",
     )
+    parser.add_argument(
+        "--encoding",
+        default="utf-8",
+        help="Optional. Text encoding used for read/write.",
+    )
 
-    return parser.parse_args()
+    subparsers = parser.add_subparsers(dest="command")
+
+    init_parser = subparsers.add_parser("init", help="Create book folder and file structure")
+    init_parser.add_argument("--book-name", required=True, help="Book folder name to create under workspace root.")
+
+    export_parser = subparsers.add_parser("export", help="Read workspace files and write one snapshot JSON")
+    export_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
+    export_parser.add_argument("--snapshot-path", required=True, help="Output snapshot JSON path")
+
+    import_parser = subparsers.add_parser("import", help="Read one snapshot JSON and restore workspace files")
+    import_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    import_parser.add_argument("--snapshot-path", required=True, help="Input snapshot JSON path")
+
+    clone_parser = subparsers.add_parser("clone", help="Clone one workspace book into another book folder")
+    clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
+    clone_parser.add_argument("--target-book-name", required=True, help="New target book folder name")
+
+    argv = sys.argv[1:]
+    if not argv:
+        parser.print_help()
+        parser.exit(1)
+
+    if argv[0] in {"-h", "--help"}:
+        return parser.parse_args(argv)
+
+    if argv[0] not in {"init", "export", "import", "clone"}:
+        argv = ["init", *argv]
+
+    return parser.parse_args(argv)
+
+
+def _build_manager(args: argparse.Namespace) -> SnapshotManager:
+    return SnapshotManager.from_config_file(args.config_path, encoding=args.encoding)
+
+
+def run_init(args: argparse.Namespace) -> None:
+    manager = _build_manager(args)
+    book_path = manager.initialize_workspace(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+    )
+    print(f"Structure created at: {book_path}")
+
+
+def run_export(args: argparse.Namespace) -> None:
+    manager = _build_manager(args)
+    manager.export_workspace_to_json(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+        snapshot_path=args.snapshot_path,
+    )
+    print(f"Snapshot exported: {args.snapshot_path}")
+
+
+def run_import(args: argparse.Namespace) -> None:
+    manager = _build_manager(args)
+    snapshot = manager.load_snapshot_json(args.snapshot_path)
+    manager.restore_to_workspace(
+        snapshot=snapshot,
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+    )
+    print(f"Snapshot imported: {args.snapshot_path}")
+
+
+def run_clone(args: argparse.Namespace) -> None:
+    manager = _build_manager(args)
+    manager.clone_workspace(
+        workspace_root=args.workspace_root,
+        source_book_name=args.source_book_name,
+        target_book_name=args.target_book_name,
+    )
+    print(f"Book cloned: {args.source_book_name} -> {args.target_book_name}")
 
 def main() -> None:
     args = parse_args()
 
-    workspace_root = Path(args.workspace_root)
-    book_name = args.book_name
-    manager = SnapshotManager.from_config_file(args.config_path)
-    book_path = manager.initialize_workspace(workspace_root=workspace_root, book_name=book_name)
+    if args.command == "init":
+        run_init(args)
+        return
 
-    print(f"Structure created at: {book_path}")
+    if args.command == "export":
+        run_export(args)
+        return
+
+    if args.command == "import":
+        run_import(args)
+        return
+
+    if args.command == "clone":
+        run_clone(args)
+        return
+
+    raise RuntimeError(f"Unsupported command: {args.command}")
 
 
 if __name__ == "__main__":
