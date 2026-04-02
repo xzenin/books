@@ -1,7 +1,7 @@
 import asyncio
 import json
 from pathlib import Path
-from lib.genai import chat, generate_async, OllamaChat
+from lib.genai import chat, generate_async
 
 PROMPT = "Why is the sky blue? Answer in two sentences."
 
@@ -14,23 +14,17 @@ def _load_config() -> dict:
 
 async def main():
     config = _load_config()
+    provider = str(config.get("genai", {}).get("provider", "copilot")).strip().lower()
 
-    print("=== Copilot (async) ===")
-    safe_rendered = await generate_async(PROMPT)
+    print(f"=== Global provider (async): {provider} ===")
+    safe_rendered = await generate_async(PROMPT, verbose=True)
     print(safe_rendered)
 
-    print("\n=== Ollama (async) ===")
-    ollama_client = OllamaChat.from_config(config, verbose=True)
-    print(f"  model: {ollama_client.model}  host: {ollama_client._ollama_host}")
-    response = await ollama_client.send(PROMPT)
-    print(response)
 
 if __name__ == "__main__":
     asyncio.run(main())
 
-    print("\n=== Copilot (sync) ===")
-    print(chat(PROMPT))
-
-    print("\n=== Ollama (sync) ===")
     config = _load_config()
-    print(chat(PROMPT, client=OllamaChat.from_config(config)))
+    provider = str(config.get("genai", {}).get("provider", "copilot")).strip().lower()
+    print(f"\n=== Global provider (sync): {provider} ===")
+    print(chat(PROMPT, verbose=True))

@@ -62,7 +62,7 @@ def _default_json_log_mode(script_dir: Path) -> bool:
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    commands = {"init", "list", "export", "import", "clone", "write"}
+    commands = {"init", "list", "export", "import", "clone", "layout"}
     global_option_values = {"--workspace-root", "--config-path", "--encoding"}
 
     if not argv:
@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="book.py",
-        description="Initialize, list, export, import, clone, or write book workspaces.",
+        description="Initialize, list, export, import, clone, or layout book workspaces.",
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
@@ -122,8 +122,8 @@ def parse_args() -> argparse.Namespace:
             "  python book.py import --book-name Ramayan\n"
             "  python book.py import --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
             "  python book.py clone --source-book-name Ramayan --target-book-name Mahabharat\n"
-            "  python book.py write --book-name Sita --gist \"A historical Bengali epic\"\n"
-            "  python book.py write --book-name Sita --mode dummy\n"
+            "  python book.py layout --book-name Sita --gist \"A historical Bengali epic\"\n"
+            "  python book.py layout --book-name Sita --mode dummy\n"
             "  python book.py --verbose --json list\n"
             "  python book.py --version\n"
             "  python book.py --help"
@@ -176,22 +176,22 @@ def parse_args() -> argparse.Namespace:
     clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
     clone_parser.add_argument("--target-book-name", required=True, help="New target book folder name")
 
-    write_parser = subparsers.add_parser("write", help="Generate prompts/content for a book or use the legacy dummy writer")
-    write_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    write_parser.add_argument(
+    layout_parser = subparsers.add_parser("layout", help="Generate prompts/content for a book or use the legacy dummy writer")
+    layout_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    layout_parser.add_argument(
         "--mode",
         choices=("genai", "dummy"),
         default="genai",
-        help="Write mode. 'genai' creates prompts and JSON from the model; 'dummy' keeps the old sample-content flow.",
+        help="Layout mode. 'genai' creates prompts and JSON from the model; 'dummy' keeps the old sample-content flow.",
     )
-    write_parser.add_argument("--gist", help="Optional novel gist. If omitted in genai mode, you will be prompted.")
-    write_parser.add_argument(
+    layout_parser.add_argument("--gist", help="Optional novel gist. If omitted in genai mode, you will be prompted.")
+    layout_parser.add_argument(
         "--no-cache",
         action="store_true",
-        help="Disable GenAI response caching for the write command.",
+        help="Disable GenAI response caching for the layout command.",
     )
 
-    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, write_parser):
+    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, layout_parser):
         _add_runtime_flags(command_parser)
 
     argv = sys.argv[1:]
@@ -395,8 +395,32 @@ def run_clone(args: argparse.Namespace) -> None:
     print(f"Book cloned: {args.source_book_name} -> {args.target_book_name}")
 
 
-def run_write(args: argparse.Namespace) -> None:
-    _emit_verbose(args, event="write.start", message=f"Running write for '{args.book_name}' in mode '{args.mode}'")
+def _ensure_layout_initialized(args: argparse.Namespace) -> None:
+    book_path = Path(args.workspace_root) / args.book_name
+    settings_path = book_path / "Settings.json"
+
+    if settings_path.exists():
+        return
+
+    manager = _build_manager(args)
+    settings = _build_project_settings(args, manager)
+    manager.initialize_workspace(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+        number_of_chapters=settings.chapter_count,
+    )
+    settings_path.parent.mkdir(parents=True, exist_ok=True)
+    settings_path.write_text(_serialize_project_settings(settings), encoding=args.encoding)
+    _emit_verbose(
+        args,
+        event="layout.autoinit",
+        message=f"Auto-initialized missing workspace for '{args.book_name}'",
+    )
+
+
+def run_layout(args: argparse.Namespace) -> None:
+    _emit_verbose(args, event="layout.start", message=f"Running layout for '{args.book_name}' in mode '{args.mode}'")
+    _ensure_layout_initialized(args)
     if args.mode == "dummy":
         book_path = write_dummy_content(
             workspace_root=args.workspace_root,
@@ -446,8 +470,8 @@ def main() -> None:
         run_clone(args)
         return
 
-    if args.command == "write":
-        run_write(args)
+    if args.command == "layout":
+        run_layout(args)
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")
