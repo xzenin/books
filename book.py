@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import platform
+import shutil
 import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
@@ -11,6 +12,17 @@ from pathlib import Path
 
 from lib.writer import SnapshotManager
 from lib.writer.write import write_dummy_content, write_generated_content
+
+
+def _ensure_config(script_dir: Path) -> None:
+    config_path = script_dir / ".pkbook" / "config.json"
+    if config_path.exists():
+        return
+    template_path = script_dir / "templates" / "config.json"
+    if not template_path.exists():
+        return
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(template_path, config_path)
 
 
 def _load_app_config(script_dir: Path) -> dict[str, object]:
@@ -411,6 +423,7 @@ def run_write(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
+    _ensure_config(Path(__file__).resolve().parent)
     args = parse_args()
 
     if args.command == "init":
