@@ -33,7 +33,7 @@ class GenAIChat:
         storage_root: Optional[Path] = None,
     ) -> None:
         self.conversation_id = conversation_id or DEFAULT_CONVERSATION_ID
-        self.storage_root = storage_root or Path(__file__).resolve().parent / ".genai"
+        self.storage_root = storage_root or Path(__file__).resolve().parent / ".pkbook" / "_genai"
         self.history_dir = self.storage_root / "history"
         self.cache_dir = self.storage_root / "cache"
         self.history_dir.mkdir(parents=True, exist_ok=True)

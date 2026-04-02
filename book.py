@@ -5,32 +5,37 @@ import sys
 from pathlib import Path
 
 from snapshot_lib import SnapshotManager
+from write import write_dummy_content
 
 
 def parse_args() -> argparse.Namespace:
     script_dir = Path(__file__).resolve().parent
 
     parser = argparse.ArgumentParser(
-        prog="init.py",
-        description="Initialize, export, import, or clone book workspaces.",
+        prog="book.py",
+        description="Initialize, export, import, clone, or write book workspaces.",
         epilog=(
             "Examples:\n"
-            "  python init.py --book-name Ramayan\n"
-            "  python init.py init --book-name Sita --workspace-root .\\_workspace\n"
-            "  python init.py export --book-name Ramayan\n"
-            "  python init.py import --book-name Ramayan\n"
-            "  python init.py clone --source-book-name Ramayan --target-book-name Mahabharat"
+            "  python book.py --book-name Ramayan\n"
+            "  python book.py init --book-name Sita --workspace-root .\\.pkbook\\_wokspace\n"
+            "  python book.py export --book-name Ramayan\n"
+            "  python book.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
+            "  python book.py import --book-name Ramayan\n"
+            "  python book.py import --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
+            "  python book.py clone --source-book-name Ramayan --target-book-name Mahabharat\n"
+            "  python book.py write --book-name Sita\n"
+            "  python book.py --help"
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument(
         "--workspace-root",
-        default=str(script_dir / "_workspace"),
+        default=str(script_dir / ".pkbook" / "_wokspace"),
         help="Optional. Root directory where the book folder will be created.",
     )
     parser.add_argument(
         "--config-path",
-        default=str(script_dir / "init.json"),
+        default=str(script_dir / "templates" / "init.json"),
         help="Optional. Path to JSON config template.",
     )
     parser.add_argument(
@@ -56,6 +61,9 @@ def parse_args() -> argparse.Namespace:
     clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
     clone_parser.add_argument("--target-book-name", required=True, help="New target book folder name")
 
+    write_parser = subparsers.add_parser("write", help="Write dummy content into the configured book files")
+    write_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+
     argv = sys.argv[1:]
     if not argv:
         parser.print_help()
@@ -64,7 +72,7 @@ def parse_args() -> argparse.Namespace:
     if argv[0] in {"-h", "--help"}:
         return parser.parse_args(argv)
 
-    if argv[0] not in {"init", "export", "import", "clone"}:
+    if argv[0] not in {"init", "export", "import", "clone", "write"}:
         argv = ["init", *argv]
 
     return parser.parse_args(argv)
@@ -127,6 +135,17 @@ def run_clone(args: argparse.Namespace) -> None:
     )
     print(f"Book cloned: {args.source_book_name} -> {args.target_book_name}")
 
+
+def run_write(args: argparse.Namespace) -> None:
+    book_path = write_dummy_content(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+        config_path=args.config_path,
+        encoding=args.encoding,
+    )
+    print(f"Dummy content written to: {book_path}")
+
+
 def main() -> None:
     args = parse_args()
 
@@ -144,6 +163,10 @@ def main() -> None:
 
     if args.command == "clone":
         run_clone(args)
+        return
+
+    if args.command == "write":
+        run_write(args)
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")
