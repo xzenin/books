@@ -9,8 +9,8 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from snapshot_lib import SnapshotManager
-from write import write_dummy_content, write_generated_content
+from lib.writer import SnapshotManager
+from lib.writer.write import write_dummy_content, write_generated_content
 
 
 def _load_app_config(script_dir: Path) -> dict[str, object]:

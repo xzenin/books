@@ -35,7 +35,8 @@ class GenAIChat:
         json_logs: bool = False,
     ) -> None:
         self.conversation_id = conversation_id or DEFAULT_CONVERSATION_ID
-        self.storage_root = storage_root or Path(__file__).resolve().parent / ".pkbook" / "_genai"
+        default_storage = Path(__file__).resolve().parent.parent / ".pkbook" / "_genai"
+        self.storage_root = storage_root or default_storage
         self.verbose = verbose
         self.json_logs = json_logs
         self.history_dir = self.storage_root / "history"

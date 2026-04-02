@@ -7,7 +7,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-from snapshot_lib import SnapshotConfig, SnapshotManager
+from .manager import SnapshotManager
+from .models import SnapshotConfig
 
 
 TEXT_DUMMY_CONTENT = "hello"
@@ -54,86 +55,6 @@ def _verbose_print(verbose: bool, json_logs: bool, message: str, event: str = "t
 
 def _read_text(path: Path, *, encoding: str) -> str:
     return path.read_text(encoding=encoding)
-
-
-def _filename_to_method(file_name: str) -> str:
-    stem = Path(file_name).stem
-    stem = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", stem)
-    stem = re.sub(r"\d+", "", stem)
-    stem = re.sub(r"[^A-Za-z0-9]+", "_", stem).strip("_")
-    return stem.lower()
-
-
-def json_settings(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_book_outline(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_book_summary(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_all_characters(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_all_settings(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_book_references(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_chapter_parameter(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def json_default(path: Path, content: Any, *, encoding: str) -> None:
-    _write_json(path, content, encoding=encoding)
-
-
-def text_book_prompt(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_book_foreword(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_book_running_summary(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_chapter_references(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_chapter_prompt(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_chapter_summary(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_chapter_characters(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_chapter_generated(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_chapter_running_summary(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
-
-
-def text_default(path: Path, content: str, *, encoding: str) -> None:
-    _write_text(path, content, encoding=encoding)
 
 
 def _normalize_json_content(raw: str) -> Any:
@@ -207,7 +128,7 @@ def _prompt_for_gist(book_name: str) -> str:
 
 
 def _load_template_payload(template_name: str, *, encoding: str) -> Any:
-    template_path = Path(__file__).resolve().parent / "templates" / template_name
+    template_path = Path(__file__).resolve().parents[2] / "templates" / template_name
     return _load_json_file(template_path, encoding=encoding)
 
 
@@ -274,7 +195,7 @@ def _call_genai(
     verbose: bool = False,
     json_logs: bool = False,
 ) -> str:
-    from genai import chat
+    from lib.genai import chat
 
     return chat(
         prompt,
@@ -316,16 +237,11 @@ def _prompt_content_for_file(path: Path) -> Any:
 
 
 def _write_dummy_file(path: Path, content: Any, *, encoding: str) -> None:
-    extension = path.suffix.lower()
-    method = _filename_to_method(path.name)
-
-    if extension == ".json":
-        writer = globals().get(f"json_{method}", json_default)
-        writer(path, content, encoding=encoding)
+    if path.suffix.lower() == ".json":
+        _write_json(path, content, encoding=encoding)
         return
 
-    writer = globals().get(f"text_{method}", text_default)
-    writer(path, str(content), encoding=encoding)
+    _write_text(path, str(content), encoding=encoding)
 
 
 def _iter_configured_files(book_path: Path, config: SnapshotConfig) -> list[Path]:
