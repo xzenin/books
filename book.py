@@ -13,8 +13,33 @@ from snapshot_lib import SnapshotManager
 from write import write_dummy_content, write_generated_content
 
 
+def _load_app_config(script_dir: Path) -> dict[str, object]:
+    config_path = script_dir / ".pkbook" / "config.json"
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+
+    with config_path.open("r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+
+    if not isinstance(payload, dict):
+        raise ValueError(f"Config file must contain a JSON object: {config_path}")
+
+    return payload
+
+
+def _format_version_output(script_dir: Path) -> str:
+    payload = _load_app_config(script_dir)
+    app_name = str(payload.get("appname", "book"))
+    version = str(payload.get("version", "unknown"))
+    return f"{app_name} {version}"
+
+
 def parse_args() -> argparse.Namespace:
     script_dir = Path(__file__).resolve().parent
+
+    if "--version" in sys.argv[1:]:
+        print(_format_version_output(script_dir))
+        raise SystemExit(0)
 
     parser = argparse.ArgumentParser(
         prog="book.py",
@@ -33,9 +58,15 @@ def parse_args() -> argparse.Namespace:
             "  python book.py clone --source-book-name Ramayan --target-book-name Mahabharat\n"
             "  python book.py write --book-name Sita --gist \"A historical Bengali epic\"\n"
             "  python book.py write --book-name Sita --mode dummy\n"
+            "  python book.py --version\n"
             "  python book.py --help"
         ),
         formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Show application version from .pkbook/config.json and exit.",
     )
     parser.add_argument(
         "--workspace-root",

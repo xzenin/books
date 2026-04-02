@@ -20,6 +20,17 @@ After init, keep the intial project settings saved to settings.json in _workspac
 Get these informations from arguments and environment and the create a class model. Then serialze the same model into a string, the same string must go to snapshot as well as to persisted file.
 
 
+create a config.json in .pkbook folder 
+{
+    "appname": "book",
+    "owner": "xzen.in@gmail.com",
+    "version": 1.0.1,
+    "website": "https://www.xzen.in",
+    "installed_on": <date>,
+    "licence": "lic"
+}
+
+
 
 
 Keep the dummy content writing intact. I want to try new things here. 
