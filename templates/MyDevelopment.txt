@@ -79,3 +79,8 @@ Your task here include:
       
 
 
+
+Add one argument 'publish'
+For all the chapter mentioned in Book. The book context is provided. Refer file "<workspace>/<bookname>/BookOutline.json"
+Append the content from  generated output at: "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterGenerated.txt"     
+Append the content in textfile "<workspace>/<bookname>/BookPublished.txt"

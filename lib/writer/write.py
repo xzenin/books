@@ -724,3 +724,73 @@ def write_authored_content(
     )
     _verbose_print(verbose, json_logs, f"Draft command completed for: {book_name}", "draft.done")
     return book_path
+
+
+def publish_book_content(
+    *,
+    workspace_root: str | Path,
+    book_name: str,
+    config_path: str | Path,
+    output_path: str | Path | None = None,
+    encoding: str = "utf-8",
+    verbose: bool = False,
+    json_logs: bool = False,
+) -> Path:
+    config = SnapshotConfig.from_json_file(config_path)
+    book_path = Path(workspace_root) / book_name
+    outline_path = book_path / "BookOutline.json"
+
+    if not outline_path.exists():
+        raise FileNotFoundError(f"Book outline not found: {outline_path}")
+
+    outline_payload = _load_json_file(outline_path, encoding=encoding)
+    if not isinstance(outline_payload, dict):
+        raise ValueError("BookOutline.json must be a JSON object.")
+
+    chapters = outline_payload.get("chapters", [])
+    if not isinstance(chapters, list):
+        raise ValueError("BookOutline.json must contain a chapters array.")
+
+    chapter_cfg = config.chapters
+    published_path = Path(output_path) if output_path else (book_path / "BookPublished.txt")
+    published_path.parent.mkdir(parents=True, exist_ok=True)
+
+    sorted_chapters = sorted(
+        (chapter for chapter in chapters if isinstance(chapter, dict)),
+        key=lambda chapter: _chapter_sort_key(chapter, 0),
+    )
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Publishing {len(sorted_chapters)} chapters into: {_relative_path_text(published_path)}",
+        "publish.start",
+    )
+
+    chunks: list[str] = []
+    for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
+        chapter_number = _chapter_sort_key(chapter_payload, fallback_index)
+        chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(chapter_number))
+        out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(chapter_number))
+        generated_path = book_path / "BookChapters" / chapter_folder / out_folder / "ChapterGenerated.txt"
+        if not generated_path.exists():
+            raise FileNotFoundError(f"Generated chapter content not found: {generated_path}")
+
+        chapter_title = str(chapter_payload.get("chapter_title", "")).strip()
+        heading = chapter_title or f"Chapter {chapter_number}"
+        content = _read_text(generated_path, encoding=encoding).strip()
+        chunks.append(f"{heading}\n\n{content}\n")
+        _verbose_print(
+            verbose,
+            json_logs,
+            f"Included chapter {chapter_number} from: {_relative_path_text(generated_path)}",
+            "publish.chapter.appended",
+        )
+
+    _write_text(published_path, "\n\n".join(chunks).strip() + "\n", encoding=encoding)
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Published manuscript written to: {_relative_path_text(published_path)}",
+        "publish.done",
+    )
+    return published_path
