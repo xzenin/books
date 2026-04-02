@@ -1,34 +1,3 @@
-<#
-.SYNOPSIS
-Creates a complete book folder/file scaffold from a JSON definition.
-
-.DESCRIPTION
-Reads structure rules from init.json (or a custom config path) and creates
-the target book root, chapter folders, and files.
-
-.PARAMETER BookName
-Mandatory. Name of the book root folder to create under WorkspaceRoot.
-
-.PARAMETER WorkspaceRoot
-Optional. Base directory where the book folder is created.
-Default: <script_folder>\_workspace
-
-.PARAMETER ConfigPath
-Optional. Path to JSON configuration file.
-Default: <script_folder>\init.json
-
-.EXAMPLE
-.\init.ps1 -BookName "Majar"
-
-.EXAMPLE
-.\init.ps1 -BookName "Sita" -WorkspaceRoot ".\_workspace"
-
-.EXAMPLE
-.\init.ps1 -BookName "Ramayana" -ConfigPath ".\init.json"
-
-.NOTES
-Use -BookName (correct parameter name).
-#>
 [CmdletBinding()]
 param(
     [string]$WorkspaceRoot = (Join-Path $PSScriptRoot "_workspace"),
