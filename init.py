@@ -17,8 +17,8 @@ def parse_args() -> argparse.Namespace:
             "Examples:\n"
             "  python init.py --book-name Ramayan\n"
             "  python init.py init --book-name Sita --workspace-root .\\_workspace\n"
-            "  python init.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
-            "  python init.py import --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
+            "  python init.py export --book-name Ramayan\n"
+            "  python init.py import --book-name Ramayan\n"
             "  python init.py clone --source-book-name Ramayan --target-book-name Mahabharat"
         ),
         formatter_class=argparse.RawTextHelpFormatter,
@@ -46,11 +46,11 @@ def parse_args() -> argparse.Namespace:
 
     export_parser = subparsers.add_parser("export", help="Read workspace files and write one snapshot JSON")
     export_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
-    export_parser.add_argument("--snapshot-path", required=True, help="Output snapshot JSON path")
+    export_parser.add_argument("--snapshot-path", help="Output snapshot JSON path (default: <book-name>.json)")
 
     import_parser = subparsers.add_parser("import", help="Read one snapshot JSON and restore workspace files")
     import_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    import_parser.add_argument("--snapshot-path", required=True, help="Input snapshot JSON path")
+    import_parser.add_argument("--snapshot-path", help="Input snapshot JSON path (default: <book-name>.json)")
 
     clone_parser = subparsers.add_parser("clone", help="Clone one workspace book into another book folder")
     clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
@@ -74,6 +74,18 @@ def _build_manager(args: argparse.Namespace) -> SnapshotManager:
     return SnapshotManager.from_config_file(args.config_path, encoding=args.encoding)
 
 
+def _resolve_snapshot_path(args: argparse.Namespace) -> str:
+    snapshot_path = getattr(args, "snapshot_path", None)
+    if snapshot_path:
+        return snapshot_path
+
+    book_name = getattr(args, "book_name", None)
+    if not book_name:
+        raise ValueError("book_name is required to resolve the default snapshot path.")
+
+    return f"{book_name}.json"
+
+
 def run_init(args: argparse.Namespace) -> None:
     manager = _build_manager(args)
     book_path = manager.initialize_workspace(
@@ -85,23 +97,25 @@ def run_init(args: argparse.Namespace) -> None:
 
 def run_export(args: argparse.Namespace) -> None:
     manager = _build_manager(args)
+    snapshot_path = _resolve_snapshot_path(args)
     manager.export_workspace_to_json(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
-        snapshot_path=args.snapshot_path,
+        snapshot_path=snapshot_path,
     )
-    print(f"Snapshot exported: {args.snapshot_path}")
+    print(f"Snapshot exported: {snapshot_path}")
 
 
 def run_import(args: argparse.Namespace) -> None:
     manager = _build_manager(args)
-    snapshot = manager.load_snapshot_json(args.snapshot_path)
+    snapshot_path = _resolve_snapshot_path(args)
+    snapshot = manager.load_snapshot_json(snapshot_path)
     manager.restore_to_workspace(
         snapshot=snapshot,
         workspace_root=args.workspace_root,
         book_name=args.book_name,
     )
-    print(f"Snapshot imported: {args.snapshot_path}")
+    print(f"Snapshot imported: {snapshot_path}")
 
 
 def run_clone(args: argparse.Namespace) -> None:
