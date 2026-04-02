@@ -1,0 +1,30 @@
+{
+  "rootFiles": [
+    "Settings.json",
+    "BookPrompt.txt",
+    "BookOutline.json",
+    "BookSummary.json",
+    "AllCharacters.json",
+    "AllSettings.json",
+    "BookReferences.json",
+    "BookForeword.txt"
+  ],
+  "chapters": {
+    "start": 1,
+    "end": 20,
+    "chapterFolderPattern": "Chapter{n}",
+    "chapterFiles": [
+      "Chapter{n}Parameter.json",
+      "Chapter{n}References.txt",
+      "Chapter{n}Prompt.txt"
+    ],
+    "chapterOutFolderPattern": "Chapter{n}Out",
+    "chapterOutFiles": [
+      "Chapter{n}Summary.txt",
+      "Chapter{n}Characters.txt",
+      "Chapter{n}Generated.txt",
+      "Chapter{n}RunningSummary.txt"
+    ],
+    "chapter1RunningSummaryFile": "ChapterRunningSummary.txt"
+  }
+}
