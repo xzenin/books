@@ -150,7 +150,6 @@ def _build_novel_prompt(*, settings: ProjectSettings, gist: str, template_payloa
     template_text = _read_text(template_path, encoding="utf-8")
 
     required_fields = {
-        "settings_json",
         "gist",
         "template_json",
         "chapter_count",
@@ -169,7 +168,6 @@ def _build_novel_prompt(*, settings: ProjectSettings, gist: str, template_payloa
 
     try:
         return template_text.format(
-            settings_json=settings_json,
             gist=gist,
             template_json=template_json,
             chapter_count=settings.chapter_count,
@@ -208,7 +206,6 @@ def _build_chapter_prompt(
     template_text = _read_text(template_path, encoding=encoding)
 
     required_fields = {
-        "book_settings_json",
         "gist",
         "outline_context",
         "chapter_json",
@@ -228,7 +225,6 @@ def _build_chapter_prompt(
 
     try:
         return template_text.format(
-            book_settings_json=book_settings_json,
             gist=gist,
             outline_context=outline_context,
             chapter_json=chapter_json,
@@ -263,6 +259,87 @@ def _chapter_sort_key(chapter_payload: dict[str, Any], fallback_index: int) -> i
         return int(raw_value)
     except (TypeError, ValueError):
         return fallback_index
+
+
+def _chapter_texts_to_text(raw_sections: Any) -> str:
+    if not isinstance(raw_sections, list):
+        return ""
+
+    parts: list[str] = []
+    for item in raw_sections:
+        if isinstance(item, dict):
+            value = str(item.get("text", "")).strip()
+            if value:
+                parts.append(value)
+        elif isinstance(item, str):
+            value = item.strip()
+            if value:
+                parts.append(value)
+    return "\n\n".join(parts).strip()
+
+
+def _chapter_text_to_sections(chapter_text: str) -> list[dict[str, str]]:
+    text = chapter_text.strip()
+    if not text:
+        return []
+
+    blocks = [block.strip() for block in re.split(r"\n\s*\n", text) if block.strip()]
+    if not blocks:
+        return [{"section": "body", "text": text}]
+
+    return [
+        {"section-title": f"part-{index}", "section": f"part-{index}", "text": block}
+        for index, block in enumerate(blocks, start=1)
+    ]
+
+
+def _normalize_chapter_payload(payload: dict[str, Any], chapter_number: int) -> dict[str, Any]:
+    normalized = dict(payload)
+    chapter_title = str(normalized.get("chapter_title", "")).strip() or f"Chapter {chapter_number}"
+    chapter_summary = str(normalized.get("chapter_summary", "")).strip()
+    chapter_text_from_array = _chapter_texts_to_text(normalized.get("chapter_texts", []))
+    chapter_text = str(
+        normalized.get("chapter_text", normalized.get("chatper_text", chapter_text_from_array))
+    ).strip()
+    if not chapter_text:
+        chapter_text = chapter_text_from_array
+
+    normalized["sl"] = _chapter_sort_key(normalized, chapter_number)
+    normalized["name"] = str(normalized.get("name", f"Chapter {chapter_number}")).strip() or f"Chapter {chapter_number}"
+    normalized["chapter_title"] = chapter_title
+    normalized["chapter_summary"] = chapter_summary
+    normalized["chapter_text"] = chapter_text
+    raw_chapter_texts = normalized.get("chapter_texts")
+    if isinstance(raw_chapter_texts, list):
+        normalized_sections: list[dict[str, str]] = []
+        for index, item in enumerate(raw_chapter_texts, start=1):
+            if isinstance(item, dict):
+                text_value = str(item.get("text", "")).strip()
+                if not text_value:
+                    continue
+                section_name = str(item.get("section-title", item.get("section", f"part-{index}"))).strip()
+                if not section_name:
+                    section_name = f"part-{index}"
+                normalized_sections.append(
+                    {"section-title": section_name, "section": section_name, "text": text_value}
+                )
+            elif isinstance(item, str):
+                text_value = item.strip()
+                if text_value:
+                    section_name = f"part-{index}"
+                    normalized_sections.append(
+                        {"section-title": section_name, "section": section_name, "text": text_value}
+                    )
+        normalized["chapter_texts"] = normalized_sections if normalized_sections else _chapter_text_to_sections(chapter_text)
+    else:
+        normalized["chapter_texts"] = _chapter_text_to_sections(chapter_text)
+    normalized["included_characters"] = normalized.get("included_characters", [])
+    references = normalized.get("references", normalized.get("further_references", []))
+    if not isinstance(references, list):
+        references = []
+    normalized["references"] = references
+    normalized["further_references"] = references
+    return normalized
 
 
 def _chapter_paths(book_path: Path, config: SnapshotConfig, chapter_number: int) -> tuple[Path, Path, Path]:
@@ -466,6 +543,7 @@ def write_generated_content(
 
     for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
         chapter_number = _chapter_sort_key(chapter_payload, fallback_index)
+        chapter_payload = _normalize_chapter_payload(chapter_payload, chapter_number)
         chapter_root, prompt_path, parameter_path = _chapter_paths(book_path, config, chapter_number)
         chapter_root.mkdir(parents=True, exist_ok=True)
 
@@ -493,6 +571,9 @@ def write_generated_content(
             json_logs=json_logs,
         )
         chapter_json = _extract_json_payload(chapter_response)
+        if not isinstance(chapter_json, dict):
+            raise ValueError(f"Chapter parameter response for chapter {chapter_number} must be a JSON object.")
+        chapter_json = _normalize_chapter_payload(chapter_json, chapter_number)
         _write_json(parameter_path, chapter_json, encoding=encoding)
         _verbose_print(
             verbose,
@@ -555,7 +636,6 @@ def _build_author_prompt(
         "Task:\n"
         "- Write this chapter as rich literary prose.\n"
         "- Finalize a strong chapter title.\n"
-        "- Prepend chapter title to the generated chapter text (the caller will also persist title separately).\n"
         "- Produce a concise chapter summary that carries forward continuity from previous running summary.\n"
         "- Produce a next running summary for upcoming chapter alignment.\n"
         "- Propose at least 3 new human characters for the next chapter.\n"
@@ -570,7 +650,7 @@ def _build_author_prompt(
 
 def _normalize_author_payload(payload: dict[str, Any]) -> dict[str, Any]:
     title = str(payload.get("chapter_title", "")).strip() or "Untitled Chapter"
-    chapter_text = str(payload.get("chapter_text", "")).strip()
+    chapter_text = str(payload.get("chapter_text", _chapter_texts_to_text(payload.get("chapter_texts", [])))).strip()
     summary = str(payload.get("chapter_summary", "")).strip()
     next_running_summary = str(payload.get("next_running_summary", "")).strip() or summary
 
@@ -603,6 +683,7 @@ def _normalize_author_payload(payload: dict[str, Any]) -> dict[str, Any]:
     return {
         "chapter_title": title,
         "chapter_text": chapter_text,
+        "chapter_texts": _chapter_text_to_sections(chapter_text),
         "chapter_summary": summary,
         "next_running_summary": next_running_summary,
         "next_characters": normalized_characters,
@@ -698,12 +779,13 @@ def write_authored_content(
     else:
         chapter_numbers = _discover_chapter_numbers_from_workspace(book_path, config)
         chapters = [
-            {
+            _normalize_chapter_payload({
                 "sl": number,
                 "name": f"Chapter {number}",
                 "chapter_title": f"Chapter {number}",
                 "chapter_summary": "",
-            }
+                "chapter_text": "",
+            }, number)
             for number in chapter_numbers
         ]
         outline_payload = {
@@ -742,6 +824,7 @@ def write_authored_content(
 
     for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
         chapter_number = _chapter_sort_key(chapter_payload, fallback_index)
+        chapter_payload = _normalize_chapter_payload(chapter_payload, chapter_number)
         chapter_root, _, parameter_path = _chapter_paths(book_path, config, chapter_number)
         chapter_cfg = config.chapters
         out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(chapter_number))
@@ -755,6 +838,7 @@ def write_authored_content(
                 chapter_parameter_payload = chapter_payload
             if not isinstance(chapter_parameter_payload, dict):
                 chapter_parameter_payload = chapter_payload
+            chapter_parameter_payload = _normalize_chapter_payload(chapter_parameter_payload, chapter_number)
         else:
             chapter_parameter_payload = chapter_payload
 
@@ -765,44 +849,94 @@ def write_authored_content(
             f"Drafting chapter {chapter_number} using context: {_relative_path_text(parameter_path)}",
             "draft.chapter.start",
         )
-        prompt = _build_author_prompt(
-            settings=settings,
-            gist=novel_gist,
-            outline_payload=outline_payload,
-            chapter_payload=chapter_payload,
-            chapter_parameter_payload=chapter_parameter_payload,
-            chapter_number=chapter_number,
-            previous_running_summary=previous_running_summary,
-        )
-        response = _call_genai(
-            prompt,
-            conversation_id=f"{book_name}-draft-chapter-{chapter_number}",
-            use_cache=use_cache,
-            verbose=verbose,
-            json_logs=json_logs,
-        )
-        author_payload_raw = _extract_json_payload(response)
-        if not isinstance(author_payload_raw, dict):
-            raise ValueError(f"Draft response for chapter {chapter_number} must be a JSON object.")
-        author_payload = _normalize_author_payload(author_payload_raw)
+        chapter_sections = chapter_parameter_payload.get("chapter_texts", [])
+        if not isinstance(chapter_sections, list) or not chapter_sections:
+            chapter_sections = chapter_payload.get("chapter_texts", [])
+        if not isinstance(chapter_sections, list) or not chapter_sections:
+            chapter_sections = [{"section-title": "part-1", "text": chapter_payload.get("chapter_text", "")}]
 
-        chapter_title = author_payload["chapter_title"]
-        chapter_text = author_payload["chapter_text"]
-        chapter_summary = author_payload["chapter_summary"]
-        next_running_summary = author_payload["next_running_summary"]
-        next_characters = author_payload["next_characters"]
+        aggregated_section_texts: list[str] = []
+        aggregated_characters: list[dict[str, str]] = []
+        chapter_title = str(chapter_payload.get("chapter_title", "")).strip() or f"Chapter {chapter_number}"
+        chapter_summary_parts: list[str] = []
+        next_running_summary = previous_running_summary
 
-        generated_text = f"{chapter_title}\n\n{chapter_text}".strip() + "\n"
+        for section_index, section_payload in enumerate(chapter_sections, start=1):
+            if isinstance(section_payload, dict):
+                section_name = str(
+                    section_payload.get("section-title", section_payload.get("section", f"part-{section_index}"))
+                ).strip() or f"part-{section_index}"
+                section_seed_text = str(section_payload.get("text", "")).strip()
+            else:
+                section_name = f"part-{section_index}"
+                section_seed_text = str(section_payload).strip()
+
+            section_chapter_payload = dict(chapter_payload)
+            section_chapter_payload["chapter_texts"] = [{"section-title": section_name, "section": section_name, "text": section_seed_text}]
+            section_chapter_payload["chapter_text"] = section_seed_text
+
+            section_parameter_payload = dict(chapter_parameter_payload)
+            section_parameter_payload["chapter_texts"] = [{"section-title": section_name, "section": section_name, "text": section_seed_text}]
+            section_parameter_payload["chapter_text"] = section_seed_text
+
+            prompt = _build_author_prompt(
+                settings=settings,
+                gist=novel_gist,
+                outline_payload=outline_payload,
+                chapter_payload=section_chapter_payload,
+                chapter_parameter_payload=section_parameter_payload,
+                chapter_number=chapter_number,
+                previous_running_summary=next_running_summary,
+            )
+            response = _call_genai(
+                prompt,
+                conversation_id=f"{book_name}-draft-chapter-{chapter_number}-section-{section_index}",
+                use_cache=use_cache,
+                verbose=verbose,
+                json_logs=json_logs,
+            )
+            author_payload_raw = _extract_json_payload(response)
+            if not isinstance(author_payload_raw, dict):
+                raise ValueError(
+                    f"Draft response for chapter {chapter_number} section {section_index} must be a JSON object."
+                )
+            author_payload = _normalize_author_payload(author_payload_raw)
+
+            section_text = author_payload["chapter_text"].strip()
+            if section_text:
+                aggregated_section_texts.append(section_text)
+
+            if author_payload["chapter_title"].strip():
+                chapter_title = author_payload["chapter_title"].strip()
+
+            summary_text = author_payload["chapter_summary"].strip()
+            if summary_text:
+                chapter_summary_parts.append(summary_text)
+
+            next_running_summary = author_payload["next_running_summary"].strip() or next_running_summary
+            aggregated_characters.extend(author_payload["next_characters"])
+
+            _verbose_print(
+                verbose,
+                json_logs,
+                f"Drafted chapter {chapter_number} section {section_index}: {section_name}",
+                "draft.chapter.section.done",
+            )
+
+        chapter_text = "\n\n".join(part for part in aggregated_section_texts if part).strip()
+        chapter_summary = "\n".join(dict.fromkeys(part for part in chapter_summary_parts if part)).strip()
+        next_characters = aggregated_characters
+
+        generated_text = f"{chapter_text}".strip() + "\n"
         chapter_generated_path = out_path / "ChapterGenerated.txt"
         chapter_summary_path = out_path / "ChapterSummary.txt"
-        chapter_character_path = out_path / "ChapterCharacter.txt"
-        chapter_characters_compat_path = out_path / "ChapterCharacters.txt"
+        chapter_character_path = out_path / "ChapterCharacter.txt"         
 
         _write_text(chapter_generated_path, generated_text, encoding=encoding)
         _write_text(chapter_summary_path, chapter_summary + "\n", encoding=encoding)
         character_text = _render_character_text(next_characters)
         _write_text(chapter_character_path, character_text, encoding=encoding)
-        _write_text(chapter_characters_compat_path, character_text, encoding=encoding)
+       
 
         _verbose_print(
             verbose,
@@ -818,6 +952,8 @@ def write_authored_content(
 
         chapter_payload["chapter_title"] = chapter_title
         chapter_payload["chapter_summary"] = chapter_summary
+        chapter_payload["chapter_texts"] = _chapter_text_to_sections(chapter_text)
+        chapter_payload["chapter_text"] = chapter_text
         chapter_payload["chatper_text"] = chapter_text
         outline_payload["running_summary"] = next_running_summary
         _extend_outline_characters(outline_payload, next_characters)
@@ -919,7 +1055,7 @@ def publish_book_content(
         chapter_title = chapter_titles.get(chapter_number, "")
         heading = chapter_title or f"Chapter {chapter_number}"
         content = _read_text(generated_path, encoding=encoding).strip()
-        chunks.append(f"{heading}\n\n{content}\n")
+        chunks.append(f"Chapter {chapter_number}\n\n{heading}\n\n{content}\n===========================\n\n")
         _verbose_print(
             verbose,
             json_logs,

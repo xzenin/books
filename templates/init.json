@@ -17,7 +17,7 @@
     "chapterOutFolderPattern": "ChapterOut",
     "chapterOutFiles": [
       "ChapterSummary.txt",
-      "ChapterCharacters.txt",
+      "ChapterCharacter.txt",
       "ChapterGenerated.txt"
     ]
   }

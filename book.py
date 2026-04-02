@@ -93,6 +93,12 @@ def _add_runtime_flags(parser: argparse.ArgumentParser) -> None:
         help="Enable verbose logging for major workflow steps.",
     )
     parser.add_argument(
+        "--debug",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Show full Python traceback on failures.",
+    )
+    parser.add_argument(
         "--json",
         action=argparse.BooleanOptionalAction,
         default=None,
@@ -285,6 +291,8 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args(argv)
     if args.json is None:
         args.json = False
+    if args.debug is None:
+        args.debug = False
     return args
 
 
@@ -633,31 +641,7 @@ def run_read(args: argparse.Namespace) -> None:
     )
 
 
-def _business_error_message(command: str, error: Exception) -> str:
-    if isinstance(error, FileNotFoundError):
-        return f"{command} failed: required file or folder was not found. {error}"
-    if isinstance(error, json.JSONDecodeError):
-        return (
-            f"{command} failed: invalid JSON content was found. "
-            f"{error.msg} (line {error.lineno}, column {error.colno})"
-        )
-    if isinstance(error, ModuleNotFoundError):
-        package_name = getattr(error, "name", None) or str(error)
-        return f"{command} failed: required dependency is missing ({package_name})."
-    if isinstance(error, PermissionError):
-        return f"{command} failed: permission denied while accessing files. {error}"
-    if isinstance(error, ValueError):
-        return f"{command} failed: {error}"
-    if isinstance(error, NotADirectoryError):
-        return f"{command} failed: expected a folder path but got a file path. {error}"
-
-    return (
-        f"{command} failed due to an internal error. "
-        "Run again with --verbose to see additional details."
-    )
-
-
-def _run_command(args: argparse.Namespace) -> None:
+def _dispatch_command(args: argparse.Namespace) -> None:
     if args.command == "init":
         run_init(args)
         return
@@ -703,6 +687,24 @@ def _run_command(args: argparse.Namespace) -> None:
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")
+
+
+def _format_business_error(command: str, error: Exception) -> str:
+    command_name = command or "startup"
+
+    if isinstance(error, FileNotFoundError):
+        return f"{command_name} failed. Required file or folder was not found. Details: {error}"
+    if isinstance(error, json.JSONDecodeError):
+        return (
+            f"{command_name} failed due to invalid JSON content at line {error.lineno}, "
+            f"column {error.colno}."
+        )
+    if isinstance(error, ModuleNotFoundError):
+        return f"{command_name} failed due to missing dependency. Details: {error}"
+    if isinstance(error, (ValueError, NotADirectoryError, PermissionError)):
+        return f"{command_name} failed. {error}"
+
+    return f"{command_name} failed due to an unexpected error. Use --debug for full traceback."
 
 
 def run_rm(args: argparse.Namespace) -> None:
@@ -768,23 +770,30 @@ def run_purge(args: argparse.Namespace) -> None:
 
 def main() -> None:
     _ensure_config(Path(__file__).resolve().parent)
-    args = parse_args()
+    args: argparse.Namespace | None = None
     try:
-        _run_command(args)
+        args = parse_args()
+        _dispatch_command(args)
     except KeyboardInterrupt:
-        print(f"{args.command} cancelled by user.")
+        command = args.command if args is not None and hasattr(args, "command") else "command"
+        print(f"{command} cancelled by user.")
         raise SystemExit(130)
-    except Exception as exc:
-        command = args.command or "command"
-        message = _business_error_message(command, exc)
-        if args.verbose or args.json:
+    except SystemExit:
+        raise
+    except Exception as error:
+        if args is not None and getattr(args, "debug", False):
+            raise
+
+        command = args.command if args is not None and hasattr(args, "command") else "startup"
+        message = _format_business_error(command, error)
+        if args is not None and (args.verbose or args.json):
             _emit_verbose(
                 args,
                 event=f"{command}.error",
                 message=message,
                 extra={
-                    "error_type": type(exc).__name__,
-                    "detail": str(exc),
+                    "error_type": type(error).__name__,
+                    "detail": str(error),
                 },
             )
         print(message)

@@ -10,12 +10,12 @@ Root:
       - ChapterPrompt.txt
       - ChapterOut:        
         - ChapterSummary.txt
-        - ChapterCharacters.txt
+        - ChapterCharacter.txt
         - ChapterGenerated.txt
     - Chapter2:
       - ChapterParameter.json
       - ChapterPrompt.txt
       - ChapterOut:        
         - ChapterSummary.txt
-        - ChapterCharacters.txt
+        - ChapterCharacter.txt
         - ChapterGenerated.txt

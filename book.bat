@@ -12,7 +12,7 @@ if not defined VIRTUAL_ENV (
     )
 )
 
-python book.py %*
+@python book.py %*
 set "EXIT_CODE=%ERRORLEVEL%"
 
 popd >nul
