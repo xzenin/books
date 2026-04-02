@@ -8,6 +8,8 @@ Use `book.py` as the single entrypoint.
 
 Global options such as `--workspace-root`, `--config-path`, and `--encoding` must be placed before the subcommand.
 
+`--version` reads application metadata from `.pkbook/config.json`.
+
 ### Defaults
 
 - Workspace root: `.pkbook/_wokspace`
@@ -25,6 +27,7 @@ python book.py import --book-name Sita
 python book.py clone --source-book-name Sita --target-book-name SitaCopy
 python book.py write --book-name Sita --gist "A historical Bengali epic"
 python book.py write --book-name Sita --mode dummy
+python book.py --version
 ```
 
 `python book.py --book-name IndiaDelhi` uses the implicit `init` behavior.
