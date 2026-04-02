@@ -1,25 +1,45 @@
 from __future__ import annotations
 
+import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 from .models import ChapterSnapshot, SnapshotConfig, WorkspaceSnapshot
 
 
 class SnapshotManager:
-    def __init__(self, config: SnapshotConfig, *, encoding: str = "utf-8") -> None:
+    def __init__(
+        self,
+        config: SnapshotConfig,
+        *,
+        encoding: str = "utf-8",
+        verbose: bool = False,
+        json_logs: bool = False,
+    ) -> None:
         self.config = config
         self.encoding = encoding
+        self.verbose = verbose
+        self.json_logs = json_logs
 
     @classmethod
-    def from_config_file(cls, config_path: str | Path, *, encoding: str = "utf-8") -> "SnapshotManager":
+    def from_config_file(
+        cls,
+        config_path: str | Path,
+        *,
+        encoding: str = "utf-8",
+        verbose: bool = False,
+        json_logs: bool = False,
+    ) -> "SnapshotManager":
         config = SnapshotConfig.from_json_file(config_path)
-        return cls(config, encoding=encoding)
+        return cls(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
 
     def read_from_workspace(self, workspace_root: str | Path, book_name: str) -> WorkspaceSnapshot:
         root = Path(workspace_root)
         book_path = root / book_name
         chapter_root = book_path / "BookChapters"
+
+        self._verbose_print(f"Reading workspace snapshot from: {book_path}")
 
         snapshot = WorkspaceSnapshot(bookName=book_name)
 
@@ -53,6 +73,9 @@ class SnapshotManager:
 
             snapshot.chapters.append(chapter)
 
+        self._verbose_print(
+            f"Collected snapshot for {book_name} with {len(snapshot.rootFiles)} root files and {len(snapshot.chapters)} chapters"
+        )
         return snapshot
 
     def initialize_workspace(
@@ -65,6 +88,8 @@ class SnapshotManager:
         root = Path(workspace_root)
         book_path = root / book_name
         chapter_root = book_path / "BookChapters"
+
+        self._verbose_print(f"Initializing workspace for {book_name} at: {book_path}")
 
         book_path.mkdir(parents=True, exist_ok=True)
         chapter_root.mkdir(parents=True, exist_ok=True)
@@ -99,6 +124,7 @@ class SnapshotManager:
                     file_name = chapter_cfg.chapter1RunningSummaryFile
                 self._ensure_file(out_path / file_name)
 
+        self._verbose_print(f"Workspace ready with chapters {chapter_start} to {chapter_end}")
         return book_path
 
     def restore_to_workspace(self, snapshot: WorkspaceSnapshot, workspace_root: str | Path, *, book_name: str | None = None) -> None:
@@ -106,6 +132,8 @@ class SnapshotManager:
         root = Path(workspace_root)
         book_path = root / target_book_name
         chapter_root = book_path / "BookChapters"
+
+        self._verbose_print(f"Restoring snapshot {snapshot.bookName} into: {book_path}")
 
         for filename in self.config.bookRootFiles:
             content = snapshot.rootFiles.get(filename, "")
@@ -128,13 +156,18 @@ class SnapshotManager:
                 content = self._lookup_snapshot_content(chapter.outFiles, filename, chapter_number)
                 self._write_text(out_path / filename, content)
 
+        self._verbose_print(f"Snapshot restore completed for: {target_book_name}")
+
     def write_snapshot_json(self, snapshot: WorkspaceSnapshot, snapshot_path: str | Path) -> None:
+        self._verbose_print(f"Writing snapshot JSON to: {snapshot_path}")
         snapshot.to_json_file(snapshot_path)
 
     def load_snapshot_json(self, snapshot_path: str | Path) -> WorkspaceSnapshot:
+        self._verbose_print(f"Loading snapshot JSON from: {snapshot_path}")
         return WorkspaceSnapshot.from_json_file(snapshot_path)
 
     def export_workspace_to_json(self, workspace_root: str | Path, book_name: str, snapshot_path: str | Path) -> WorkspaceSnapshot:
+        self._verbose_print(f"Exporting workspace '{book_name}' to snapshot: {snapshot_path}")
         snapshot = self.read_from_workspace(workspace_root, book_name)
         self.write_snapshot_json(snapshot, snapshot_path)
         return snapshot
@@ -145,10 +178,24 @@ class SnapshotManager:
         source_book_name: str,
         target_book_name: str,
     ) -> WorkspaceSnapshot:
+        self._verbose_print(f"Cloning workspace '{source_book_name}' -> '{target_book_name}'")
         snapshot = self.read_from_workspace(workspace_root, source_book_name)
         snapshot.bookName = target_book_name
         self.restore_to_workspace(snapshot, workspace_root, book_name=target_book_name)
         return snapshot
+
+    def _verbose_print(self, message: str) -> None:
+        if self.verbose:
+            if self.json_logs:
+                payload = {
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "component": "snapshot",
+                    "event": "trace",
+                    "message": message,
+                }
+                print(json.dumps(payload, ensure_ascii=False))
+                return
+            print(f"[verbose][snapshot] {message}")
 
     def _read_text(self, path: Path) -> str:
         if not path.exists():
