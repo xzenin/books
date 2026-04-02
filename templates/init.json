@@ -10,16 +10,15 @@
     "end": 20,
     "chapterFolderPattern": "Chapter{n}",
     "chapterFiles": [
-      "Chapter{n}Parameter.json",
-      "Chapter{n}References.txt",
-      "Chapter{n}Prompt.txt"
+      "ChapterParameter.json",
+      "ChapterPrompt.txt"
     ],
-    "chapterOutFolderPattern": "Chapter{n}Out",
+    "chapterOutFolderPattern": "ChapterOut",
     "chapterOutFiles": [
-      "Chapter{n}Summary.txt",
-      "Chapter{n}Characters.txt",
-      "Chapter{n}Generated.txt",
-      "Chapter{n}RunningSummary.txt"
+      "ChapterSummary.txt",
+      "ChapterCharacters.txt",
+      "ChapterGenerated.txt",
+      "ChapterRunningSummary.txt"
     ]
   }
 }

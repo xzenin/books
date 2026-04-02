@@ -151,7 +151,7 @@ def _iter_configured_files(book_path: Path, config: SnapshotConfig) -> list[Path
         paths.append(book_path / file_name)
 
     chapter_root = book_path / "BookChapters"
-    chapter_cfg = config.chapterscls
+    chapter_cfg = config.chapters
     for number in range(chapter_cfg.start, chapter_cfg.end + 1):
         chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(number))
         chapter_path = chapter_root / chapter_folder

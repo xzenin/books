@@ -1,78 +1,64 @@
-# How to run init.ps1
+# How to initialize a book workspace
 
-This guide explains how to run the PowerShell initializer that creates a full book folder and file structure.
+This guide explains how to use `book.py` to create the book folder and file structure from `templates/init.json`.
 
 ## Files used
 
-- init.ps1: Script that creates folders and files
-- templates\init.json: JSON configuration that defines the structure
+- `book.py`: Main CLI for init, export, import, clone, and write
+- `templates/init.json`: JSON configuration that defines the structure
 
 ## Prerequisites
 
-- Windows PowerShell or PowerShell 7
-- Run commands from the books workspace root (the folder that contains init.ps1)
+- Python environment for this repo
+- Run commands from the books workspace root
 
 ## Basic command
 
 ```powershell
-.\init.ps1 -BookName "Majar"
+python .\book.py init --book-name "Majar"
 ```
 
 This uses defaults for optional parameters:
-- WorkspaceRoot: .pkbook\_wokspace folder inside the current repo
-- ConfigPath: templates\init.json in the repo root
-
-BookName is mandatory.
+- `--workspace-root`: `.pkbook\_wokspace` folder inside the repo
+- `--config-path`: `templates\init.json`
 
 ## Common usage
 
-### 1) Create a different book name
+### Create a different book name
 
 ```powershell
-.\init.ps1 -BookName "Sita"
+python .\book.py init --book-name "Sita"
 ```
 
-### 2) Use a custom workspace root
+### Use a custom workspace root
 
 ```powershell
-.\init.ps1 -WorkspaceRoot "D:\lab\organization\books\.pkbook\_wokspace" -BookName "Ramayana"
+python .\book.py --workspace-root "D:\lab\organization\books\.pkbook\_wokspace" init --book-name "Ramayana"
 ```
 
-### 3) Use a custom JSON config file
+### Use a custom JSON config file
 
 ```powershell
-.\init.ps1 -ConfigPath ".\templates\init.json" -BookName "Majar"
+python .\book.py --config-path ".\templates\init.json" init --book-name "Majar"
 ```
 
 ## Full example
 
 ```powershell
-.\init.ps1 -WorkspaceRoot ".\.pkbook\_wokspace" -BookName "MyNewBook" -ConfigPath ".\templates\init.json"
+python .\book.py --workspace-root ".\.pkbook\_wokspace" --config-path ".\templates\init.json" init --book-name "MyNewBook"
 ```
-
-## Mandatory vs optional parameters
-
-- Mandatory: -BookName
-- Optional: -WorkspaceRoot, -ConfigPath
-
-## Important note on parameter name
-
-Use -BookName (correct)
-Do not use --BooName (incorrect)
-
-If you run with an unknown argument, PowerShell may treat it as a positional value and create unexpected folders.
 
 ## What gets created
 
-- Book root folder inside .pkbook\_wokspace\<BookName>
-- Root files from templates\init.json
-- BookChapters\Chapter1 to BookChapters\Chapter20
-- Per-chapter parameter/references/prompt files
-- Per-chapter output files inside ChapterNOut
+- Book root folder inside `.pkbook\_wokspace\<BookName>`
+- Root files from `templates/init.json`
+- `BookChapters\Chapter1` to `BookChapters\Chapter20`
+- Per-chapter files: `ChapterParameter.json` and `ChapterPrompt.txt`
+- Per-chapter output files inside `ChapterOut`
 
 ## Re-running behavior
 
-The script uses -Force with New-Item:
+The initializer is safe to run again for structure setup:
 - Existing folders are kept
-- Existing files are recreated if needed
-- Running the script again is safe for structure setup
+- Missing files are recreated
+- Existing files are not deleted by init

@@ -1,0 +1,311 @@
+{
+  "bookName": "Beauty",
+  "rootFiles": {
+    "Settings.json": "{\n  \"book_name\": \"Beauty\",\n  \"chapter_count\": 5,\n  \"root_folder\": \"D:\\\\lab\\\\organization\\\\books\\\\.pkbook\\\\_wokspace\",\n  \"date_created\": \"2026-04-02T18:17:40.897933+00:00\",\n  \"location\": \"biswas\",\n  \"user\": \"pijush\"\n}",
+    "BookPrompt.txt": "",
+    "BookOutline.json": "",
+    "BookRunningSummary.txt": ""
+  },
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "chapterFolder": "Chapter1",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 2,
+      "chapterFolder": "Chapter2",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 3,
+      "chapterFolder": "Chapter3",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 4,
+      "chapterFolder": "Chapter4",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 5,
+      "chapterFolder": "Chapter5",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 6,
+      "chapterFolder": "Chapter6",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 7,
+      "chapterFolder": "Chapter7",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 8,
+      "chapterFolder": "Chapter8",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 9,
+      "chapterFolder": "Chapter9",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 10,
+      "chapterFolder": "Chapter10",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 11,
+      "chapterFolder": "Chapter11",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 12,
+      "chapterFolder": "Chapter12",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 13,
+      "chapterFolder": "Chapter13",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 14,
+      "chapterFolder": "Chapter14",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 15,
+      "chapterFolder": "Chapter15",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 16,
+      "chapterFolder": "Chapter16",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 17,
+      "chapterFolder": "Chapter17",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 18,
+      "chapterFolder": "Chapter18",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 19,
+      "chapterFolder": "Chapter19",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    },
+    {
+      "chapterNumber": 20,
+      "chapterFolder": "Chapter20",
+      "files": {
+        "ChapterParameter.json": "",
+        "ChapterPrompt.txt": ""
+      },
+      "outFolder": "ChapterOut",
+      "outFiles": {
+        "ChapterSummary.txt": "",
+        "ChapterCharacters.txt": "",
+        "ChapterGenerated.txt": "",
+        "ChapterRunningSummary.txt": ""
+      }
+    }
+  ]
+}

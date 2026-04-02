@@ -3,27 +3,21 @@ Root:
   - Settings.json
   - BookPrompt.txt
   - BookOutline.json
-  - BookSummary.json
-  - AllCharacters.json
-  - AllSettings.json
-  - BookReferences.json
-  - BookForeword.txt  
+  - BookRunningSummary.txt
   - BookChapters:
     - Chapter1:
-      - Chapter1Parameter.json
-      - Chapter1References.txt
-      - Chapter1Prompt.txt
-      - Chapter1Out:        
-        - Chapter1Summary.txt
-        - Chapter1Characters.txt
-        - Chapter1Generated.txt
+      - ChapterParameter.json
+      - ChapterPrompt.txt
+      - ChapterOut:        
+        - ChapterSummary.txt
+        - ChapterCharacters.txt
+        - ChapterGenerated.txt
         - ChapterRunningSummary.txt
     - Chapter2:
-      - Chapter2Parameter.json
-      - Chapter2References.txt
-      - Chapter2Prompt.txt
-      - Chapter2Out:        
-        - Chapter2Summary.txt
-        - Chapter2Characters.txt
-        - Chapter2Generated.txt
-        - Chapter2RunningSummary.txt
+      - ChapterParameter.json
+      - ChapterPrompt.txt
+      - ChapterOut:        
+        - ChapterSummary.txt
+        - ChapterCharacters.txt
+        - ChapterGenerated.txt
+        - ChapterRunningSummary.txt
