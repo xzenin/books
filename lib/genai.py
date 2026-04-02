@@ -10,8 +10,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-import ollama
 from copilot import CopilotClient
+
+try:
+    import ollama  # type: ignore[import-not-found]
+except ImportError:
+    ollama = None
 
 
 DEFAULT_CONVERSATION_ID = "default"
@@ -243,6 +247,10 @@ class OllamaChat(GenAIChat):
         return cls(model=model, host=host, **kwargs)
 
     async def _request_model(self, prompt: str) -> str:
+        if ollama is None:
+            raise ModuleNotFoundError(
+                "Ollama provider requires the 'ollama' package. Install it with: pip install ollama"
+            )
         client = ollama.AsyncClient(host=self._ollama_host)
         response = await client.chat(
             model=self.model,

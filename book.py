@@ -62,7 +62,7 @@ def _default_json_log_mode(script_dir: Path) -> bool:
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    commands = {"init", "list", "export", "import", "clone", "layout", "draft", "publish", "read"}
+    commands = {"init", "list", "export", "import", "clone", "layout", "draft", "publish", "read", "rm", "purge"}
     global_option_values = {"--workspace-root", "--config-path", "--encoding"}
 
     if not argv:
@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="book.py",
-        description="Initialize, list, export, import, clone, layout, draft, publish, or read book workspaces.",
+        description="Initialize, list, export, import, clone, layout, draft, publish, read, rm, or purge book workspaces.",
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
@@ -127,6 +127,8 @@ def parse_args() -> argparse.Namespace:
             "  python book.py draft --book-name Sita --gist \"A historical Bengali epic\"\n"
             "  python book.py publish --book-name Sita\n"
             "  python book.py read --book-name Sita\n"
+            "  python book.py rm --book-name Sita --yes\n"
+            "  python book.py purge --yes\n"
             "  python book.py --verbose --json list\n"
             "  python book.py --version\n"
             "  python book.py --help"
@@ -235,6 +237,27 @@ def parse_args() -> argparse.Namespace:
     )
     read_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
 
+    rm_parser = subparsers.add_parser(
+        "rm",
+        help="Remove one book folder from workspace root",
+    )
+    rm_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    rm_parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="Required confirmation flag for deletion.",
+    )
+
+    purge_parser = subparsers.add_parser(
+        "purge",
+        help="Remove all book folders under workspace root",
+    )
+    purge_parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="Required confirmation flag for deleting all books.",
+    )
+
     for command_parser in (
         init_parser,
         list_parser,
@@ -245,6 +268,8 @@ def parse_args() -> argparse.Namespace:
         draft_parser,
         publish_parser,
         read_parser,
+        rm_parser,
+        purge_parser,
     ):
         _add_runtime_flags(command_parser)
 
@@ -608,10 +633,31 @@ def run_read(args: argparse.Namespace) -> None:
     )
 
 
-def main() -> None:
-    _ensure_config(Path(__file__).resolve().parent)
-    args = parse_args()
+def _business_error_message(command: str, error: Exception) -> str:
+    if isinstance(error, FileNotFoundError):
+        return f"{command} failed: required file or folder was not found. {error}"
+    if isinstance(error, json.JSONDecodeError):
+        return (
+            f"{command} failed: invalid JSON content was found. "
+            f"{error.msg} (line {error.lineno}, column {error.colno})"
+        )
+    if isinstance(error, ModuleNotFoundError):
+        package_name = getattr(error, "name", None) or str(error)
+        return f"{command} failed: required dependency is missing ({package_name})."
+    if isinstance(error, PermissionError):
+        return f"{command} failed: permission denied while accessing files. {error}"
+    if isinstance(error, ValueError):
+        return f"{command} failed: {error}"
+    if isinstance(error, NotADirectoryError):
+        return f"{command} failed: expected a folder path but got a file path. {error}"
 
+    return (
+        f"{command} failed due to an internal error. "
+        "Run again with --verbose to see additional details."
+    )
+
+
+def _run_command(args: argparse.Namespace) -> None:
     if args.command == "init":
         run_init(args)
         return
@@ -648,7 +694,101 @@ def main() -> None:
         run_read(args)
         return
 
+    if args.command == "rm":
+        run_rm(args)
+        return
+
+    if args.command == "purge":
+        run_purge(args)
+        return
+
     raise RuntimeError(f"Unsupported command: {args.command}")
+
+
+def run_rm(args: argparse.Namespace) -> None:
+    if not args.yes:
+        raise ValueError("Refusing to delete without --yes. Example: book.py rm --book-name <name> --yes")
+
+    book_path = Path(args.workspace_root) / args.book_name
+    _emit_verbose(
+        args,
+        event="rm.start",
+        message=f"Removing book '{args.book_name}'",
+        extra={"path": _relative_path_text(book_path)},
+    )
+
+    if not book_path.exists():
+        print(f"Book not found: {book_path}")
+        return
+    if not book_path.is_dir():
+        raise NotADirectoryError(f"Target is not a folder: {book_path}")
+
+    shutil.rmtree(book_path)
+    _emit_verbose(
+        args,
+        event="rm.done",
+        message=f"Removed book '{args.book_name}'",
+    )
+    print(f"Book removed: {book_path}")
+
+
+def run_purge(args: argparse.Namespace) -> None:
+    if not args.yes:
+        raise ValueError("Refusing to purge without --yes. Example: book.py purge --yes")
+
+    workspace_root = Path(args.workspace_root)
+    _emit_verbose(
+        args,
+        event="purge.start",
+        message=f"Purging all books under: {_relative_path_text(workspace_root)}",
+    )
+
+    if not workspace_root.exists():
+        print(f"Workspace root does not exist: {workspace_root}")
+        return
+
+    removed_count = 0
+    for child in workspace_root.iterdir():
+        if child.is_dir():
+            shutil.rmtree(child)
+            removed_count += 1
+            _emit_verbose(
+                args,
+                event="purge.book.removed",
+                message=f"Removed: {_relative_path_text(child)}",
+            )
+
+    _emit_verbose(
+        args,
+        event="purge.done",
+        message=f"Purge completed. Removed {removed_count} book(s).",
+    )
+    print(f"Purge completed. Removed {removed_count} book(s) from: {workspace_root}")
+
+
+def main() -> None:
+    _ensure_config(Path(__file__).resolve().parent)
+    args = parse_args()
+    try:
+        _run_command(args)
+    except KeyboardInterrupt:
+        print(f"{args.command} cancelled by user.")
+        raise SystemExit(130)
+    except Exception as exc:
+        command = args.command or "command"
+        message = _business_error_message(command, exc)
+        if args.verbose or args.json:
+            _emit_verbose(
+                args,
+                event=f"{command}.error",
+                message=message,
+                extra={
+                    "error_type": type(exc).__name__,
+                    "detail": str(exc),
+                },
+            )
+        print(message)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
