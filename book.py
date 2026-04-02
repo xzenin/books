@@ -1,7 +1,12 @@
 from __future__ import annotations
 
 import argparse
+import json
+import os
+import platform
 import sys
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 
 from snapshot_lib import SnapshotManager
@@ -18,6 +23,7 @@ def parse_args() -> argparse.Namespace:
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
             "  python book.py init --book-name Sita --workspace-root .\\.pkbook\\_wokspace\n"
+            "  python book.py init --book-name Sita --chapter-count 8\n"
             "  python book.py export --book-name Ramayan\n"
             "  python book.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
             "  python book.py import --book-name Ramayan\n"
@@ -48,6 +54,11 @@ def parse_args() -> argparse.Namespace:
 
     init_parser = subparsers.add_parser("init", help="Create book folder and file structure")
     init_parser.add_argument("--book-name", required=True, help="Book folder name to create under workspace root.")
+    init_parser.add_argument(
+        "--chapter-count",
+        type=int,
+        help="Optional. Number of chapter folders to create from the configured start chapter.",
+    )
 
     export_parser = subparsers.add_parser("export", help="Read workspace files and write one snapshot JSON")
     export_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
@@ -94,13 +105,58 @@ def _resolve_snapshot_path(args: argparse.Namespace) -> str:
     return f"{book_name}.json"
 
 
+@dataclass
+class ProjectSettings:
+    book_name: str
+    chapter_count: int
+    root_folder: str
+    date_created: str
+    location: str
+    user: str
+
+
+def _build_project_settings(args: argparse.Namespace, manager: SnapshotManager) -> ProjectSettings:
+    chapter_count = args.chapter_count
+    if chapter_count is None:
+        chapters = manager.config.chapters
+        chapter_count = chapters.end - chapters.start + 1
+
+    return ProjectSettings(
+        book_name=args.book_name,
+        chapter_count=chapter_count,
+        root_folder=str(Path(args.workspace_root)),
+        date_created=datetime.now(timezone.utc).isoformat(),
+        location=platform.node() or "unknown",
+        user=os.environ.get("USERNAME") or os.environ.get("USER") or "unknown",
+    )
+
+
+def _serialize_project_settings(settings: ProjectSettings) -> str:
+    return json.dumps(asdict(settings), ensure_ascii=False, indent=2)
+
+
 def run_init(args: argparse.Namespace) -> None:
     manager = _build_manager(args)
     book_path = manager.initialize_workspace(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
+        number_of_chapters=args.chapter_count,
     )
+
+    settings = _build_project_settings(args, manager)
+    settings_string = _serialize_project_settings(settings)
+
+    settings_path = book_path / "Settings.json"
+    settings_path.write_text(settings_string, encoding=args.encoding)
+
+    snapshot = manager.read_from_workspace(args.workspace_root, args.book_name)
+    snapshot.rootFiles["Settings.json"] = settings_string
+    snapshot_path = _resolve_snapshot_path(args)
+    manager.write_snapshot_json(snapshot, snapshot_path)
+
     print(f"Structure created at: {book_path}")
+    print(f"Settings initialized at: {settings_path}")
+    print(f"Snapshot exported: {snapshot_path}")
 
 
 def run_export(args: argparse.Namespace) -> None:

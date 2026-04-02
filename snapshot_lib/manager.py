@@ -52,7 +52,13 @@ class SnapshotManager:
 
         return snapshot
 
-    def initialize_workspace(self, workspace_root: str | Path, book_name: str) -> Path:
+    def initialize_workspace(
+        self,
+        workspace_root: str | Path,
+        book_name: str,
+        *,
+        number_of_chapters: int | None = None,
+    ) -> Path:
         root = Path(workspace_root)
         book_path = root / book_name
         chapter_root = book_path / "BookChapters"
@@ -64,7 +70,14 @@ class SnapshotManager:
             self._ensure_file(book_path / filename)
 
         chapter_cfg = self.config.chapters
-        for number in range(chapter_cfg.start, chapter_cfg.end + 1):
+        chapter_start = chapter_cfg.start
+        chapter_end = chapter_cfg.end
+        if number_of_chapters is not None:
+            if number_of_chapters < 1:
+                raise ValueError("number_of_chapters must be >= 1")
+            chapter_end = chapter_start + number_of_chapters - 1
+
+        for number in range(chapter_start, chapter_end + 1):
             chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(number))
             chapter_path = chapter_root / chapter_folder
             chapter_path.mkdir(parents=True, exist_ok=True)
