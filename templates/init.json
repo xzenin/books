@@ -17,8 +17,7 @@
     "chapterOutFiles": [
       "ChapterSummary.txt",
       "ChapterCharacters.txt",
-      "ChapterGenerated.txt",
-      "ChapterRunningSummary.txt"
+      "ChapterGenerated.txt"
     ]
   }
 }

@@ -12,7 +12,6 @@ Root:
         - ChapterSummary.txt
         - ChapterCharacters.txt
         - ChapterGenerated.txt
-        - ChapterRunningSummary.txt
     - Chapter2:
       - ChapterParameter.json
       - ChapterPrompt.txt
@@ -20,4 +19,3 @@ Root:
         - ChapterSummary.txt
         - ChapterCharacters.txt
         - ChapterGenerated.txt
-        - ChapterRunningSummary.txt
