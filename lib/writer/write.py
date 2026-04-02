@@ -274,6 +274,39 @@ def _chapter_paths(book_path: Path, config: SnapshotConfig, chapter_number: int)
     return chapter_root, chapter_root / prompt_name, chapter_root / parameter_name
 
 
+def _discover_chapter_numbers_from_workspace(book_path: Path, config: SnapshotConfig) -> list[int]:
+    chapter_root = book_path / "BookChapters"
+    if not chapter_root.exists():
+        return []
+
+    folder_pattern = config.chapters.chapterFolderPattern
+    if "{n}" in folder_pattern:
+        prefix, suffix = folder_pattern.split("{n}", 1)
+    else:
+        prefix, suffix = folder_pattern, ""
+
+    chapter_numbers: list[int] = []
+    for child in chapter_root.iterdir():
+        if not child.is_dir():
+            continue
+        name = child.name
+        if not name.startswith(prefix):
+            continue
+        if suffix and not name.endswith(suffix):
+            continue
+
+        middle = name[len(prefix):]
+        if suffix:
+            middle = middle[:-len(suffix)]
+
+        try:
+            chapter_numbers.append(int(middle))
+        except ValueError:
+            continue
+
+    return sorted(chapter_numbers)
+
+
 def _prompt_content_for_file(path: Path) -> Any:
     if path.suffix.lower() == ".json":
         raw = input(
@@ -648,13 +681,49 @@ def write_authored_content(
     )
 
     outline_path = book_path / "BookOutline.json"
-    outline_payload = _load_json_file(outline_path, encoding=encoding)
-    if not isinstance(outline_payload, dict):
-        raise ValueError("BookOutline.json must be a JSON object.")
+    outline_payload: dict[str, Any]
+    chapters: list[dict[str, Any]]
 
-    chapters = outline_payload.get("chapters", [])
-    if not isinstance(chapters, list):
-        raise ValueError("BookOutline.json must contain a chapters array.")
+    if outline_path.exists():
+        try:
+            loaded_outline = _load_json_file(outline_path, encoding=encoding)
+        except (json.JSONDecodeError, OSError, ValueError):
+            loaded_outline = {}
+    else:
+        loaded_outline = {}
+
+    if isinstance(loaded_outline, dict) and isinstance(loaded_outline.get("chapters", []), list):
+        outline_payload = loaded_outline
+        chapters = [item for item in loaded_outline.get("chapters", []) if isinstance(item, dict)]
+    else:
+        chapter_numbers = _discover_chapter_numbers_from_workspace(book_path, config)
+        chapters = [
+            {
+                "sl": number,
+                "name": f"Chapter {number}",
+                "chapter_title": f"Chapter {number}",
+                "chapter_summary": "",
+            }
+            for number in chapter_numbers
+        ]
+        outline_payload = {
+            "novel_name": book_name,
+            "chapters": chapters,
+            "running_summary": "",
+            "all_characters": [],
+        }
+        _verbose_print(
+            verbose,
+            json_logs,
+            f"BookOutline.json missing/invalid. Falling back to discovered chapter folders for: {book_name}",
+            "draft.outline.fallback",
+        )
+
+    if not chapters:
+        raise ValueError(
+            f"No chapters found for draft under: {book_path / 'BookChapters'}. "
+            "Run layout first to generate chapter structure."
+        )
 
     novel_gist = (gist or str(outline_payload.get("gist", "")).strip() or _prompt_for_gist(book_name)).strip()
     if not novel_gist:
@@ -680,7 +749,10 @@ def write_authored_content(
         out_path.mkdir(parents=True, exist_ok=True)
 
         if parameter_path.exists():
-            chapter_parameter_payload = _load_json_file(parameter_path, encoding=encoding)
+            try:
+                chapter_parameter_payload = _load_json_file(parameter_path, encoding=encoding)
+            except (json.JSONDecodeError, OSError, ValueError):
+                chapter_parameter_payload = chapter_payload
             if not isinstance(chapter_parameter_payload, dict):
                 chapter_parameter_payload = chapter_payload
         else:
@@ -782,42 +854,69 @@ def publish_book_content(
     book_path = Path(workspace_root) / book_name
     outline_path = book_path / "BookOutline.json"
 
-    if not outline_path.exists():
-        raise FileNotFoundError(f"Book outline not found: {outline_path}")
-
-    outline_payload = _load_json_file(outline_path, encoding=encoding)
-    if not isinstance(outline_payload, dict):
-        raise ValueError("BookOutline.json must be a JSON object.")
-
-    chapters = outline_payload.get("chapters", [])
-    if not isinstance(chapters, list):
-        raise ValueError("BookOutline.json must contain a chapters array.")
-
     chapter_cfg = config.chapters
     published_path = Path(output_path) if output_path else (book_path / "BookPublished.txt")
     published_path.parent.mkdir(parents=True, exist_ok=True)
 
-    sorted_chapters = sorted(
-        (chapter for chapter in chapters if isinstance(chapter, dict)),
-        key=lambda chapter: _chapter_sort_key(chapter, 0),
-    )
+    sorted_chapters: list[dict[str, Any]] = []
+    chapter_numbers: list[int] = []
+    chapter_titles: dict[int, str] = {}
+
+    if outline_path.exists():
+        try:
+            outline_payload = _load_json_file(outline_path, encoding=encoding)
+            if isinstance(outline_payload, dict) and isinstance(outline_payload.get("chapters", []), list):
+                chapters = outline_payload.get("chapters", [])
+                sorted_chapters = sorted(
+                    (chapter for chapter in chapters if isinstance(chapter, dict)),
+                    key=lambda chapter: _chapter_sort_key(chapter, 0),
+                )
+                chapter_numbers = [_chapter_sort_key(chapter, index) for index, chapter in enumerate(sorted_chapters, start=1)]
+                chapter_titles = {
+                    _chapter_sort_key(chapter, index): str(chapter.get("chapter_title", "")).strip()
+                    for index, chapter in enumerate(sorted_chapters, start=1)
+                    if isinstance(chapter, dict)
+                }
+            else:
+                _verbose_print(
+                    verbose,
+                    json_logs,
+                    f"BookOutline.json is not in expected shape. Falling back to chapter folders under: {_relative_path_text(book_path / 'BookChapters')}",
+                    "publish.outline.fallback",
+                )
+        except (json.JSONDecodeError, OSError, ValueError):
+            _verbose_print(
+                verbose,
+                json_logs,
+                f"BookOutline.json is empty/invalid. Falling back to chapter folders under: {_relative_path_text(book_path / 'BookChapters')}",
+                "publish.outline.fallback",
+            )
+
+    if not chapter_numbers:
+        chapter_numbers = _discover_chapter_numbers_from_workspace(book_path, config)
+
+    if not chapter_numbers:
+        raise ValueError(
+            f"No chapters found to publish under: {book_path / 'BookChapters'}. "
+            "Run layout/draft first to generate chapter content."
+        )
+
     _verbose_print(
         verbose,
         json_logs,
-        f"Publishing {len(sorted_chapters)} chapters into: {_relative_path_text(published_path)}",
+        f"Publishing {len(chapter_numbers)} chapters into: {_relative_path_text(published_path)}",
         "publish.start",
     )
 
     chunks: list[str] = []
-    for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
-        chapter_number = _chapter_sort_key(chapter_payload, fallback_index)
+    for chapter_number in chapter_numbers:
         chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(chapter_number))
         out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(chapter_number))
         generated_path = book_path / "BookChapters" / chapter_folder / out_folder / "ChapterGenerated.txt"
         if not generated_path.exists():
             raise FileNotFoundError(f"Generated chapter content not found: {generated_path}")
 
-        chapter_title = str(chapter_payload.get("chapter_title", "")).strip()
+        chapter_title = chapter_titles.get(chapter_number, "")
         heading = chapter_title or f"Chapter {chapter_number}"
         content = _read_text(generated_path, encoding=encoding).strip()
         chunks.append(f"{heading}\n\n{content}\n")
