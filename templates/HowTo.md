@@ -5,7 +5,7 @@ This guide explains how to run the PowerShell initializer that creates a full bo
 ## Files used
 
 - init.ps1: Script that creates folders and files
-- init.json: JSON configuration that defines the structure
+- templates\init.json: JSON configuration that defines the structure
 
 ## Prerequisites
 
@@ -19,8 +19,8 @@ This guide explains how to run the PowerShell initializer that creates a full bo
 ```
 
 This uses defaults for optional parameters:
-- WorkspaceRoot: _workspace folder inside the current repo
-- ConfigPath: init.json in the repo root
+- WorkspaceRoot: .pkbook\_wokspace folder inside the current repo
+- ConfigPath: templates\init.json in the repo root
 
 BookName is mandatory.
 
@@ -35,19 +35,19 @@ BookName is mandatory.
 ### 2) Use a custom workspace root
 
 ```powershell
-.\init.ps1 -WorkspaceRoot "D:\lab\organization\books\_workspace" -BookName "Ramayana"
+.\init.ps1 -WorkspaceRoot "D:\lab\organization\books\.pkbook\_wokspace" -BookName "Ramayana"
 ```
 
 ### 3) Use a custom JSON config file
 
 ```powershell
-.\init.ps1 -ConfigPath ".\init.json" -BookName "Majar"
+.\init.ps1 -ConfigPath ".\templates\init.json" -BookName "Majar"
 ```
 
 ## Full example
 
 ```powershell
-.\init.ps1 -WorkspaceRoot ".\_workspace" -BookName "MyNewBook" -ConfigPath ".\init.json"
+.\init.ps1 -WorkspaceRoot ".\.pkbook\_wokspace" -BookName "MyNewBook" -ConfigPath ".\templates\init.json"
 ```
 
 ## Mandatory vs optional parameters
@@ -64,8 +64,8 @@ If you run with an unknown argument, PowerShell may treat it as a positional val
 
 ## What gets created
 
-- Book root folder inside _workspace\<BookName>
-- Root files from init.json
+- Book root folder inside .pkbook\_wokspace\<BookName>
+- Root files from templates\init.json
 - BookChapters\Chapter1 to BookChapters\Chapter20
 - Per-chapter parameter/references/prompt files
 - Per-chapter output files inside ChapterNOut

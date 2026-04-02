@@ -10,9 +10,9 @@
 *.sln.docstates
 .vs
 
-_workspace/
 .venv/
-.genai/
+.pkbook/
+snapshots/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
