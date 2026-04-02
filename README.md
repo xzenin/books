@@ -1,4 +1,4 @@
-# books
+# Book writing software
 
 Book workspace utility for structure initialization, listing, snapshot export/import, cloning, and content layout generation.
 
@@ -25,6 +25,7 @@ Global options such as `--workspace-root`, `--config-path`, and `--encoding` mus
 ```python
 python book.py --book-name IndiaDelhi
 python book.py init --book-name Sita
+python book.py init --book-name Sita --chapter-count 6
 python book.py list
 python book.py export --book-name Sita
 python book.py import --book-name Sita
@@ -57,14 +58,32 @@ python book.py --version
 - `--mode genai` (default): Uses GenAI to generate novel outline and chapter JSON content.
 - `--mode dummy`: Writes placeholder/sample content using the legacy dummy flow.
 
-If the target book is not initialized yet, `layout` now auto-initializes the workspace first and creates `Settings.json` before generating content.
+If the target book is not initialized yet, `layout` auto-initializes the workspace first and creates `Settings.json` before generating content.
+
+`--chapter-count` is supported on `layout` in both cases:
+
+- First run (book not initialized): creates chapter folders using the provided count.
+- Existing book (already initialized): updates chapter layout and `Settings.json` chapter count.
 
 Examples:
 
 ```python
 python book.py layout --book-name Sita --gist "A historical Bengali epic"
+python book.py layout --book-name Sita --gist "A historical Bengali epic" --chapter-count 6
 python book.py layout --book-name Sita --mode dummy
+python book.py layout --book-name Sita --mode dummy --chapter-count 6
 python book.py --workspace-root .\.pkbook\_wokspace layout --book-name Sita --mode dummy
+```
+
+### Init Command
+
+`init` also supports `--chapter-count` to control initial chapter folder creation.
+
+Examples:
+
+```python
+python book.py init --book-name Sita
+python book.py init --book-name Sita --chapter-count 6
 ```
 
 ### Important Argument Order
