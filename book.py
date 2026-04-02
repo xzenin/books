@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from snapshot_lib import SnapshotManager
-from write import write_dummy_content
+from write import write_dummy_content, write_generated_content
 
 
 def parse_args() -> argparse.Namespace:
@@ -18,18 +18,21 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="book.py",
-        description="Initialize, export, import, clone, or write book workspaces.",
+        description="Initialize, list, export, import, clone, or write book workspaces.",
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
-            "  python book.py init --book-name Sita --workspace-root .\\.pkbook\\_wokspace\n"
+            "  python book.py --workspace-root .\\.pkbook\\_wokspace init --book-name Sita\n"
             "  python book.py init --book-name Sita --chapter-count 8\n"
+            "  python book.py list\n"
+            "  python book.py --workspace-root .\\.pkbook\\_wokspace list\n"
             "  python book.py export --book-name Ramayan\n"
             "  python book.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
             "  python book.py import --book-name Ramayan\n"
             "  python book.py import --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
             "  python book.py clone --source-book-name Ramayan --target-book-name Mahabharat\n"
-            "  python book.py write --book-name Sita\n"
+            "  python book.py write --book-name Sita --gist \"A historical Bengali epic\"\n"
+            "  python book.py write --book-name Sita --mode dummy\n"
             "  python book.py --help"
         ),
         formatter_class=argparse.RawTextHelpFormatter,
@@ -60,20 +63,34 @@ def parse_args() -> argparse.Namespace:
         help="Optional. Number of chapter folders to create from the configured start chapter.",
     )
 
+    subparsers.add_parser("list", help="List book folders under workspace root")
+
     export_parser = subparsers.add_parser("export", help="Read workspace files and write one snapshot JSON")
     export_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
-    export_parser.add_argument("--snapshot-path", help="Output snapshot JSON path (default: <book-name>.json)")
+    export_parser.add_argument("--snapshot-path", help="Output snapshot JSON path (default: snapshots/<book-name>.json)")
 
     import_parser = subparsers.add_parser("import", help="Read one snapshot JSON and restore workspace files")
     import_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    import_parser.add_argument("--snapshot-path", help="Input snapshot JSON path (default: <book-name>.json)")
+    import_parser.add_argument("--snapshot-path", help="Input snapshot JSON path (default: snapshots/<book-name>.json)")
 
     clone_parser = subparsers.add_parser("clone", help="Clone one workspace book into another book folder")
     clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
     clone_parser.add_argument("--target-book-name", required=True, help="New target book folder name")
 
-    write_parser = subparsers.add_parser("write", help="Write dummy content into the configured book files")
+    write_parser = subparsers.add_parser("write", help="Generate prompts/content for a book or use the legacy dummy writer")
     write_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    write_parser.add_argument(
+        "--mode",
+        choices=("genai", "dummy"),
+        default="genai",
+        help="Write mode. 'genai' creates prompts and JSON from the model; 'dummy' keeps the old sample-content flow.",
+    )
+    write_parser.add_argument("--gist", help="Optional novel gist. If omitted in genai mode, you will be prompted.")
+    write_parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Disable GenAI response caching for the write command.",
+    )
 
     argv = sys.argv[1:]
     if not argv:
@@ -83,7 +100,7 @@ def parse_args() -> argparse.Namespace:
     if argv[0] in {"-h", "--help"}:
         return parser.parse_args(argv)
 
-    if argv[0] not in {"init", "export", "import", "clone", "write"}:
+    if argv[0] not in {"init", "list", "export", "import", "clone", "write"}:
         argv = ["init", *argv]
 
     return parser.parse_args(argv)
@@ -102,7 +119,7 @@ def _resolve_snapshot_path(args: argparse.Namespace) -> str:
     if not book_name:
         raise ValueError("book_name is required to resolve the default snapshot path.")
 
-    return f"{book_name}.json"
+    return str(Path("snapshots") / f"{book_name}.json")
 
 
 @dataclass
@@ -159,6 +176,43 @@ def run_init(args: argparse.Namespace) -> None:
     print(f"Snapshot exported: {snapshot_path}")
 
 
+def run_list(args: argparse.Namespace) -> None:
+    workspace_root = Path(args.workspace_root)
+    if not workspace_root.exists():
+        print(f"Workspace root does not exist: {workspace_root}")
+        return
+
+    book_names = sorted(
+        child.name
+        for child in workspace_root.iterdir()
+        if child.is_dir()
+    )
+
+    if not book_names:
+        print(f"No books found in: {workspace_root}")
+        return
+
+    print("book_name\tchapter_count")
+    for book_name in book_names:
+        print(f"{book_name}\t{_resolve_book_chapter_count(workspace_root / book_name, args.encoding)}")
+
+
+def _resolve_book_chapter_count(book_path: Path, encoding: str) -> int | str:
+    settings_path = book_path / "Settings.json"
+    if settings_path.exists():
+        try:
+            payload = json.loads(settings_path.read_text(encoding=encoding))
+            return int(payload["chapter_count"])
+        except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError):
+            pass
+
+    chapter_root = book_path / "BookChapters"
+    if chapter_root.exists():
+        return sum(1 for child in chapter_root.iterdir() if child.is_dir())
+
+    return "unknown"
+
+
 def run_export(args: argparse.Namespace) -> None:
     manager = _build_manager(args)
     snapshot_path = _resolve_snapshot_path(args)
@@ -193,13 +247,25 @@ def run_clone(args: argparse.Namespace) -> None:
 
 
 def run_write(args: argparse.Namespace) -> None:
-    book_path = write_dummy_content(
+    if args.mode == "dummy":
+        book_path = write_dummy_content(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            config_path=args.config_path,
+            encoding=args.encoding,
+        )
+        print(f"Dummy content written to: {book_path}")
+        return
+
+    book_path = write_generated_content(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
         config_path=args.config_path,
         encoding=args.encoding,
+        gist=args.gist,
+        use_cache=not args.no_cache,
     )
-    print(f"Dummy content written to: {book_path}")
+    print(f"Generated content written to: {book_path}")
 
 
 def main() -> None:
@@ -207,6 +273,10 @@ def main() -> None:
 
     if args.command == "init":
         run_init(args)
+        return
+
+    if args.command == "list":
+        run_list(args)
         return
 
     if args.command == "export":
