@@ -26,6 +26,7 @@ Keep the dummy content writing intact. I want to try new things here.
 Now you have the folder and file structure and python models and manager in place.
 
 You will be provided with a book-name which you have inited earlier and created basic folder and file structure.
+We need to create two kind of prompt here. a) Novel Prompt b) Chapter prompt.
 
 Now, Impliment the usecase in write.py, which takes parameters from "<workspace>/<bookname>/Settings.json"
 
@@ -39,10 +40,10 @@ Now, Impliment the usecase in write.py, which takes parameters from "<workspace>
 When you finish these activity, do the following:
 1) Read and parse "<workspace>/<bookname>/BookOutline.json" and iterate over number of chapters.
 2) For each chapters, call a GenAIChat 'send' method to create the chapter. The output JSON is at: ./templates/chapter.json
-4) When create the prompt , save the prompt in "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterPrompt.txt" file.  
+4) After created the prompt , save the prompt in "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterPrompt.txt" file.  
 5) Save the output layout JSON to "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterParameter.json" file.
-6) Save chapter outputs in "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/" using ChapterSummary.txt, ChapterCharacters.txt, ChapterGenerated.txt, and ChapterRunningSummary.txt.
-  
+
+
 
 
 
