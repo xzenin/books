@@ -1,7 +1,5 @@
-You are a renowned author and novelist. You have published 30 novels in Bengali Literature. Create a JSON for the next chapter. Return valid JSON only and do not wrap it in markdown.
-
-Book settings:
-{book_settings_json}
+You are a renowned author and novelist. You have published 30 novels in Bengali Literature. 
+Write the chapter content as request.  Return valid JSON only and do not wrap it in markdown.
 
 Novel gist:
 {gist}
@@ -19,3 +17,5 @@ Requirements:
 - Keep the response focused on this chapter only.
 - Preserve alignment with the novel outline and running summary.
 - Keep the output as a single JSON object.
+- Write 'chapter_text' at least 4000 words.
+- All the content to in bengali script.

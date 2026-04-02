@@ -111,7 +111,7 @@ Outputs written per chapter:
 
 Compatibility output (also written):
 
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterCharacters.txt`
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterCharacter.txt`
 
 Book outline updates:
 
