@@ -4,11 +4,13 @@ import asyncio
 import hashlib
 import json
 import re
+from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
+import ollama
 from copilot import CopilotClient
 
 
@@ -26,7 +28,7 @@ async def allow_permissions(_request, _context):
     return {"behavior": "allow"}
 
 
-class GenAIChat:
+class GenAIChat(ABC):
     def __init__(
         self,
         conversation_id: str = DEFAULT_CONVERSATION_ID,
@@ -108,28 +110,6 @@ class GenAIChat:
             f"User: {prompt}\n\nAssistant:"
         )
 
-    async def _request_model(self, prompt: str) -> str:
-        client = CopilotClient()
-        await client.start()
-
-        try:
-            session = await client.create_session(on_permission_request=allow_permissions)
-            response_event = await session.send_and_wait(prompt)
-            return self._render_response(response_event)
-        finally:
-            await client.stop()
-
-    def _render_response(self, response_event) -> str:
-        content = None
-        if response_event is not None and getattr(response_event, "data", None) is not None:
-            content = getattr(response_event.data, "content", None)
-
-        if content:
-            return content.strip()
-        if hasattr(response_event, "model_dump"):
-            return json.dumps(response_event.model_dump(), ensure_ascii=False, indent=2)
-        return str(response_event).strip()
-
     def _load_history(self) -> list[ChatMessage]:
         if not self.history_file.exists():
             return []
@@ -192,6 +172,68 @@ class GenAIChat:
                 return
             print(f"[verbose][genai] {message}")
 
+    @abstractmethod
+    async def _request_model(self, prompt: str) -> str:
+        raise NotImplementedError
+
+
+class CopilotAIChat(GenAIChat):
+    async def _request_model(self, prompt: str) -> str:
+        client = CopilotClient()
+        await client.start()
+
+        try:
+            session = await client.create_session(on_permission_request=allow_permissions)
+            response_event = await session.send_and_wait(prompt)
+            return self._render_response(response_event)
+        finally:
+            await client.stop()
+
+    def _render_response(self, response_event) -> str:
+        content = None
+        if response_event is not None and getattr(response_event, "data", None) is not None:
+            content = getattr(response_event.data, "content", None)
+
+        if content:
+            return content.strip()
+        if hasattr(response_event, "model_dump"):
+            return json.dumps(response_event.model_dump(), ensure_ascii=False, indent=2)
+        return str(response_event).strip()
+
+
+class OllamaChat(GenAIChat):
+    DEFAULT_MODEL = "llama3"
+    DEFAULT_HOST = "http://127.0.0.1:11434"
+
+    def __init__(
+        self,
+        model: str = DEFAULT_MODEL,
+        host: Optional[str] = None,
+        **kwargs,
+    ) -> None:
+        self.model = model
+        self._ollama_host = host or self.DEFAULT_HOST
+        super().__init__(**kwargs)
+
+    @classmethod
+    def from_config(cls, config: dict, **kwargs) -> "OllamaChat":
+        """Create an OllamaChat instance from a parsed config.json dict."""
+        providers = config.get("genai", {}).get("credentials", [])
+        ollama_cfg = next((p for p in providers if p.get("name") == "ollama"), {})
+        model = ollama_cfg.get("model", cls.DEFAULT_MODEL)
+        url = ollama_cfg.get("url", cls.DEFAULT_HOST)
+        # Normalise URL: replace localhost with 127.0.0.1 to avoid IPv6 issues on Windows
+        host = url.replace("localhost", "127.0.0.1") if url else cls.DEFAULT_HOST
+        return cls(model=model, host=host, **kwargs)
+
+    async def _request_model(self, prompt: str) -> str:
+        client = ollama.AsyncClient(host=self._ollama_host)
+        response = await client.chat(
+            model=self.model,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.message.content.strip()
+
 
 async def generate_async(
     text: str,
@@ -202,7 +244,7 @@ async def generate_async(
     verbose: bool = False,
     json_logs: bool = False,
 ) -> str:
-    chat_client = client or GenAIChat(
+    chat_client = client or CopilotAIChat(
         conversation_id=conversation_id,
         storage_root=storage_root,
         verbose=verbose,
@@ -239,6 +281,6 @@ def chat(
 
 
 async def main():
-    client = GenAIChat(conversation_id="demo")
+    client = CopilotAIChat(conversation_id="demo")
     response = await client.send("How do I parse JSON in Python?")
     print(response)
