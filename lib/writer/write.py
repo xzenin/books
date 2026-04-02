@@ -285,6 +285,7 @@ def write_dummy_content(
     workspace_root: str | Path,
     book_name: str,
     config_path: str | Path,
+    chapter_count: int | None = None,
     encoding: str = "utf-8",
     content_provider: Callable[[Path], Any] | None = None,
     verbose: bool = False,
@@ -292,7 +293,7 @@ def write_dummy_content(
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
     manager = SnapshotManager(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
-    book_path = manager.initialize_workspace(workspace_root, book_name)
+    book_path = manager.initialize_workspace(workspace_root, book_name, number_of_chapters=chapter_count)
     _verbose_print(
         verbose,
         json_logs,

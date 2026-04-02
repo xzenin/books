@@ -179,6 +179,11 @@ def parse_args() -> argparse.Namespace:
     layout_parser = subparsers.add_parser("layout", help="Generate prompts/content for a book or use the legacy dummy writer")
     layout_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
     layout_parser.add_argument(
+        "--chapter-count",
+        type=int,
+        help="Optional. Number of chapter folders to create when layout auto-initializes a missing workspace.",
+    )
+    layout_parser.add_argument(
         "--mode",
         choices=("genai", "dummy"),
         default="genai",
@@ -398,11 +403,48 @@ def run_clone(args: argparse.Namespace) -> None:
 def _ensure_layout_initialized(args: argparse.Namespace) -> None:
     book_path = Path(args.workspace_root) / args.book_name
     settings_path = book_path / "Settings.json"
+    manager = _build_manager(args)
 
     if settings_path.exists():
+        if args.chapter_count is None:
+            return
+
+        try:
+            payload = json.loads(settings_path.read_text(encoding=args.encoding))
+        except (OSError, json.JSONDecodeError):
+            payload = {}
+
+        if not isinstance(payload, dict):
+            payload = {}
+
+        current_count_raw = payload.get("chapter_count")
+        try:
+            current_count = int(current_count_raw)
+        except (TypeError, ValueError):
+            current_count = None
+
+        if current_count == args.chapter_count:
+            return
+
+        manager.initialize_workspace(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            number_of_chapters=args.chapter_count,
+        )
+        payload["book_name"] = str(payload.get("book_name", args.book_name))
+        payload["chapter_count"] = args.chapter_count
+        payload["root_folder"] = str(payload.get("root_folder", str(Path(args.workspace_root))))
+        payload["date_created"] = str(payload.get("date_created", datetime.now(timezone.utc).isoformat()))
+        payload["location"] = str(payload.get("location", platform.node() or "unknown"))
+        payload["user"] = str(payload.get("user", os.environ.get("USERNAME") or os.environ.get("USER") or "unknown"))
+        settings_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding=args.encoding)
+        _emit_verbose(
+            args,
+            event="layout.reconfigure",
+            message=f"Updated chapter_count to {args.chapter_count} for '{args.book_name}'",
+        )
         return
 
-    manager = _build_manager(args)
     settings = _build_project_settings(args, manager)
     manager.initialize_workspace(
         workspace_root=args.workspace_root,
@@ -426,6 +468,7 @@ def run_layout(args: argparse.Namespace) -> None:
             workspace_root=args.workspace_root,
             book_name=args.book_name,
             config_path=args.config_path,
+            chapter_count=args.chapter_count,
             encoding=args.encoding,
             verbose=args.verbose or args.json,
             json_logs=args.json,
