@@ -14,7 +14,7 @@ class ChapterConfig:
     chapterFiles: list[str]
     chapterOutFolderPattern: str
     chapterOutFiles: list[str]
-    chapter1RunningSummaryFile: str
+    chapter1RunningSummaryFile: str = ""
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "ChapterConfig":
@@ -25,7 +25,7 @@ class ChapterConfig:
             chapterFiles=[str(item) for item in payload.get("chapterFiles", [])],
             chapterOutFolderPattern=str(payload["chapterOutFolderPattern"]),
             chapterOutFiles=[str(item) for item in payload.get("chapterOutFiles", [])],
-            chapter1RunningSummaryFile=str(payload["chapter1RunningSummaryFile"]),
+            chapter1RunningSummaryFile=str(payload.get("chapter1RunningSummaryFile", "")),
         )
 
     def to_dict(self) -> dict[str, Any]:
@@ -34,13 +34,18 @@ class ChapterConfig:
 
 @dataclass
 class InitConfig:
-    rootFiles: list[str]
+    bookRootFiles: list[str]
     chapters: ChapterConfig
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "InitConfig":
+        # Support both new and old config keys.
+        root_files = payload.get("bookRootFiles")
+        if root_files is None:
+            root_files = payload.get("rootFiles", [])
+
         return cls(
-            rootFiles=[str(item) for item in payload.get("rootFiles", [])],
+            bookRootFiles=[str(item) for item in root_files],
             chapters=ChapterConfig.from_dict(payload["chapters"]),
         )
 
@@ -53,7 +58,7 @@ class InitConfig:
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "rootFiles": list(self.rootFiles),
+            "bookRootFiles": list(self.bookRootFiles),
             "chapters": self.chapters.to_dict(),
         }
 
@@ -113,7 +118,7 @@ class WorkspaceSnapshot:
 
         snapshot = cls(bookName=book_name)
 
-        for filename in config.rootFiles:
+        for filename in config.bookRootFiles:
             snapshot.rootFiles[filename] = _read_text(book_path / filename, encoding=encoding)
 
         chapter_cfg = config.chapters
@@ -134,7 +139,7 @@ class WorkspaceSnapshot:
             out_folder_path = chapter_path / chapter_entry.outFolder
             for pattern in chapter_cfg.chapterOutFiles:
                 out_name = pattern.replace("{n}", str(n))
-                if n == 1 and out_name == "Chapter1RunningSummary.txt":
+                if n == 1 and out_name == "Chapter1RunningSummary.txt" and chapter_cfg.chapter1RunningSummaryFile:
                     out_name = chapter_cfg.chapter1RunningSummaryFile
                 chapter_entry.outFiles[out_name] = _read_text(out_folder_path / out_name, encoding=encoding)
 

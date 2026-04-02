@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
+
+from snapshot_lib import SnapshotManager
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,63 +38,13 @@ def parse_args() -> argparse.Namespace:
 
     return parser.parse_args()
 
-
-def ensure_file(path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.touch(exist_ok=True)
-
-
-def load_config(config_path: Path) -> dict:
-    if not config_path.exists():
-        raise FileNotFoundError(f"Config file not found: {config_path}")
-
-    with config_path.open("r", encoding="utf-8") as f:
-        return json.load(f)
-
-
 def main() -> None:
     args = parse_args()
 
     workspace_root = Path(args.workspace_root)
     book_name = args.book_name
-    config_path = Path(args.config_path)
-
-    config = load_config(config_path)
-
-    book_path = workspace_root / book_name
-    chapters_root = book_path / "BookChapters"
-
-    book_path.mkdir(parents=True, exist_ok=True)
-    chapters_root.mkdir(parents=True, exist_ok=True)
-
-    for file_name in config["rootFiles"]:
-        ensure_file(book_path / file_name)
-
-    chapters_cfg = config["chapters"]
-    start = int(chapters_cfg["start"])
-    end = int(chapters_cfg["end"])
-
-    for n in range(start, end + 1):
-        chapter_folder_name = chapters_cfg["chapterFolderPattern"].replace("{n}", str(n))
-        chapter_path = chapters_root / chapter_folder_name
-        chapter_path.mkdir(parents=True, exist_ok=True)
-
-        for chapter_file_pattern in chapters_cfg["chapterFiles"]:
-            chapter_file_name = chapter_file_pattern.replace("{n}", str(n))
-            ensure_file(chapter_path / chapter_file_name)
-
-        out_folder_name = chapters_cfg["chapterOutFolderPattern"].replace("{n}", str(n))
-        out_path = chapter_path / out_folder_name
-        out_path.mkdir(parents=True, exist_ok=True)
-
-        for out_file_pattern in chapters_cfg["chapterOutFiles"]:
-            out_file_name = out_file_pattern.replace("{n}", str(n))
-
-            # Keep chapter 1 running summary file aligned with current convention.
-            if n == 1 and out_file_name == "Chapter1RunningSummary.txt":
-                out_file_name = chapters_cfg["chapter1RunningSummaryFile"]
-
-            ensure_file(out_path / out_file_name)
+    manager = SnapshotManager.from_config_file(args.config_path)
+    book_path = manager.initialize_workspace(workspace_root=workspace_root, book_name=book_name)
 
     print(f"Structure created at: {book_path}")
 

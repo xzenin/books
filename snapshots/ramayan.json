@@ -4,11 +4,7 @@
     "Settings.json": "",
     "BookPrompt.txt": "",
     "BookOutline.json": "",
-    "BookSummary.json": "",
-    "AllCharacters.json": "",
-    "AllSettings.json": "",
-    "BookReferences.json": "",
-    "BookForeword.txt": ""
+    "BookRunningSummary.txt": ""
   },
   "chapters": [
     {
@@ -24,7 +20,7 @@
         "Chapter1Summary.txt": "",
         "Chapter1Characters.txt": "",
         "Chapter1Generated.txt": "",
-        "ChapterRunningSummary.txt": ""
+        "Chapter1RunningSummary.txt": ""
       }
     },
     {

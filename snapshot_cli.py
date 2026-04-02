@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from init_models import InitConfig, WorkspaceSnapshot
+from snapshot_lib import SnapshotManager
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -16,7 +16,7 @@ def build_parser() -> argparse.ArgumentParser:
             "Examples:\n"
             "  python snapshot_cli.py export --book-name DemoBook --snapshot-path DemoBook.snapshot.json\n"
             "  python snapshot_cli.py import --book-name DemoBook --snapshot-path DemoBook.snapshot.json\n"
-            "  python snapshot_cli.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json --workspace-root ./_workspace"
+            "  python snapshot_cli.py refresh --book-name Ramayan --snapshot-path snapshots/ramayan.json --workspace-root ./_workspace"
         ),
         formatter_class=argparse.RawTextHelpFormatter,
     )
@@ -46,31 +46,49 @@ def build_parser() -> argparse.ArgumentParser:
     import_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
     import_parser.add_argument("--snapshot-path", required=True, help="Input snapshot JSON path")
 
+    refresh_parser = subparsers.add_parser(
+        "refresh",
+        help="Update snapshot JSON from current workspace file contents",
+    )
+    refresh_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
+    refresh_parser.add_argument("--snapshot-path", required=True, help="Snapshot JSON path to update")
+
     return parser
 
 
+def _build_manager(args: argparse.Namespace) -> SnapshotManager:
+    return SnapshotManager.from_config_file(args.config_path, encoding=args.encoding)
+
+
 def run_export(args: argparse.Namespace) -> None:
-    config = InitConfig.from_json_file(args.config_path)
-    snapshot = WorkspaceSnapshot.from_workspace(
+    manager = _build_manager(args)
+    manager.export_workspace_to_json(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
-        config=config,
-        encoding=args.encoding,
+        snapshot_path=args.snapshot_path,
     )
-    snapshot.to_json_file(args.snapshot_path)
     print(f"Snapshot exported: {args.snapshot_path}")
 
 
 def run_import(args: argparse.Namespace) -> None:
-    config = InitConfig.from_json_file(args.config_path)
-    snapshot = WorkspaceSnapshot.from_json_file(args.snapshot_path)
-    snapshot.bookName = args.book_name
-    snapshot.restore_to_workspace(
+    manager = _build_manager(args)
+    snapshot = manager.load_snapshot_json(args.snapshot_path)
+    manager.restore_to_workspace(
+        snapshot=snapshot,
         workspace_root=args.workspace_root,
-        config=config,
-        encoding=args.encoding,
+        book_name=args.book_name,
     )
     print(f"Snapshot imported: {args.snapshot_path}")
+
+
+def run_refresh(args: argparse.Namespace) -> None:
+    manager = _build_manager(args)
+    manager.refresh_snapshot_json_from_workspace(
+        workspace_root=args.workspace_root,
+        snapshot_path=args.snapshot_path,
+        book_name=args.book_name,
+    )
+    print(f"Snapshot refreshed: {args.snapshot_path}")
 
 
 def main() -> None:
@@ -83,6 +101,10 @@ def main() -> None:
 
     if args.command == "import":
         run_import(args)
+        return
+
+    if args.command == "refresh":
+        run_refresh(args)
         return
 
     parser.error("Unsupported command")
