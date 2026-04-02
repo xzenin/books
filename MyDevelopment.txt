@@ -1,4 +1,8 @@
 Can you create a root folder in _workspace directory for book name "majar' as per the navigation provided in MyBooks.txt
 
 
-Create a single powershell file init.ps1 to create complete folder & file structure. First ceate a json structure for files and folder, then parse the json structure and then run a loop to create the folder and file structure
+Create a single powershell file init.ps1 to create complete folder & file structure. First ceate a json structure for files and folder, then parse the json structure and then run a loop to create the folder and file structure 
+
+
+
+Work on generateprompt.ps1, it should take a input from user and then put some sample text to each file based on the input. If it is json, create sample json. Get the content from naming convention. It is text file, just append some text to the target file. For each file create seperate function and create parameter suitable for it.
