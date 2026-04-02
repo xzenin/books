@@ -1,6 +1,6 @@
 # Book writing software
 
-Book workspace utility for structure initialization, listing, snapshot export/import, cloning, and content layout generation.
+Book workspace utility for structure initialization, listing, snapshot export/import, cloning, layout generation, and chapter authoring.
 
 ## Main CLI
 
@@ -8,7 +8,7 @@ Use `book.py` as the single entrypoint.
 
 Global options such as `--workspace-root`, `--config-path`, and `--encoding` must be placed before the subcommand.
 
-`--verbose` prints progress details for major CLI, snapshot, layout, and GenAI workflow steps.
+`--verbose` prints progress details for major CLI, snapshot, layout/draft, and GenAI workflow steps.
 
 `--json` switches verbose events to machine-readable JSON lines.
 
@@ -32,8 +32,11 @@ python book.py import --book-name Sita
 python book.py clone --source-book-name Sita --target-book-name SitaCopy
 python book.py layout --book-name Sita --gist "A historical Bengali epic"
 python book.py layout --book-name Sita --mode dummy
+python book.py draft --book-name Sita --gist "A historical Bengali epic"
 python book.py --verbose list
 python book.py --verbose layout --book-name Sita --gist "A historical Bengali epic"
+python book.py --verbose draft --book-name Sita
+python book.py --verbose --json draft --book-name Sita
 python book.py --verbose --json list
 python book.py --version
 ```
@@ -50,6 +53,7 @@ python book.py --version
 - `import`: Restores one book workspace from a snapshot JSON file.
 - `clone`: Copies one book workspace into another book name.
 - `layout`: Generates or fills layout/content files for a book.
+- `draft`: Writes chapter prose and chapter outputs from `BookOutline.json` and chapter parameter context.
 
 ### Layout Command
 
@@ -84,6 +88,46 @@ Examples:
 ```python
 python book.py init --book-name Sita
 python book.py init --book-name Sita --chapter-count 6
+```
+
+### Draft Command
+
+`draft` reads the generated outline and chapter parameter context, then writes chapter outputs chapter-by-chapter.
+
+Inputs used per chapter:
+
+- `<workspace>/<bookname>/BookOutline.json`
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterParameter.json`
+
+Outputs written per chapter:
+
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterGenerated.txt`
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterSummary.txt`
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterCharacter.txt`
+
+Compatibility output (also written):
+
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterCharacters.txt`
+
+Book outline updates:
+
+- Updates `running_summary` in `<workspace>/<bookname>/BookOutline.json`
+- Extends `all_characters` with newly proposed characters
+
+Notes:
+
+- `draft` auto-initializes if the book workspace does not exist.
+- `draft` also supports `--chapter-count` for first-time initialization.
+- `draft` supports `--no-cache` and `--gist` override.
+- `draft` supports `--verbose` and `--json` for machine-readable progress logs.
+
+Examples:
+
+```python
+python book.py draft --book-name Sita
+python book.py draft --book-name Sita --gist "A historical Bengali epic"
+python book.py draft --book-name Sita --chapter-count 6 --verbose
+python book.py --workspace-root .\.pkbook\_wokspace draft --book-name Sita --no-cache
 ```
 
 ### Important Argument Order

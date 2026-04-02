@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from lib.writer import SnapshotManager
-from lib.writer.write import write_dummy_content, write_generated_content
+from lib.writer.write import write_authored_content, write_dummy_content, write_generated_content
 
 
 def _ensure_config(script_dir: Path) -> None:
@@ -62,7 +62,7 @@ def _default_json_log_mode(script_dir: Path) -> bool:
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    commands = {"init", "list", "export", "import", "clone", "layout"}
+    commands = {"init", "list", "export", "import", "clone", "layout", "draft"}
     global_option_values = {"--workspace-root", "--config-path", "--encoding"}
 
     if not argv:
@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="book.py",
-        description="Initialize, list, export, import, clone, or layout book workspaces.",
+        description="Initialize, list, export, import, clone, layout, or draft book workspaces.",
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
@@ -124,6 +124,7 @@ def parse_args() -> argparse.Namespace:
             "  python book.py clone --source-book-name Ramayan --target-book-name Mahabharat\n"
             "  python book.py layout --book-name Sita --gist \"A historical Bengali epic\"\n"
             "  python book.py layout --book-name Sita --mode dummy\n"
+            "  python book.py draft --book-name Sita --gist \"A historical Bengali epic\"\n"
             "  python book.py --verbose --json list\n"
             "  python book.py --version\n"
             "  python book.py --help"
@@ -196,7 +197,27 @@ def parse_args() -> argparse.Namespace:
         help="Disable GenAI response caching for the layout command.",
     )
 
-    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, layout_parser):
+    draft_parser = subparsers.add_parser(
+        "draft",
+        help="Write chapter-by-chapter story outputs from BookOutline and ChapterParameter context",
+    )
+    draft_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    draft_parser.add_argument(
+        "--chapter-count",
+        type=int,
+        help="Optional. Number of chapter folders to create when draft auto-initializes a missing workspace.",
+    )
+    draft_parser.add_argument(
+        "--gist",
+        help="Optional novel gist override. If omitted, gist is read from BookOutline.json when available.",
+    )
+    draft_parser.add_argument(
+        "--no-cache",
+        action="store_true",
+        help="Disable GenAI response caching for the draft command.",
+    )
+
+    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, layout_parser, draft_parser):
         _add_runtime_flags(command_parser)
 
     argv = sys.argv[1:]
@@ -489,6 +510,33 @@ def run_layout(args: argparse.Namespace) -> None:
     print(f"Generated content written to: {book_path}")
 
 
+def run_draft(args: argparse.Namespace) -> None:
+    _emit_verbose(
+        args,
+        event="draft.start",
+        message=f"Running draft for '{args.book_name}'",
+        extra={"use_cache": not args.no_cache, "chapter_count": args.chapter_count},
+    )
+    _ensure_layout_initialized(args)
+    book_path = write_authored_content(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+        config_path=args.config_path,
+        encoding=args.encoding,
+        gist=args.gist,
+        use_cache=not args.no_cache,
+        verbose=args.verbose or args.json,
+        json_logs=args.json,
+    )
+    _emit_verbose(
+        args,
+        event="draft.done",
+        message=f"Draft completed for '{args.book_name}'",
+        extra={"path": _relative_path_text(book_path)},
+    )
+    print(f"Draft chapter outputs written to: {book_path}")
+
+
 def main() -> None:
     _ensure_config(Path(__file__).resolve().parent)
     args = parse_args()
@@ -515,6 +563,10 @@ def main() -> None:
 
     if args.command == "layout":
         run_layout(args)
+        return
+
+    if args.command == "draft":
+        run_draft(args)
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")

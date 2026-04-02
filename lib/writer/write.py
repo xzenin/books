@@ -428,3 +428,299 @@ def write_generated_content(
 
     _verbose_print(verbose, json_logs, f"Generated content write completed for: {book_name}", "generated.done")
     return book_path
+
+
+def _build_author_prompt(
+    *,
+    settings: ProjectSettings,
+    gist: str,
+    outline_payload: dict[str, Any],
+    chapter_payload: dict[str, Any],
+    chapter_parameter_payload: dict[str, Any],
+    chapter_number: int,
+    previous_running_summary: str,
+) -> str:
+    authoring_contract = {
+        "required_json_keys": [
+            "chapter_title",
+            "chapter_text",
+            "chapter_summary",
+            "next_running_summary",
+            "next_characters",
+        ],
+        "next_characters_shape": [
+            {
+                "name": "Character Name",
+                "role": "Role in next chapter",
+                "notes": "1-2 lines motivation/conflict",
+            }
+        ],
+    }
+    context_payload = {
+        "book_settings": settings.__dict__,
+        "novel_gist": gist,
+        "novel_outline_context": {
+            "novel_name": outline_payload.get("novel_name", ""),
+            "novel_long_title": outline_payload.get("novel_long_title", ""),
+            "generic": outline_payload.get("generic", ""),
+            "era": outline_payload.get("era", ""),
+            "language": outline_payload.get("language", ""),
+            "target_audience": outline_payload.get("target_audience", ""),
+            "running_summary": outline_payload.get("running_summary", ""),
+            "all_characters": outline_payload.get("all_characters", []),
+        },
+        "chapter_outline": chapter_payload,
+        "chapter_parameter": chapter_parameter_payload,
+        "previous_running_summary": previous_running_summary,
+    }
+    return (
+        "You are a renowned author and popular novelist. You have published 30 novels in Bengali literature. "
+        "You are an expert in language development, poetic prose, and high-level narrative syntax. "
+        "Use your strongest reasoning and storytelling quality for this response.\n\n"
+        "Task:\n"
+        "- Write this chapter as rich literary prose.\n"
+        "- Finalize a strong chapter title.\n"
+        "- Prepend chapter title to the generated chapter text (the caller will also persist title separately).\n"
+        "- Produce a concise chapter summary that carries forward continuity from previous running summary.\n"
+        "- Produce a next running summary for upcoming chapter alignment.\n"
+        "- Propose at least 3 new human characters for the next chapter.\n"
+        "- Keep historical/geographical references aligned with provided context and references.\n"
+        "- If external retrieval context is unavailable, rely on given outline, chapter parameters, and references only.\n\n"
+        f"Current chapter number: {chapter_number}\n\n"
+        f"Context JSON:\n{json.dumps(context_payload, ensure_ascii=False, indent=2)}\n\n"
+        f"Response contract (JSON only):\n{json.dumps(authoring_contract, ensure_ascii=False, indent=2)}\n\n"
+        "Return valid JSON only. Do not wrap in markdown."
+    )
+
+
+def _normalize_author_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    title = str(payload.get("chapter_title", "")).strip() or "Untitled Chapter"
+    chapter_text = str(payload.get("chapter_text", "")).strip()
+    summary = str(payload.get("chapter_summary", "")).strip()
+    next_running_summary = str(payload.get("next_running_summary", "")).strip() or summary
+
+    raw_characters = payload.get("next_characters", [])
+    normalized_characters: list[dict[str, str]] = []
+    if isinstance(raw_characters, list):
+        for item in raw_characters:
+            if isinstance(item, dict):
+                normalized_characters.append(
+                    {
+                        "name": str(item.get("name", "")).strip(),
+                        "role": str(item.get("role", "")).strip(),
+                        "notes": str(item.get("notes", "")).strip(),
+                    }
+                )
+            elif isinstance(item, str):
+                normalized_characters.append({"name": item.strip(), "role": "", "notes": ""})
+
+    if len(normalized_characters) < 3:
+        filler_count = 3 - len(normalized_characters)
+        for idx in range(1, filler_count + 1):
+            normalized_characters.append(
+                {
+                    "name": f"Character {idx}",
+                    "role": "Supporting role",
+                    "notes": "To be refined in next chapter.",
+                }
+            )
+
+    return {
+        "chapter_title": title,
+        "chapter_text": chapter_text,
+        "chapter_summary": summary,
+        "next_running_summary": next_running_summary,
+        "next_characters": normalized_characters,
+    }
+
+
+def _render_character_text(characters: list[dict[str, str]]) -> str:
+    lines: list[str] = []
+    for index, item in enumerate(characters, start=1):
+        name = item.get("name", "").strip() or f"Character {index}"
+        role = item.get("role", "").strip()
+        notes = item.get("notes", "").strip()
+        lines.append(f"{index}. {name}")
+        if role:
+            lines.append(f"   role: {role}")
+        if notes:
+            lines.append(f"   notes: {notes}")
+    return "\n".join(lines).strip() + "\n"
+
+
+def _extend_outline_characters(outline_payload: dict[str, Any], new_characters: list[dict[str, str]]) -> None:
+    existing = outline_payload.get("all_characters")
+    if not isinstance(existing, list):
+        existing = []
+
+    existing_names = {
+        str(item.get("friendly_name", "")).strip().lower()
+        for item in existing
+        if isinstance(item, dict)
+    }
+    next_id = max(
+        [int(item.get("character_id", 0)) for item in existing if isinstance(item, dict)] or [0]
+    )
+
+    for item in new_characters:
+        name = str(item.get("name", "")).strip()
+        if not name:
+            continue
+        key = name.lower()
+        if key in existing_names:
+            continue
+        next_id += 1
+        existing.append(
+            {
+                "character_id": next_id,
+                "friendly_name": name,
+                "role": str(item.get("role", "")).strip() or "Supporting character",
+                "notes": str(item.get("notes", "")).strip(),
+            }
+        )
+        existing_names.add(key)
+
+    outline_payload["all_characters"] = existing
+
+
+def write_authored_content(
+    *,
+    workspace_root: str | Path,
+    book_name: str,
+    config_path: str | Path,
+    encoding: str = "utf-8",
+    gist: str | None = None,
+    use_cache: bool = True,
+    verbose: bool = False,
+    json_logs: bool = False,
+) -> Path:
+    config = SnapshotConfig.from_json_file(config_path)
+    manager = SnapshotManager(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
+    book_path = Path(workspace_root) / book_name
+
+    settings = _load_project_settings(book_path, encoding=encoding)
+    manager.initialize_workspace(
+        workspace_root,
+        book_name,
+        number_of_chapters=settings.chapter_count,
+    )
+
+    outline_path = book_path / "BookOutline.json"
+    outline_payload = _load_json_file(outline_path, encoding=encoding)
+    if not isinstance(outline_payload, dict):
+        raise ValueError("BookOutline.json must be a JSON object.")
+
+    chapters = outline_payload.get("chapters", [])
+    if not isinstance(chapters, list):
+        raise ValueError("BookOutline.json must contain a chapters array.")
+
+    novel_gist = (gist or str(outline_payload.get("gist", "")).strip() or _prompt_for_gist(book_name)).strip()
+    if not novel_gist:
+        raise ValueError("Novel gist is required for draft command.")
+
+    sorted_chapters = sorted(
+        (chapter for chapter in chapters if isinstance(chapter, dict)),
+        key=lambda chapter: _chapter_sort_key(chapter, 0),
+    )
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Drafting {len(sorted_chapters)} chapters for: {book_name} (cache={'on' if use_cache else 'off'})",
+        "draft.start",
+    )
+
+    for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
+        chapter_number = _chapter_sort_key(chapter_payload, fallback_index)
+        chapter_root, _, parameter_path = _chapter_paths(book_path, config, chapter_number)
+        chapter_cfg = config.chapters
+        out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(chapter_number))
+        out_path = chapter_root / out_folder
+        out_path.mkdir(parents=True, exist_ok=True)
+
+        if parameter_path.exists():
+            chapter_parameter_payload = _load_json_file(parameter_path, encoding=encoding)
+            if not isinstance(chapter_parameter_payload, dict):
+                chapter_parameter_payload = chapter_payload
+        else:
+            chapter_parameter_payload = chapter_payload
+
+        previous_running_summary = str(outline_payload.get("running_summary", "")).strip()
+        _verbose_print(
+            verbose,
+            json_logs,
+            f"Drafting chapter {chapter_number} using context: {_relative_path_text(parameter_path)}",
+            "draft.chapter.start",
+        )
+        prompt = _build_author_prompt(
+            settings=settings,
+            gist=novel_gist,
+            outline_payload=outline_payload,
+            chapter_payload=chapter_payload,
+            chapter_parameter_payload=chapter_parameter_payload,
+            chapter_number=chapter_number,
+            previous_running_summary=previous_running_summary,
+        )
+        response = _call_genai(
+            prompt,
+            conversation_id=f"{book_name}-draft-chapter-{chapter_number}",
+            use_cache=use_cache,
+            verbose=verbose,
+            json_logs=json_logs,
+        )
+        author_payload_raw = _extract_json_payload(response)
+        if not isinstance(author_payload_raw, dict):
+            raise ValueError(f"Draft response for chapter {chapter_number} must be a JSON object.")
+        author_payload = _normalize_author_payload(author_payload_raw)
+
+        chapter_title = author_payload["chapter_title"]
+        chapter_text = author_payload["chapter_text"]
+        chapter_summary = author_payload["chapter_summary"]
+        next_running_summary = author_payload["next_running_summary"]
+        next_characters = author_payload["next_characters"]
+
+        generated_text = f"{chapter_title}\n\n{chapter_text}".strip() + "\n"
+        chapter_generated_path = out_path / "ChapterGenerated.txt"
+        chapter_summary_path = out_path / "ChapterSummary.txt"
+        chapter_character_path = out_path / "ChapterCharacter.txt"
+        chapter_characters_compat_path = out_path / "ChapterCharacters.txt"
+
+        _write_text(chapter_generated_path, generated_text, encoding=encoding)
+        _write_text(chapter_summary_path, chapter_summary + "\n", encoding=encoding)
+        character_text = _render_character_text(next_characters)
+        _write_text(chapter_character_path, character_text, encoding=encoding)
+        _write_text(chapter_characters_compat_path, character_text, encoding=encoding)
+
+        _verbose_print(
+            verbose,
+            json_logs,
+            (
+                f"Wrote chapter {chapter_number} outputs: "
+                f"{_relative_path_text(chapter_generated_path)}, "
+                f"{_relative_path_text(chapter_summary_path)}, "
+                f"{_relative_path_text(chapter_character_path)}"
+            ),
+            "draft.chapter.files",
+        )
+
+        chapter_payload["chapter_title"] = chapter_title
+        chapter_payload["chapter_summary"] = chapter_summary
+        chapter_payload["chatper_text"] = chapter_text
+        outline_payload["running_summary"] = next_running_summary
+        _extend_outline_characters(outline_payload, next_characters)
+
+        _verbose_print(
+            verbose,
+            json_logs,
+            f"Drafted chapter {chapter_number}: {_relative_path_text(chapter_generated_path)}",
+            "draft.chapter.done",
+        )
+
+    _write_json(outline_path, outline_payload, encoding=encoding)
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Updated running summary and characters in: {_relative_path_text(outline_path)}",
+        "draft.outline.updated",
+    )
+    _verbose_print(verbose, json_logs, f"Draft command completed for: {book_name}", "draft.done")
+    return book_path
