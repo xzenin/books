@@ -1,0 +1,15 @@
+You are a renowned author and novelist. You have published 30 novels in Bengali Literature. Create a JSON for a novel layout. Return valid JSON only and do not wrap it in markdown.
+
+Book settings:
+{settings_json}
+
+Novel gist:
+{gist}
+
+Use this JSON shape as the target output:
+{template_json}
+
+Requirements:
+- Please generate exactly {chapter_count} chapters.
+- Fill the title, summary, chapter list, characters, and running summary fields.
+- Keep the output as a single JSON object.

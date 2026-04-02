@@ -62,7 +62,7 @@ def _default_json_log_mode(script_dir: Path) -> bool:
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    commands = {"init", "list", "export", "import", "clone", "layout", "draft", "publish"}
+    commands = {"init", "list", "export", "import", "clone", "layout", "draft", "publish", "read"}
     global_option_values = {"--workspace-root", "--config-path", "--encoding"}
 
     if not argv:
@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="book.py",
-        description="Initialize, list, export, import, clone, layout, draft, or publish book workspaces.",
+        description="Initialize, list, export, import, clone, layout, draft, publish, or read book workspaces.",
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
@@ -126,6 +126,7 @@ def parse_args() -> argparse.Namespace:
             "  python book.py layout --book-name Sita --mode dummy\n"
             "  python book.py draft --book-name Sita --gist \"A historical Bengali epic\"\n"
             "  python book.py publish --book-name Sita\n"
+            "  python book.py read --book-name Sita\n"
             "  python book.py --verbose --json list\n"
             "  python book.py --version\n"
             "  python book.py --help"
@@ -228,7 +229,23 @@ def parse_args() -> argparse.Namespace:
         help="Optional output file path (default: <workspace>/<book-name>/BookPublished.txt)",
     )
 
-    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, layout_parser, draft_parser, publish_parser):
+    read_parser = subparsers.add_parser(
+        "read",
+        help="Read and print BookPublished.txt for a book",
+    )
+    read_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+
+    for command_parser in (
+        init_parser,
+        list_parser,
+        export_parser,
+        import_parser,
+        clone_parser,
+        layout_parser,
+        draft_parser,
+        publish_parser,
+        read_parser,
+    ):
         _add_runtime_flags(command_parser)
 
     argv = sys.argv[1:]
@@ -333,6 +350,8 @@ def run_init(args: argparse.Namespace) -> None:
         book_name=args.book_name,
         number_of_chapters=args.chapter_count,
     )
+    published_path = book_path / "BookPublished.txt"
+    published_path.touch(exist_ok=True)
 
     settings = _build_project_settings(args, manager)
     settings_string = _serialize_project_settings(settings)
@@ -347,6 +366,7 @@ def run_init(args: argparse.Namespace) -> None:
 
     print(f"Structure created at: {book_path}")
     print(f"Settings initialized at: {settings_path}")
+    print(f"Publish target initialized at: {published_path}")
     print(f"Snapshot exported: {snapshot_path}")
 
 
@@ -568,6 +588,26 @@ def run_publish(args: argparse.Namespace) -> None:
     print(f"Published book output: {output_path}")
 
 
+def run_read(args: argparse.Namespace) -> None:
+    published_path = Path(args.workspace_root) / args.book_name / "BookPublished.txt"
+    _emit_verbose(
+        args,
+        event="read.start",
+        message=f"Reading published output for '{args.book_name}'",
+        extra={"path": _relative_path_text(published_path)},
+    )
+    if not published_path.exists():
+        raise FileNotFoundError(f"Published file not found: {published_path}")
+
+    print(published_path.read_text(encoding=args.encoding))
+
+    _emit_verbose(
+        args,
+        event="read.done",
+        message=f"Read completed for '{args.book_name}'",
+    )
+
+
 def main() -> None:
     _ensure_config(Path(__file__).resolve().parent)
     args = parse_args()
@@ -602,6 +642,10 @@ def main() -> None:
 
     if args.command == "publish":
         run_publish(args)
+        return
+
+    if args.command == "read":
+        run_read(args)
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")
