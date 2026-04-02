@@ -17,6 +17,22 @@ from copilot import CopilotClient
 DEFAULT_CONVERSATION_ID = "default"
 
 
+def _load_runtime_config() -> dict:
+    config_path = Path(__file__).resolve().parent.parent / ".pkbook" / "config.json"
+    if not config_path.exists():
+        return {}
+    try:
+        with config_path.open("r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+_RUNTIME_CONFIG = _load_runtime_config()
+_CLIENT_CACHE: dict[tuple[str, str, str, bool, bool], "GenAIChat"] = {}
+
+
 @dataclass
 class ChatMessage:
     role: str
@@ -235,6 +251,61 @@ class OllamaChat(GenAIChat):
         return response.message.content.strip()
 
 
+def _resolve_provider_name(config: dict) -> str:
+    genai_cfg = config.get("genai", {})
+    if not isinstance(genai_cfg, dict):
+        return "copilot"
+    provider = str(genai_cfg.get("provider", "copilot")).strip().lower()
+    return provider or "copilot"
+
+
+def _create_provider_client(
+    provider: str,
+    config: dict,
+    conversation_id: str,
+    storage_root: Optional[Path],
+    verbose: bool,
+    json_logs: bool,
+) -> GenAIChat:
+    kwargs = {
+        "conversation_id": conversation_id,
+        "storage_root": storage_root,
+        "verbose": verbose,
+        "json_logs": json_logs,
+    }
+
+    if provider == "ollama":
+        return OllamaChat.from_config(config, **kwargs)
+
+    # Fallback to Copilot for unknown providers.
+    return CopilotAIChat(**kwargs)
+
+
+def _default_client(
+    conversation_id: str,
+    storage_root: Optional[Path],
+    verbose: bool,
+    json_logs: bool,
+) -> GenAIChat:
+    provider = _resolve_provider_name(_RUNTIME_CONFIG)
+    storage_key = str(storage_root) if storage_root is not None else ""
+    cache_key = (provider, conversation_id, storage_key, verbose, json_logs)
+    cached = _CLIENT_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    client = _create_provider_client(
+        provider=provider,
+        config=_RUNTIME_CONFIG,
+        conversation_id=conversation_id,
+        storage_root=storage_root,
+        verbose=verbose,
+        json_logs=json_logs,
+    )
+    _CLIENT_CACHE[cache_key] = client
+    return client
+
+
 async def generate_async(
     text: str,
     conversation_id: str = DEFAULT_CONVERSATION_ID,
@@ -244,7 +315,7 @@ async def generate_async(
     verbose: bool = False,
     json_logs: bool = False,
 ) -> str:
-    chat_client = client or CopilotAIChat(
+    chat_client = client or _default_client(
         conversation_id=conversation_id,
         storage_root=storage_root,
         verbose=verbose,
@@ -281,6 +352,6 @@ def chat(
 
 
 async def main():
-    client = CopilotAIChat(conversation_id="demo")
+    client = _default_client(conversation_id="demo", storage_root=None, verbose=False, json_logs=False)
     response = await client.send("How do I parse JSON in Python?")
     print(response)
