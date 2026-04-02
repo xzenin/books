@@ -1,5 +1,4 @@
-from .manager import SnapshotManager
-from .models import ChapterConfig, ChapterSnapshot, SnapshotConfig, WorkspaceSnapshot
+from lib.writer import ChapterConfig, ChapterSnapshot, SnapshotConfig, SnapshotManager, WorkspaceSnapshot
 
 __all__ = [
     "ChapterConfig",

@@ -1,5 +1,5 @@
 import asyncio
-from genai import chat, generate_async
+from lib.genai import chat, generate_async
 
 async def main():
     safe_rendered = await generate_async("Why sky is blue?")
