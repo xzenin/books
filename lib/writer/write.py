@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -51,6 +52,15 @@ def _verbose_print(verbose: bool, json_logs: bool, message: str, event: str = "t
         return
 
     print(f"[verbose][write] {message}")
+
+
+def _relative_path_text(path: str | Path) -> str:
+    raw_path = Path(path)
+    cwd = Path.cwd()
+    try:
+        return str(raw_path.resolve().relative_to(cwd.resolve()))
+    except ValueError:
+        return os.path.relpath(str(raw_path), start=str(cwd))
 
 
 def _read_text(path: Path, *, encoding: str) -> str:
@@ -283,7 +293,12 @@ def write_dummy_content(
     config = SnapshotConfig.from_json_file(config_path)
     manager = SnapshotManager(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
     book_path = manager.initialize_workspace(workspace_root, book_name)
-    _verbose_print(verbose, json_logs, f"Writing dummy content under: {book_path}", "dummy.start")
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Writing dummy content under: {_relative_path_text(book_path)}",
+        "dummy.start",
+    )
 
     provider = content_provider or _prompt_content_for_file
 
@@ -334,7 +349,12 @@ def write_generated_content(
     book_prompt = _build_novel_prompt(settings=settings, gist=novel_gist, template_payload=novel_template)
     book_prompt_path = book_path / "BookPrompt.txt"
     _write_text(book_prompt_path, book_prompt, encoding=encoding)
-    _verbose_print(verbose, json_logs, f"Saved novel prompt to: {book_prompt_path}", "prompt.novel.saved")
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Saved novel prompt to: {_relative_path_text(book_prompt_path)}",
+        "prompt.novel.saved",
+    )
 
     outline_response = _call_genai(
         book_prompt,
@@ -349,7 +369,12 @@ def write_generated_content(
 
     outline_path = book_path / "BookOutline.json"
     _write_json(outline_path, outline_payload, encoding=encoding)
-    _verbose_print(verbose, json_logs, f"Saved novel outline to: {outline_path}", "outline.saved")
+    _verbose_print(
+        verbose,
+        json_logs,
+        f"Saved novel outline to: {_relative_path_text(outline_path)}",
+        "outline.saved",
+    )
 
     chapters = outline_payload.get("chapters", [])
     if not isinstance(chapters, list):
@@ -382,7 +407,7 @@ def write_generated_content(
         _verbose_print(
             verbose,
             json_logs,
-            f"Saved chapter {chapter_number} prompt to: {prompt_path}",
+            f"Saved chapter {chapter_number} prompt to: {_relative_path_text(prompt_path)}",
             "prompt.chapter.saved",
         )
 
@@ -398,7 +423,7 @@ def write_generated_content(
         _verbose_print(
             verbose,
             json_logs,
-            f"Saved chapter {chapter_number} parameters to: {parameter_path}",
+            f"Saved chapter {chapter_number} parameters to: {_relative_path_text(parameter_path)}",
             "chapter.parameters.saved",
         )
 

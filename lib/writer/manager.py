@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,7 +40,7 @@ class SnapshotManager:
         book_path = root / book_name
         chapter_root = book_path / "BookChapters"
 
-        self._verbose_print(f"Reading workspace snapshot from: {book_path}")
+        self._verbose_print(f"Reading workspace snapshot from: {self._relative_path_text(book_path)}")
 
         snapshot = WorkspaceSnapshot(bookName=book_name)
 
@@ -89,7 +90,9 @@ class SnapshotManager:
         book_path = root / book_name
         chapter_root = book_path / "BookChapters"
 
-        self._verbose_print(f"Initializing workspace for {book_name} at: {book_path}")
+        self._verbose_print(
+            f"Initializing workspace for {book_name} at: {self._relative_path_text(book_path)}"
+        )
 
         book_path.mkdir(parents=True, exist_ok=True)
         chapter_root.mkdir(parents=True, exist_ok=True)
@@ -133,7 +136,9 @@ class SnapshotManager:
         book_path = root / target_book_name
         chapter_root = book_path / "BookChapters"
 
-        self._verbose_print(f"Restoring snapshot {snapshot.bookName} into: {book_path}")
+        self._verbose_print(
+            f"Restoring snapshot {snapshot.bookName} into: {self._relative_path_text(book_path)}"
+        )
 
         for filename in self.config.bookRootFiles:
             content = snapshot.rootFiles.get(filename, "")
@@ -159,15 +164,17 @@ class SnapshotManager:
         self._verbose_print(f"Snapshot restore completed for: {target_book_name}")
 
     def write_snapshot_json(self, snapshot: WorkspaceSnapshot, snapshot_path: str | Path) -> None:
-        self._verbose_print(f"Writing snapshot JSON to: {snapshot_path}")
+        self._verbose_print(f"Writing snapshot JSON to: {self._relative_path_text(snapshot_path)}")
         snapshot.to_json_file(snapshot_path)
 
     def load_snapshot_json(self, snapshot_path: str | Path) -> WorkspaceSnapshot:
-        self._verbose_print(f"Loading snapshot JSON from: {snapshot_path}")
+        self._verbose_print(f"Loading snapshot JSON from: {self._relative_path_text(snapshot_path)}")
         return WorkspaceSnapshot.from_json_file(snapshot_path)
 
     def export_workspace_to_json(self, workspace_root: str | Path, book_name: str, snapshot_path: str | Path) -> WorkspaceSnapshot:
-        self._verbose_print(f"Exporting workspace '{book_name}' to snapshot: {snapshot_path}")
+        self._verbose_print(
+            f"Exporting workspace '{book_name}' to snapshot: {self._relative_path_text(snapshot_path)}"
+        )
         snapshot = self.read_from_workspace(workspace_root, book_name)
         self.write_snapshot_json(snapshot, snapshot_path)
         return snapshot
@@ -238,3 +245,11 @@ class SnapshotManager:
 
     def _legacy_numbered_name(self, name: str, chapter_number: int) -> str:
         return re.sub(r"^Chapter(?!\d)", f"Chapter{chapter_number}", name, count=1)
+
+    def _relative_path_text(self, path: str | Path) -> str:
+        raw_path = Path(path)
+        cwd = Path.cwd()
+        try:
+            return str(raw_path.resolve().relative_to(cwd.resolve()))
+        except ValueError:
+            return os.path.relpath(str(raw_path), start=str(cwd))
