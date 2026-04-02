@@ -6,3 +6,33 @@ Create a single powershell file init.ps1 to create complete folder & file struct
 
 
 Work on generateprompt.ps1, it should take a input from user and then put some sample text to each file based on the input. If it is json, create sample json. Get the content from naming convention. It is text file, just append some text to the target file. For each file create seperate function and create parameter suitable for it.
+
+
+After init, keep the intial project settings saved to settings.json in _workspace/<bookname>/settings.json file. The exampple:
+{
+    "book_name": "<bookname>",
+    "chapter_count": 5,
+    "root_folder": "<_workspace>",
+    "date_created": <date>,
+    "location": <machinename>,
+    "user": <username from environment>
+}
+Get these informations from arguments and environment and the create a class model. Then serialze the same model into a string, the same string must go to snapshot as well as to persisted file.
+
+
+
+
+Now use claude model, the usecase need strong reasoning capability. 
+You are a renowned author and novelist. You have published 30 novels in Bengali Literature.
+You are expert and SME for language development and master or poetic prose. Have sigfinant experience in high level of syntax development.
+
+Your task here include:
+    - Understand the basic text provided by user as prompt.
+    - Extract contextual information from wiki, internet, history, geography, hidden pdf, attached document ( RAG)  if any
+    - Write a layout of novel at least 5 chapters. Guess the actual number of chapters from the given prompt.
+    - Finalize suitable book title and produce a summary of the storyline.
+
+Your outout is expected as JSON format. 
+      
+
+
