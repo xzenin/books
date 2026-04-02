@@ -85,37 +85,6 @@ class SnapshotManager:
 
         return book_path
 
-    def initialize_snapshot(self, book_name: str) -> WorkspaceSnapshot:
-        snapshot = WorkspaceSnapshot(bookName=book_name)
-        snapshot.rootFiles = {filename: "" for filename in self.config.bookRootFiles}
-
-        chapter_cfg = self.config.chapters
-        for number in range(chapter_cfg.start, chapter_cfg.end + 1):
-            chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(number))
-            chapter_out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(number))
-
-            chapter = ChapterSnapshot(
-                chapterNumber=number,
-                chapterFolder=chapter_folder,
-                files={},
-                outFolder=chapter_out_folder,
-                outFiles={},
-            )
-
-            for pattern in chapter_cfg.chapterFiles:
-                file_name = pattern.replace("{n}", str(number))
-                chapter.files[file_name] = ""
-
-            for pattern in chapter_cfg.chapterOutFiles:
-                file_name = pattern.replace("{n}", str(number))
-                if number == 1 and file_name == "Chapter1RunningSummary.txt" and chapter_cfg.chapter1RunningSummaryFile:
-                    file_name = chapter_cfg.chapter1RunningSummaryFile
-                chapter.outFiles[file_name] = ""
-
-            snapshot.chapters.append(chapter)
-
-        return snapshot
-
     def restore_to_workspace(self, snapshot: WorkspaceSnapshot, workspace_root: str | Path, *, book_name: str | None = None) -> None:
         target_book_name = book_name or snapshot.bookName
         root = Path(workspace_root)
@@ -154,21 +123,6 @@ class SnapshotManager:
         snapshot = self.read_from_workspace(workspace_root, source_book_name)
         snapshot.bookName = target_book_name
         self.restore_to_workspace(snapshot, workspace_root, book_name=target_book_name)
-        return snapshot
-
-    def refresh_snapshot_json_from_workspace(
-        self,
-        workspace_root: str | Path,
-        snapshot_path: str | Path,
-        *,
-        book_name: str | None = None,
-    ) -> WorkspaceSnapshot:
-        if book_name is None:
-            existing = self.load_snapshot_json(snapshot_path)
-            book_name = existing.bookName
-
-        snapshot = self.read_from_workspace(workspace_root, book_name)
-        self.write_snapshot_json(snapshot, snapshot_path)
         return snapshot
 
     def _read_text(self, path: Path) -> str:
