@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from lib.writer import SnapshotManager
-from lib.writer.write import write_authored_content, write_dummy_content, write_generated_content
+from lib.writer.write import publish_book_content, write_authored_content, write_dummy_content, write_generated_content
 
 
 def _ensure_config(script_dir: Path) -> None:
@@ -62,7 +62,7 @@ def _default_json_log_mode(script_dir: Path) -> bool:
 
 
 def _normalize_argv(argv: list[str]) -> list[str]:
-    commands = {"init", "list", "export", "import", "clone", "layout", "draft"}
+    commands = {"init", "list", "export", "import", "clone", "layout", "draft", "publish"}
     global_option_values = {"--workspace-root", "--config-path", "--encoding"}
 
     if not argv:
@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
 
     parser = argparse.ArgumentParser(
         prog="book.py",
-        description="Initialize, list, export, import, clone, layout, or draft book workspaces.",
+        description="Initialize, list, export, import, clone, layout, draft, or publish book workspaces.",
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
@@ -125,6 +125,7 @@ def parse_args() -> argparse.Namespace:
             "  python book.py layout --book-name Sita --gist \"A historical Bengali epic\"\n"
             "  python book.py layout --book-name Sita --mode dummy\n"
             "  python book.py draft --book-name Sita --gist \"A historical Bengali epic\"\n"
+            "  python book.py publish --book-name Sita\n"
             "  python book.py --verbose --json list\n"
             "  python book.py --version\n"
             "  python book.py --help"
@@ -217,7 +218,17 @@ def parse_args() -> argparse.Namespace:
         help="Disable GenAI response caching for the draft command.",
     )
 
-    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, layout_parser, draft_parser):
+    publish_parser = subparsers.add_parser(
+        "publish",
+        help="Append chapter generated text into a single BookPublished.txt file",
+    )
+    publish_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    publish_parser.add_argument(
+        "--output-path",
+        help="Optional output file path (default: <workspace>/<book-name>/BookPublished.txt)",
+    )
+
+    for command_parser in (init_parser, list_parser, export_parser, import_parser, clone_parser, layout_parser, draft_parser, publish_parser):
         _add_runtime_flags(command_parser)
 
     argv = sys.argv[1:]
@@ -537,6 +548,26 @@ def run_draft(args: argparse.Namespace) -> None:
     print(f"Draft chapter outputs written to: {book_path}")
 
 
+def run_publish(args: argparse.Namespace) -> None:
+    _emit_verbose(args, event="publish.start", message=f"Running publish for '{args.book_name}'")
+    output_path = publish_book_content(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+        config_path=args.config_path,
+        output_path=args.output_path,
+        encoding=args.encoding,
+        verbose=args.verbose or args.json,
+        json_logs=args.json,
+    )
+    _emit_verbose(
+        args,
+        event="publish.done",
+        message=f"Publish completed for '{args.book_name}'",
+        extra={"path": _relative_path_text(output_path)},
+    )
+    print(f"Published book output: {output_path}")
+
+
 def main() -> None:
     _ensure_config(Path(__file__).resolve().parent)
     args = parse_args()
@@ -567,6 +598,10 @@ def main() -> None:
 
     if args.command == "draft":
         run_draft(args)
+        return
+
+    if args.command == "publish":
+        run_publish(args)
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")

@@ -3,7 +3,8 @@
     "Settings.json",
     "BookPrompt.txt",
     "BookOutline.json",
-    "BookRunningSummary.txt"
+    "BookRunningSummary.txt",
+    "BookPublished.txt"
   ],
   "chapters": {
     "start": 1,

@@ -1,6 +1,6 @@
 # Book writing software
 
-Book workspace utility for structure initialization, listing, snapshot export/import, cloning, layout generation, and chapter authoring.
+Book workspace utility for structure initialization, listing, snapshot export/import, cloning, layout generation, chapter drafting, and publish assembly.
 
 ## Main CLI
 
@@ -8,7 +8,7 @@ Use `book.py` as the single entrypoint.
 
 Global options such as `--workspace-root`, `--config-path`, and `--encoding` must be placed before the subcommand.
 
-`--verbose` prints progress details for major CLI, snapshot, layout/draft, and GenAI workflow steps.
+`--verbose` prints progress details for major CLI, snapshot, layout/draft/publish, and GenAI workflow steps.
 
 `--json` switches verbose events to machine-readable JSON lines.
 
@@ -33,10 +33,13 @@ python book.py clone --source-book-name Sita --target-book-name SitaCopy
 python book.py layout --book-name Sita --gist "A historical Bengali epic"
 python book.py layout --book-name Sita --mode dummy
 python book.py draft --book-name Sita --gist "A historical Bengali epic"
+python book.py publish --book-name Sita
 python book.py --verbose list
 python book.py --verbose layout --book-name Sita --gist "A historical Bengali epic"
 python book.py --verbose draft --book-name Sita
+python book.py --verbose publish --book-name Sita
 python book.py --verbose --json draft --book-name Sita
+python book.py --verbose --json publish --book-name Sita
 python book.py --verbose --json list
 python book.py --version
 ```
@@ -54,6 +57,7 @@ python book.py --version
 - `clone`: Copies one book workspace into another book name.
 - `layout`: Generates or fills layout/content files for a book.
 - `draft`: Writes chapter prose and chapter outputs from `BookOutline.json` and chapter parameter context.
+- `publish`: Compiles all chapter generated text into one `BookPublished.txt` manuscript file.
 
 ### Layout Command
 
@@ -128,6 +132,28 @@ python book.py draft --book-name Sita
 python book.py draft --book-name Sita --gist "A historical Bengali epic"
 python book.py draft --book-name Sita --chapter-count 6 --verbose
 python book.py --workspace-root .\.pkbook\_wokspace draft --book-name Sita --no-cache
+```
+
+### Publish Command
+
+`publish` reads chapter order from `<workspace>/<bookname>/BookOutline.json`, then appends chapter generated content from:
+
+- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterGenerated.txt`
+
+and writes the compiled manuscript to:
+
+- `<workspace>/<bookname>/BookPublished.txt`
+
+Optional override:
+
+- `--output-path` to write to a custom target file.
+
+Examples:
+
+```python
+python book.py publish --book-name Sita
+python book.py publish --book-name Sita --output-path .\snapshots\SitaPublished.txt
+python book.py --verbose --json publish --book-name Sita
 ```
 
 ### Important Argument Order
