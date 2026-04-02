@@ -273,8 +273,6 @@ def _iter_configured_files(book_path: Path, config: SnapshotConfig) -> list[Path
         out_path = chapter_path / out_folder
         for pattern in chapter_cfg.chapterOutFiles:
             file_name = pattern.replace("{n}", str(number))
-            if number == 1 and file_name == "Chapter1RunningSummary.txt" and chapter_cfg.chapter1RunningSummaryFile:
-                file_name = chapter_cfg.chapter1RunningSummaryFile
             paths.append(out_path / file_name)
 
     return paths

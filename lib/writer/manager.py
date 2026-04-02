@@ -67,8 +67,6 @@ class SnapshotManager:
 
             for pattern in chapter_cfg.chapterOutFiles:
                 file_name = pattern.replace("{n}", str(number))
-                if number == 1 and file_name == "Chapter1RunningSummary.txt" and chapter_cfg.chapter1RunningSummaryFile:
-                    file_name = chapter_cfg.chapter1RunningSummaryFile
                 source_path = self._resolve_existing_path(out_path, file_name, number)
                 chapter.outFiles[file_name] = self._read_text(source_path)
 
@@ -123,8 +121,6 @@ class SnapshotManager:
 
             for pattern in chapter_cfg.chapterOutFiles:
                 file_name = pattern.replace("{n}", str(number))
-                if number == 1 and file_name == "Chapter1RunningSummary.txt" and chapter_cfg.chapter1RunningSummaryFile:
-                    file_name = chapter_cfg.chapter1RunningSummaryFile
                 self._ensure_file(out_path / file_name)
 
         self._verbose_print(f"Workspace ready with chapters {chapter_start} to {chapter_end}")

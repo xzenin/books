@@ -14,7 +14,6 @@ class ChapterConfig:
     chapterFiles: list[str]
     chapterOutFolderPattern: str
     chapterOutFiles: list[str]
-    chapter1RunningSummaryFile: str = ""
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "ChapterConfig":
@@ -25,7 +24,6 @@ class ChapterConfig:
             chapterFiles=[str(item) for item in payload.get("chapterFiles", [])],
             chapterOutFolderPattern=str(payload["chapterOutFolderPattern"]),
             chapterOutFiles=[str(item) for item in payload.get("chapterOutFiles", [])],
-            chapter1RunningSummaryFile=str(payload.get("chapter1RunningSummaryFile", "")),
         )
 
     def to_dict(self) -> dict[str, Any]:
