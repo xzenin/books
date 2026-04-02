@@ -225,6 +225,15 @@ def _emit_verbose(args: argparse.Namespace, *, event: str, message: str, extra: 
     print(f"[verbose][book] {message}")
 
 
+def _relative_path_text(path: str | Path) -> str:
+    raw_path = Path(path)
+    cwd = Path.cwd()
+    try:
+        return str(raw_path.resolve().relative_to(cwd.resolve()))
+    except ValueError:
+        return os.path.relpath(str(raw_path), start=str(cwd))
+
+
 def _resolve_snapshot_path(args: argparse.Namespace) -> str:
     snapshot_path = getattr(args, "snapshot_path", None)
     if snapshot_path:
@@ -293,7 +302,11 @@ def run_init(args: argparse.Namespace) -> None:
 
 
 def run_list(args: argparse.Namespace) -> None:
-    _emit_verbose(args, event="list.start", message=f"Listing books under: {Path(args.workspace_root)}")
+    _emit_verbose(
+        args,
+        event="list.start",
+        message=f"Listing books under: {_relative_path_text(args.workspace_root)}",
+    )
     workspace_root = Path(args.workspace_root)
     if not workspace_root.exists():
         print(f"Workspace root does not exist: {workspace_root}")
