@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import string
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -145,17 +146,36 @@ def _load_template_payload(template_name: str, *, encoding: str) -> Any:
 def _build_novel_prompt(*, settings: ProjectSettings, gist: str, template_payload: Any) -> str:
     settings_json = json.dumps(settings.__dict__, ensure_ascii=False, indent=2)
     template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
-    return (
-        "You are a renowned author and novelist. You have published 30 novels in Bengali Literature. "
-        "Create a JSON for a novel layout. Return valid JSON only and do not wrap it in markdown.\n\n"
-        f"Book settings:\n{settings_json}\n\n"
-        f"Novel gist:\n{gist}\n\n"
-        f"Use this JSON shape as the target output:\n{template_json}\n\n"
-        "Requirements:\n"
-        f"- Please generate exactly {settings.chapter_count} chapters.\n"
-        "- Fill the title, summary, chapter list, characters, and running summary fields.\n"
-        "- Keep the output as a single JSON object."
-    )
+    template_path = Path(__file__).resolve().parents[2] / "templates" / "book_prompt.txt"
+    template_text = _read_text(template_path, encoding="utf-8")
+
+    required_fields = {
+        "settings_json",
+        "gist",
+        "template_json",
+        "chapter_count",
+    }
+    formatter = string.Formatter()
+    available_fields = {
+        field_name
+        for _, field_name, _, _ in formatter.parse(template_text)
+        if field_name
+    }
+    missing_fields = sorted(required_fields - available_fields)
+    if missing_fields:
+        raise ValueError(
+            f"Template {template_path} is missing required placeholders: {', '.join(missing_fields)}"
+        )
+
+    try:
+        return template_text.format(
+            settings_json=settings_json,
+            gist=gist,
+            template_json=template_json,
+            chapter_count=settings.chapter_count,
+        )
+    except (KeyError, ValueError) as exc:
+        raise ValueError(f"Invalid novel prompt template format in {template_path}: {exc}") from exc
 
 
 def _build_chapter_prompt(
@@ -165,9 +185,11 @@ def _build_chapter_prompt(
     outline_payload: dict[str, Any],
     chapter_payload: dict[str, Any],
     template_payload: Any,
+    encoding: str = "utf-8",
 ) -> str:
     chapter_json = json.dumps(chapter_payload, ensure_ascii=False, indent=2)
     template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
+    book_settings_json = json.dumps(settings.__dict__, ensure_ascii=False, indent=2)
     outline_context = json.dumps(
         {
             "novel_name": outline_payload.get("novel_name", ""),
@@ -182,19 +204,38 @@ def _build_chapter_prompt(
         ensure_ascii=False,
         indent=2,
     )
-    return (
-        "You are a renowned author and novelist. You have published 30 novels in Bengali Literature. "
-        "Create a JSON for the next chapter. Return valid JSON only and do not wrap it in markdown.\n\n"
-        f"Book settings:\n{json.dumps(settings.__dict__, ensure_ascii=False, indent=2)}\n\n"
-        f"Novel gist:\n{gist}\n\n"
-        f"Novel context:\n{outline_context}\n\n"
-        f"Current chapter plan:\n{chapter_json}\n\n"
-        f"Use this JSON shape as the target output:\n{template_json}\n\n"
-        "Requirements:\n"
-        "- Keep the response focused on this chapter only.\n"
-        "- Preserve alignment with the novel outline and running summary.\n"
-        "- Keep the output as a single JSON object."
-    )
+    template_path = Path(__file__).resolve().parents[2] / "templates" / "chapter_prompt.txt"
+    template_text = _read_text(template_path, encoding=encoding)
+
+    required_fields = {
+        "book_settings_json",
+        "gist",
+        "outline_context",
+        "chapter_json",
+        "template_json",
+    }
+    formatter = string.Formatter()
+    available_fields = {
+        field_name
+        for _, field_name, _, _ in formatter.parse(template_text)
+        if field_name
+    }
+    missing_fields = sorted(required_fields - available_fields)
+    if missing_fields:
+        raise ValueError(
+            f"Template {template_path} is missing required placeholders: {', '.join(missing_fields)}"
+        )
+
+    try:
+        return template_text.format(
+            book_settings_json=book_settings_json,
+            gist=gist,
+            outline_context=outline_context,
+            chapter_json=chapter_json,
+            template_json=template_json,
+        )
+    except (KeyError, ValueError) as exc:
+        raise ValueError(f"Invalid chapter prompt template format in {template_path}: {exc}") from exc
 
 
 def _call_genai(
@@ -401,6 +442,7 @@ def write_generated_content(
             outline_payload=outline_payload,
             chapter_payload=chapter_payload,
             template_payload=chapter_template,
+            encoding=encoding,
         )
         _write_text(prompt_path, chapter_prompt, encoding=encoding)
         _verbose_print(
