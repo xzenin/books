@@ -70,18 +70,18 @@ class LayoutChapter:
                 segments.append(SegmentBlueprint.from_payload(item, index=index))
 
         if not segments:
-            chapter_sections = chapter_payload.get("chapter_texts", [])
+            chapter_sections = chapter_payload.get("chapter_segments", [])
             if isinstance(chapter_sections, list) and chapter_sections:
                 for index, section in enumerate(chapter_sections, start=1):
-                    seed = section if isinstance(section, dict) else {"text": str(section)}
+                    seed = section if isinstance(section, dict) else {"segment_text": str(section)}
                     segments.append(
                         SegmentBlueprint.from_payload(
                             {
-                                "name": str(seed.get("section-title", f"segment-{index}")),
+                                "name": str(seed.get("segment_title", seed.get("section-title", f"segment-{index}"))),
                                 "goal": "Advance chapter objective.",
                                 "stakes": "Failure escalates the chapter crisis.",
                                 "vulnerability": "Character weakness is exposed.",
-                                "conflict": str(seed.get("text", "")).strip(),
+                                "conflict": str(seed.get("segment_text", seed.get("text", ""))).strip(),
                                 "tension": "Time pressure is increasing.",
                                 "rationalize": "Character reevaluates after setback.",
                                 "subversion": "New information changes the plan.",

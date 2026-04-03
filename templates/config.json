@@ -12,7 +12,7 @@
         "content_type": "json"
     },
     "snapshot": {
-        "type": "mongo",
+        "type": "filesystem",
         "config": {
             "base_path": ".pkbook/snapshots"
         }
@@ -53,7 +53,23 @@
                 "timeout_seconds": 240
             },
              {
-                "name": "groq1",
+                "name": "xzen_groq1",
+                "type": "groq",
+                "key": "xxxxxx",
+                "model": "llama-3.1-8b-instant",
+                "url": "https://api.groq.com/openai/v1",
+                "timeout_seconds": 240
+            },
+            {
+                "name": "editor_groq1",
+                "type": "groq",
+                "key": "xxxxxx",
+                "model": "llama-3.1-8b-instant",
+                "url": "https://api.groq.com/openai/v1",
+                "timeout_seconds": 240
+            },
+            {
+                "name": "pareena_groq2",
                 "type": "groq",
                 "key": "xxxxxx",
                 "model": "llama-3.1-8b-instant",
@@ -61,11 +77,12 @@
                 "timeout_seconds": 240
             }
         ],
-        "mapping": {
-          "default": "groq1",
-            "segment_level_generation": "ollama2",
-            "chapter_level_generation": "copilot1",
-            "book_level_generation": "groq1"              
+        "mapping": {    
+          "default": "ollama1",
+            "segment_level_generation": "ollama1",
+            "chapter_level_generation": "ollama1",
+            "book_level_generation": "ollama1"              
         }
     }
 }
+

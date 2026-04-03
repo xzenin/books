@@ -25,10 +25,11 @@ except ImportError:
 
 
 DEFAULT_CONVERSATION_ID = "default"
+GENAI_HISTORY_FOLDER = "_history"
 
 
 def _default_storage_root() -> Path:
-    return Path(__file__).resolve().parent.parent / ".pkbook" / "_genai"
+    return Path(__file__).resolve().parent.parent / ".pkbook" / GENAI_HISTORY_FOLDER
 
 
 def _load_runtime_config() -> dict:
@@ -95,9 +96,9 @@ class GenAIChat(ABC):
             return self.storage_root
 
         normalized_root = Path(history_root).resolve()
-        if normalized_root.name.lower() == "_genai":
+        if normalized_root.name.lower() in {"_genai", GENAI_HISTORY_FOLDER}:
             return normalized_root
-        return normalized_root / "_genai"
+        return normalized_root / GENAI_HISTORY_FOLDER
 
     def _apply_storage_scope(self, history_root: Optional[Path], agent_name: Optional[str]) -> None:
         if agent_name is not None:

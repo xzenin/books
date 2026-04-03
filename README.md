@@ -2,7 +2,7 @@
 
 Book workspace utility for structure initialization, listing, snapshot export/import, cloning, layout generation, chapter drafting, and publish assembly.
 
-GenAI conversation history can now be scoped dynamically per call. The writer workflow uses book-level history under `<workspace>/<bookname>/.pkbook/_genai/history` for novel layout calls and chapter-level history under `<workspace>/<bookname>/BookChapters/Chapter<n>/.pkbook/_genai/history` for chapter generation and drafting calls.
+GenAI conversation history can now be scoped dynamically per call. The writer workflow uses book-level history under `<workspace>/<bookname>/.pkbook/_history/history` for novel layout calls and chapter-level history under `<workspace>/<bookname>/BookChapters/Chapter<n>/.pkbook/_history/history` for chapter generation and drafting calls.
 
 ## Main CLI
 
