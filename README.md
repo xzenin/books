@@ -2,6 +2,8 @@
 
 Book workspace utility for structure initialization, listing, snapshot export/import, cloning, layout generation, chapter drafting, and publish assembly.
 
+GenAI conversation history can now be scoped dynamically per call. The writer workflow uses book-level history under `<workspace>/<bookname>/.pkbook/_genai/history` for novel layout calls and chapter-level history under `<workspace>/<bookname>/BookChapters/Chapter<n>/.pkbook/_genai/history` for chapter generation and drafting calls.
+
 ## Main CLI
 
 Use `book.py` as the single entrypoint.
@@ -16,7 +18,7 @@ Global options such as `--workspace-root`, `--config-path`, and `--encoding` mus
 
 ### Defaults
 
-- Workspace root: `.pkbook/_wokspace`
+- Workspace root: `.pkbook/_workspace`
 - Config template: `templates/init.json`
 - Snapshot file (init/export/import): `snapshots/<book-name>.json` when `--snapshot-path` is not provided
 
@@ -68,6 +70,11 @@ python book.py --version
 
 If the target book is not initialized yet, `layout` auto-initializes the workspace first and creates `Settings.json` before generating content.
 
+GenAI memory behavior during `layout`:
+
+- Novel outline calls use the book folder as the history root.
+- Chapter parameter calls use the corresponding chapter folder as the history root.
+
 `--chapter-count` is supported on `layout` in both cases:
 
 - First run (book not initialized): creates chapter folders using the provided count.
@@ -80,7 +87,7 @@ python book.py layout --book-name Sita --gist "A historical Bengali epic"
 python book.py layout --book-name Sita --gist "A historical Bengali epic" --chapter-count 6
 python book.py layout --book-name Sita --mode dummy
 python book.py layout --book-name Sita --mode dummy --chapter-count 6
-python book.py --workspace-root .\.pkbook\_wokspace layout --book-name Sita --mode dummy
+python book.py --workspace-root .\.pkbook\_workspace layout --book-name Sita --mode dummy
 ```
 
 ### Init Command
@@ -124,6 +131,24 @@ Notes:
 - `draft` also supports `--chapter-count` for first-time initialization.
 - `draft` supports `--no-cache` and `--gist` override.
 - `draft` supports `--verbose` and `--json` for machine-readable progress logs.
+- Each chapter drafting call uses that chapter folder as the GenAI history root, so long-term memory is isolated per chapter.
+
+### GenAI History Override
+
+The public GenAI helpers in `lib/genai.py` accept an optional `history_root` path before each call:
+
+```python
+from pathlib import Path
+from lib.genai import chat
+
+response = chat(
+	"Create a chapter outline.",
+	conversation_id="demo-outline",
+	history_root=Path(".pkbook/_workspace/Sita"),
+)
+```
+
+If you are working with a persistent client directly, call `set_history_root(...)` before `send(...)`, or pass `history_root=...` to `send(...)` for that call.
 
 Examples:
 
@@ -131,7 +156,7 @@ Examples:
 python book.py draft --book-name Sita
 python book.py draft --book-name Sita --gist "A historical Bengali epic"
 python book.py draft --book-name Sita --chapter-count 6 --verbose
-python book.py --workspace-root .\.pkbook\_wokspace draft --book-name Sita --no-cache
+python book.py --workspace-root .\.pkbook\_workspace draft --book-name Sita --no-cache
 ```
 
 ### Publish Command
@@ -163,13 +188,13 @@ Global options must appear before the subcommand.
 Correct:
 
 ```python
-python book.py --workspace-root .\.pkbook\_wokspace layout --book-name Sita --mode dummy
+python book.py --workspace-root .\.pkbook\_workspace layout --book-name Sita --mode dummy
 ```
 
 Incorrect:
 
 ```python
-python book.py layout --book-name Sita --mode dummy --workspace-root .\.pkbook\_wokspace
+python book.py layout --book-name Sita --mode dummy --workspace-root .\.pkbook\_workspace
 ```
 
 
