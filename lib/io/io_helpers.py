@@ -7,21 +7,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from .writables import ProjectSettings
+from ..writer.writables import ProjectSettings
 
 TEXT_DUMMY_CONTENT = "hello"
 JSON_DUMMY_CONTENT = {"root": "hello"}
-
-
-def write_json(path: Path, content: Any, *, encoding: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding=encoding) as handle:
-        json.dump(content, handle, ensure_ascii=False, indent=2)
-
-
-def write_text(path: Path, content: str, *, encoding: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content, encoding=encoding)
 
 
 def verbose_print(verbose: bool, json_logs: bool, message: str, event: str = "trace") -> None:

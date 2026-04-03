@@ -1,4 +1,4 @@
-{
+﻿{
     "appname": "book",
     "owner": "xzen.in@gmail.com",
     "version": "1.0.1",
@@ -12,7 +12,7 @@
         "content_type": "json"
     },
     "snapshot": {
-        "type": "filesystem",
+        "type": "mongo",
         "config": {
             "base_path": ".pkbook/snapshots"
         }
@@ -44,20 +44,28 @@
                 "url": "http://localhost:11434",
                 "timeout_seconds": 240
             },
-             {
+            {
                 "name": "ollama2",
                 "type": "ollama",
                 "key": "ollama_key",
                 "model": "qwen3.5:9b",
                 "url": "http://localhost:11434",
                 "timeout_seconds": 240
+            },
+             {
+                "name": "groq1",
+                "type": "groq",
+                "key": "xxxxxx",
+                "model": "llama-3.1-8b-instant",
+                "url": "https://api.groq.com/openai/v1",
+                "timeout_seconds": 240
             }
         ],
         "mapping": {
-            "default": "ollama1",
+          "default": "groq1",
             "segment_level_generation": "ollama2",
-            "chapter_level_generation": "ollama2",
-            "book_level_generation": "ollama2"                
+            "chapter_level_generation": "copilot1",
+            "book_level_generation": "groq1"              
         }
     }
 }

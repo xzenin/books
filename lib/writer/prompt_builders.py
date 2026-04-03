@@ -5,7 +5,7 @@ import string
 from pathlib import Path
 from typing import Any
 
-from .io_helpers import load_json_file, read_text
+from ..io.io_helpers import load_json_file, read_text
 from .writables import ProjectSettings
 
 
