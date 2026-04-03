@@ -6,10 +6,12 @@ import re
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from lib.models import ChapterSnapshot, SnapshotConfig, WorkspaceSnapshot
-from ..writer.writables import ProjectSettings
+
+if TYPE_CHECKING:
+    from ..writer.writables import ProjectSettings
 
 
 class SnapshotManager(ABC):
@@ -56,6 +58,22 @@ class SnapshotManager(ABC):
             verbose=verbose,
             json_logs=json_logs,
         )
+
+    def initialize_workspace_snapshot(self, *, book_name: str | None = None) -> WorkspaceSnapshot:
+        resolved_book_name = str(book_name or self.book_name or "")
+        existing = WorkspaceSnapshot.get_singleton()
+        if existing is None:
+            snapshot = WorkspaceSnapshot.init_singleton(
+                book_name=resolved_book_name,
+                implimentor=self.storage_backend,
+                manager=self,
+            )
+            return snapshot
+
+        existing.inject_manager(self)
+        if resolved_book_name:
+            existing.bookName = resolved_book_name
+        return existing
 
     # Path getter methods
     def get_book_path(self, workspace_root: str | Path | None = None, book_name: str | None = None) -> Path:
@@ -301,7 +319,10 @@ class SnapshotManager(ABC):
 
         self._verbose_print(f"Reading workspace snapshot from: {self._relative_path_text(book_path)}")
 
-        snapshot = WorkspaceSnapshot(bookName=str(name))
+        snapshot = WorkspaceSnapshot(
+            implimentor=self.storage_backend,
+            bookName=str(name),
+        )
 
         for filename in self.config.bookRootFiles:
             snapshot.rootFiles[filename] = self._read_text(book_path / filename)
@@ -310,6 +331,10 @@ class SnapshotManager(ABC):
         for number in range(chapter_cfg.start, chapter_cfg.end + 1):
             chapter_path = self.get_chapter_path(number, root, name)
             chapter_out_path = self.get_chapter_out_path(number, root, name)
+
+            # If a chapter was not initialized (e.g. chapter_count < template max), skip it.
+            if not self.path_exists(chapter_path) and not self.path_exists(chapter_out_path):
+                continue
 
             chapter = ChapterSnapshot(
                 chapterNumber=number,
@@ -332,6 +357,8 @@ class SnapshotManager(ABC):
         self._verbose_print(
             f"Collected snapshot for {name} with {len(snapshot.rootFiles)} root files and {len(snapshot.chapters)} chapters"
         )
+        snapshot.inject_manager(self)
+        WorkspaceSnapshot.set_singleton(snapshot)
         return snapshot
 
     def initialize_workspace(
@@ -495,7 +522,10 @@ class SnapshotManager(ABC):
 
     # Internal delegation helpers — call through abstract public IO methods
     def _read_text(self, path: Path) -> str:
-        return self.read_text_file(path)
+        try:
+            return self.read_text_file(path)
+        except FileNotFoundError:
+            return ""
 
     def _write_text(self, path: Path, content: str) -> None:
         self.write_text_file(path, content)
@@ -581,7 +611,8 @@ class SnapshotManager(ABC):
         """Import workspace from JSON file. Return count of imported files/entries. Overwrites existing."""
         raise NotImplementedError
 
-    def load_project_settings(self) -> ProjectSettings:
+    def load_project_settings(self) -> "ProjectSettings":
+        from ..writer.writables import ProjectSettings
         book_path = self.get_book_path()
         settings_path = self.get_book_file_path("Settings.json")
         payload = self.load_json_file(settings_path)

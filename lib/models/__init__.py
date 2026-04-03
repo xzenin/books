@@ -2,6 +2,7 @@
 from .workspace import (
     ChapterConfig,
     ChapterSnapshot,
+    RuntimeWorkspaceState,
     SegmentConfig,
     SnapshotConfig,
     WorkspaceSnapshot,
@@ -13,4 +14,5 @@ __all__ = [
     "SnapshotConfig",
     "ChapterSnapshot",
     "WorkspaceSnapshot",
+    "RuntimeWorkspaceState",
 ]

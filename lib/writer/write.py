@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Callable
 
@@ -28,7 +29,7 @@ from ..io.io_helpers import (
     verbose_print,
 )
 from lib.io import build_snapshot_manager
-from lib.models import SnapshotConfig
+from lib.models import RuntimeWorkspaceState, SnapshotConfig
 from .prompt_builders import (
     build_author_prompt,
     build_chapter_prompt,
@@ -38,6 +39,75 @@ from .prompt_builders import (
 
 def _resolve_provider_instance(mapping: dict[str, str], level_key: str) -> str | None:
     return mapping.get(level_key.strip().lower()) or mapping.get("default")
+
+
+def _build_runtime_state(manager: Any) -> RuntimeWorkspaceState:
+    snapshot = manager.read_from_workspace()
+    return RuntimeWorkspaceState(snapshot=snapshot)
+
+
+def _record_runtime_write(
+    runtime_state: RuntimeWorkspaceState,
+    path: str | Path,
+    content: str,
+    *,
+    chapter_number: int | None = None,
+    is_out_file: bool = False,
+    entry_name: str | None = None,
+) -> None:
+    if chapter_number is None:
+        runtime_state.snapshot.set_root_file(Path(path).name, content)
+    else:
+        file_key = entry_name or Path(path).name
+        if is_out_file:
+            runtime_state.snapshot.set_chapter_out_file(chapter_number, file_key, content)
+        else:
+            runtime_state.snapshot.set_chapter_file(chapter_number, file_key, content)
+    runtime_state.mark_dirty(path)
+    runtime_state.bump_version()
+
+
+def _write_text_with_runtime(
+    manager: Any,
+    runtime_state: RuntimeWorkspaceState,
+    path: str | Path,
+    content: str,
+    *,
+    chapter_number: int | None = None,
+    is_out_file: bool = False,
+    entry_name: str | None = None,
+) -> None:
+    manager.write_text_file(path, content)
+    _record_runtime_write(
+        runtime_state,
+        path,
+        content,
+        chapter_number=chapter_number,
+        is_out_file=is_out_file,
+        entry_name=entry_name,
+    )
+
+
+def _write_json_with_runtime(
+    manager: Any,
+    runtime_state: RuntimeWorkspaceState,
+    path: str | Path,
+    payload: Any,
+    *,
+    chapter_number: int | None = None,
+    is_out_file: bool = False,
+    entry_name: str | None = None,
+) -> None:
+    manager.write_json_file(path, payload)
+    serialised = json.dumps(payload, ensure_ascii=False, indent=2)
+    _record_runtime_write(
+        runtime_state,
+        path,
+        serialised,
+        chapter_number=chapter_number,
+        is_out_file=is_out_file,
+        entry_name=entry_name,
+    )
 
 
 
@@ -116,6 +186,7 @@ def write_generated_content(
     manager.initialize_workspace(
         number_of_chapters=settings.chapter_count,
     )
+    runtime_state = _build_runtime_state(manager)
     novel_gist = gist.strip() if gist else prompt_for_gist(book_name)
     if not novel_gist:
         raise ValueError("Novel gist is required.")
@@ -165,7 +236,7 @@ def write_generated_content(
     base_book_prompt = build_novel_prompt(settings=settings, gist=novel_gist, template_payload=novel_template)
     book_prompt, outline_payload = book_layout_agent.create_master_plan(base_prompt=base_book_prompt)
     book_prompt_path = manager.get_book_prompt_path()
-    manager.write_text_file(book_prompt_path, book_prompt)
+    _write_text_with_runtime(manager, runtime_state, book_prompt_path, book_prompt)
     verbose_print(
         verbose,
         json_logs,
@@ -174,7 +245,7 @@ def write_generated_content(
     )
 
     outline_path = manager.get_outline_path()
-    manager.write_json_file(outline_path, outline_payload)
+    _write_json_with_runtime(manager, runtime_state, outline_path, outline_payload)
     verbose_print(
         verbose,
         json_logs,
@@ -213,7 +284,13 @@ def write_generated_content(
             template_payload=chapter_template,
             encoding=encoding,
         )
-        manager.write_text_file(prompt_path, chapter_prompt)
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            prompt_path,
+            chapter_prompt,
+            chapter_number=chapter_number,
+        )
         verbose_print(
             verbose,
             json_logs,
@@ -235,7 +312,14 @@ def write_generated_content(
             history_root=chapter_history_root,
         )
         layout_prompt_path = manager.get_chapter_layout_prompt_path(chapter_number)
-        manager.write_text_file(layout_prompt_path, layout_prompt + "\n")
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            layout_prompt_path,
+            layout_prompt + "\n",
+            chapter_number=chapter_number,
+            is_out_file=True,
+        )
 
         drafted_segments = segment_prompt_agent.draft_segment_prompts(
             chapter_number=chapter_number,
@@ -264,7 +348,15 @@ def write_generated_content(
             manager.ensure_dir(segment_root)
 
             if segment_prompt_path is not None:
-                manager.write_text_file(segment_prompt_path, drafted_item.prompt + "\n")
+                _write_text_with_runtime(
+                    manager,
+                    runtime_state,
+                    segment_prompt_path,
+                    drafted_item.prompt + "\n",
+                    chapter_number=chapter_number,
+                    is_out_file=True,
+                    entry_name=f"segment-{segment_index}/{Path(segment_prompt_path).name}",
+                )
 
             generated_item = next(
                 (
@@ -289,10 +381,26 @@ def write_generated_content(
                     "catharsis": drafted_item.segment.catharsis,
                     "generated_text": "" if generated_item is None else generated_item.text,
                 }
-                manager.write_json_file(segment_parameter_path, parameter_payload)
+                _write_json_with_runtime(
+                    manager,
+                    runtime_state,
+                    segment_parameter_path,
+                    parameter_payload,
+                    chapter_number=chapter_number,
+                    is_out_file=True,
+                    entry_name=f"segment-{segment_index}/{Path(segment_parameter_path).name}",
+                )
 
             if segment_generated_path is not None and generated_item is not None:
-                manager.write_text_file(segment_generated_path, generated_item.text + "\n")
+                _write_text_with_runtime(
+                    manager,
+                    runtime_state,
+                    segment_generated_path,
+                    generated_item.text + "\n",
+                    chapter_number=chapter_number,
+                    is_out_file=True,
+                    entry_name=f"segment-{segment_index}/{Path(segment_generated_path).name}",
+                )
 
         chapter_text_dicts = [item.to_dict() for item in chapter_texts]
 
@@ -300,7 +408,13 @@ def write_generated_content(
         chapter_json["chapter_texts"] = chapter_text_dicts
         chapter_json["chapter_text"] = chapter_texts_to_text(chapter_texts)
         chapter_json = normalize_chapter_payload(chapter_json, chapter_number)
-        manager.write_json_file(parameter_path, chapter_json)
+        _write_json_with_runtime(
+            manager,
+            runtime_state,
+            parameter_path,
+            chapter_json,
+            chapter_number=chapter_number,
+        )
         verbose_print(
             verbose,
             json_logs,
@@ -339,6 +453,7 @@ def write_authored_content(
     manager.initialize_workspace(
         number_of_chapters=settings.chapter_count,
     )
+    runtime_state = _build_runtime_state(manager)
 
     outline_path = manager.get_outline_path()
     outline_payload: dict[str, Any]
@@ -517,10 +632,31 @@ def write_authored_content(
         chapter_summary_path = manager.get_chapter_summary_path(chapter_number)
         chapter_character_path = manager.get_chapter_character_path(chapter_number)
 
-        manager.write_text_file(chapter_generated_path, generated_text)
-        manager.write_text_file(chapter_summary_path, chapter_summary + "\n")
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            chapter_generated_path,
+            generated_text,
+            chapter_number=chapter_number,
+            is_out_file=True,
+        )
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            chapter_summary_path,
+            chapter_summary + "\n",
+            chapter_number=chapter_number,
+            is_out_file=True,
+        )
         character_text = render_character_text(next_characters)
-        manager.write_text_file(chapter_character_path, character_text)
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            chapter_character_path,
+            character_text,
+            chapter_number=chapter_number,
+            is_out_file=True,
+        )
 
         verbose_print(
             verbose,
@@ -549,7 +685,7 @@ def write_authored_content(
             "draft.chapter.done",
         )
 
-    manager.write_json_file(outline_path, outline_payload)
+    _write_json_with_runtime(manager, runtime_state, outline_path, outline_payload)
     verbose_print(
         verbose,
         json_logs,

@@ -11,7 +11,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from lib.writer import AbstractSnapshotManager, build_snapshot_manager_from_files
+from lib.models import WorkspaceSnapshot
 from lib.writer.write import publish_book_content, write_authored_content, write_dummy_content, write_generated_content
+
+
+_GLOBAL_SNAPSHOT_MANAGER: AbstractSnapshotManager | None = None
+_GLOBAL_WORKSPACE_SNAPSHOT: WorkspaceSnapshot | None = None
 
 
 def _ensure_config(script_dir: Path) -> None:
@@ -306,15 +311,52 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def _build_manager(args: argparse.Namespace) -> AbstractSnapshotManager:
-    return build_snapshot_manager_from_files(
+def _resolve_entry_book_name(args: argparse.Namespace) -> str | None:
+    if hasattr(args, "book_name") and args.book_name:
+        return str(args.book_name)
+    if hasattr(args, "source_book_name") and args.source_book_name:
+        return str(args.source_book_name)
+    if hasattr(args, "target_book_name") and args.target_book_name:
+        return str(args.target_book_name)
+    return None
+
+
+def _bootstrap_entrypoint_singletons(args: argparse.Namespace) -> None:
+    global _GLOBAL_SNAPSHOT_MANAGER
+    global _GLOBAL_WORKSPACE_SNAPSHOT
+
+    if _GLOBAL_SNAPSHOT_MANAGER is not None and _GLOBAL_WORKSPACE_SNAPSHOT is not None:
+        return
+
+    entry_book_name = _resolve_entry_book_name(args)
+    manager = build_snapshot_manager_from_files(
         config_path=args.config_path,
         workspace_root=args.workspace_root,
-        book_name=getattr(args, "book_name", None),
+        book_name=entry_book_name,
         encoding=args.encoding,
         verbose=args.verbose or args.json,
         json_logs=args.json,
     )
+    snapshot = manager.initialize_workspace_snapshot(book_name=entry_book_name)
+    WorkspaceSnapshot.set_singleton(snapshot)
+    _GLOBAL_SNAPSHOT_MANAGER = manager
+    _GLOBAL_WORKSPACE_SNAPSHOT = snapshot
+
+
+def _build_manager(args: argparse.Namespace) -> AbstractSnapshotManager:
+    global _GLOBAL_SNAPSHOT_MANAGER
+
+    if _GLOBAL_SNAPSHOT_MANAGER is None:
+        _bootstrap_entrypoint_singletons(args)
+
+    if _GLOBAL_SNAPSHOT_MANAGER is None:
+        raise RuntimeError("Failed to initialize global SnapshotManager at entry point")
+
+    current_book_name = _resolve_entry_book_name(args)
+    if current_book_name:
+        _GLOBAL_SNAPSHOT_MANAGER.book_name = current_book_name
+
+    return _GLOBAL_SNAPSHOT_MANAGER
 
 
 def _emit_verbose(args: argparse.Namespace, *, event: str, message: str, extra: dict[str, object] | None = None) -> None:
@@ -430,17 +472,12 @@ def run_list(args: argparse.Namespace) -> None:
 
     print("book_name\tchapter_count")
     for book_name in book_names:
-        book_manager = build_snapshot_manager_from_files(
-            config_path=args.config_path,
-            workspace_root=args.workspace_root,
-            book_name=book_name,
-            encoding=args.encoding,
-        )
+        manager.book_name = book_name
         try:
-            settings = book_manager.load_project_settings()
+            settings = manager.load_project_settings()
             chapter_count: int | str = settings.chapter_count
         except (ValueError, OSError, KeyError):
-            chapter_count = book_manager.discover_chapter_numbers()
+            chapter_count = manager.discover_chapter_numbers()
             chapter_count = len(chapter_count) if chapter_count else "unknown"
         print(f"{book_name}\t{chapter_count}")
 
@@ -753,6 +790,7 @@ def main() -> None:
     args: argparse.Namespace | None = None
     try:
         args = parse_args()
+        _bootstrap_entrypoint_singletons(args)
         _dispatch_command(args)
     except KeyboardInterrupt:
         command = args.command if args is not None and hasattr(args, "command") else "command"

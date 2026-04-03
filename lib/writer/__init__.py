@@ -11,7 +11,7 @@ from lib.io.factory import (
 	resolve_snapshot_type,
 )
 from ..io.manager import SnapshotManager as AbstractSnapshotManager
-from lib.models import ChapterConfig, ChapterSnapshot, SnapshotConfig, WorkspaceSnapshot
+from lib.models import ChapterConfig, ChapterSnapshot, RuntimeWorkspaceState, SnapshotConfig, WorkspaceSnapshot
 from .writables import ChapterSegmentText, DraftedSegmentPrompt, ProjectSettings, SegmentBlueprint
 from .write import publish_book_content, write_authored_content, write_dummy_content, write_generated_content
 
@@ -35,6 +35,7 @@ __all__ = [
 	"ChapterSegmentText",
 	"ProjectSettings",
 	"WorkspaceSnapshot",
+	"RuntimeWorkspaceState",
 	"publish_book_content",
 	"write_authored_content",
 	"write_dummy_content",

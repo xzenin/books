@@ -18,7 +18,7 @@
     "segments": {
       "start": 1,
       "end": 5,
-      "segmentFolderPattern": "Segment{s}",
+      "segmentFolderPattern": "ChapterSegments/Segment{s}",
       "segmentFiles": [
         "SegmentParameter.json",
         "SegmentPrompt.txt"

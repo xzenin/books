@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from ...io.manager import SnapshotManager
 from ..writables import DraftedSegmentPrompt, SegmentBlueprint
 
 
