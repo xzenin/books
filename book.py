@@ -23,7 +23,7 @@ def _ensure_config(script_dir: Path) -> None:
     config_path = script_dir / ".pkbook" / "config.json"
     if config_path.exists():
         return
-    template_path = script_dir / "templates" / "config.json"
+    template_path = script_dir / "templates" / "config.example.json"
     if not template_path.exists():
         return
     config_path.parent.mkdir(parents=True, exist_ok=True)
