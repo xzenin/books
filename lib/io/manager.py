@@ -217,7 +217,13 @@ class SnapshotManager(ABC):
         workspace_root: str | Path | None = None,
         book_name: str | None = None,
     ) -> Path:
-        return self.get_runtime_segment_prompt_dir(chapter_number, workspace_root, book_name) / f"Segment{segment_number}Prompt.txt"
+        segment_root, _, prompt_path, _ = self.get_segment_structured_paths(
+            chapter_number,
+            segment_number,
+            workspace_root,
+            book_name,
+        )
+        return prompt_path or (segment_root / "SegmentPrompt.txt")
 
     def get_segment_structured_paths(
         self,

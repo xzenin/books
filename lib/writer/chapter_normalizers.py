@@ -27,7 +27,8 @@ def chapter_texts_to_text(raw_sections: Any) -> str:
             if value:
                 parts.append(value)
         elif isinstance(item, dict):
-            value = str(item.get("text", "")).strip()
+            # Try segment_text first (from chapter_segments), then text (from chapter_texts)
+            value = str(item.get("segment_text", item.get("text", ""))).strip()
             if value:
                 parts.append(value)
         elif isinstance(item, str):
@@ -52,52 +53,83 @@ def chapter_text_to_sections(chapter_text: str) -> list[dict[str, str]]:
     ]
 
 
-def normalize_chapter_payload(payload: dict[str, Any], chapter_number: int) -> dict[str, Any]:
-    normalized = dict(payload)
-    chapter_title = str(normalized.get("chapter_title", "")).strip() or f"Chapter {chapter_number}"
-    chapter_summary = str(normalized.get("chapter_summary", "")).strip()
-    chapter_text_from_array = chapter_texts_to_text(normalized.get("chapter_texts", []))
-    chapter_text = str(
-        normalized.get("chapter_text", normalized.get("chatper_text", chapter_text_from_array))
-    ).strip()
-    if not chapter_text:
-        chapter_text = chapter_text_from_array
+def normalize_chapter_segments(raw_segments: Any) -> list[dict[str, Any]]:
+    if not isinstance(raw_segments, list):
+        return []
 
+    normalized_segments: list[dict[str, Any]] = []
+    for index, item in enumerate(raw_segments, start=1):
+        if isinstance(item, ChapterSegmentText):
+            segment_title = item.section_title.strip() or f"Segment {index}"
+            segment_text = item.text.strip()
+            normalized_segments.append(
+                {
+                    "segment_title": segment_title,
+                    "segment_text": segment_text,
+                }
+            )
+            continue
+
+        if isinstance(item, dict):
+            payload = dict(item)
+            segment_title = str(
+                payload.get(
+                    "segment_title",
+                    payload.get("segment-title", payload.get("section-title", payload.get("section", f"Segment {index}"))),
+                )
+            ).strip() or f"Segment {index}"
+            segment_text = str(payload.get("segment_text", payload.get("text", ""))).strip()
+
+            payload.pop("segment-title", None)
+            payload.pop("section-title", None)
+            payload.pop("section", None)
+            payload.pop("text", None)
+            payload["segment_title"] = segment_title
+            payload["segment_text"] = segment_text
+            normalized_segments.append(payload)
+            continue
+
+        if isinstance(item, str):
+            segment_text = item.strip()
+            if segment_text:
+                normalized_segments.append(
+                    {
+                        "segment_title": f"Segment {index}",
+                        "segment_text": segment_text,
+                    }
+                )
+
+    return normalized_segments
+
+
+def normalize_chapter_payload(payload: dict[str, Any], chapter_number: int) -> dict[str, Any]:
+    """Normalize chapter payload while preserving the new JSON structure with chapter_segments."""
+    normalized = dict(payload)
+    
+    # Preserve all top-level fields and just ensure required ones are set
     normalized["sl"] = chapter_sort_key(normalized, chapter_number)
     normalized["name"] = str(normalized.get("name", f"Chapter {chapter_number}")).strip() or f"Chapter {chapter_number}"
-    normalized["chapter_title"] = chapter_title
-    normalized["chapter_summary"] = chapter_summary
-    normalized["chapter_text"] = chapter_text
-    raw_chapter_texts = normalized.get("chapter_texts")
-    if isinstance(raw_chapter_texts, list):
-        normalized_sections: list[dict[str, str]] = []
-        for index, item in enumerate(raw_chapter_texts, start=1):
-            if isinstance(item, dict):
-                text_value = str(item.get("text", "")).strip()
-                if not text_value:
-                    continue
-                section_name = str(item.get("section-title", item.get("section", f"part-{index}"))).strip()
-                if not section_name:
-                    section_name = f"part-{index}"
-                normalized_sections.append(
-                    {"section-title": section_name, "section": section_name, "text": text_value}
-                )
-            elif isinstance(item, str):
-                text_value = item.strip()
-                if text_value:
-                    section_name = f"part-{index}"
-                    normalized_sections.append(
-                        {"section-title": section_name, "section": section_name, "text": text_value}
-                    )
-        normalized["chapter_texts"] = normalized_sections if normalized_sections else chapter_text_to_sections(chapter_text)
-    else:
-        normalized["chapter_texts"] = chapter_text_to_sections(chapter_text)
+    normalized["chapter_title"] = str(normalized.get("chapter_title", "")).strip() or f"Chapter {chapter_number}"
+    normalized["chapter_summary"] = str(normalized.get("chapter_summary", "")).strip()
+    
+    normalized["chapter_segments"] = normalize_chapter_segments(normalized.get("chapter_segments", []))
+    
+    # Preserve all additional fields
     normalized["included_characters"] = normalized.get("included_characters", [])
+    normalized["historical_accuracy"] = normalized.get("historical_accuracy", "")
+    normalized["human_in_the_loop"] = normalized.get("human_in_the_loop", "")
+    normalized["literary_style"] = normalized.get("literary_style", "")
+    normalized["symbolism_and_motifs"] = normalized.get("symbolism_and_motifs", "")
+    normalized["novel_name"] = normalized.get("novel_name", "")
+    normalized["novel_long_title"] = normalized.get("novel_long_title", "")
+    
+    # Handle references properly
     references = normalized.get("references", normalized.get("further_references", []))
     if not isinstance(references, list):
         references = []
     normalized["references"] = references
     normalized["further_references"] = references
+    
     return normalized
 
 
@@ -136,7 +168,10 @@ def discover_chapter_numbers_from_workspace(book_path: Path, config: SnapshotCon
 
 def normalize_author_payload(payload: dict[str, Any]) -> dict[str, Any]:
     title = str(payload.get("chapter_title", "")).strip() or "Untitled Chapter"
-    chapter_text = str(payload.get("chapter_text", chapter_texts_to_text(payload.get("chapter_texts", [])))).strip()
+    chapter_segments = normalize_chapter_segments(payload.get("chapter_segments", []))
+    chapter_texts = payload.get("chapter_texts", [])
+    fallback_array = chapter_segments if chapter_segments else chapter_texts
+    chapter_text = str(payload.get("chapter_text", chapter_texts_to_text(fallback_array))).strip()
     summary = str(payload.get("chapter_summary", "")).strip()
     next_running_summary = str(payload.get("next_running_summary", "")).strip() or summary
 
@@ -169,7 +204,7 @@ def normalize_author_payload(payload: dict[str, Any]) -> dict[str, Any]:
     return {
         "chapter_title": title,
         "chapter_text": chapter_text,
-        "chapter_texts": chapter_text_to_sections(chapter_text),
+        "chapter_segments": chapter_segments,
         "chapter_summary": summary,
         "next_running_summary": next_running_summary,
         "next_characters": normalized_characters,

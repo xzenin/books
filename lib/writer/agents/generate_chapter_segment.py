@@ -26,7 +26,7 @@ class GenerateChapterSegment:
         drafted_segments: list[DraftedSegmentPrompt],
         segment_history_roots: dict[int, Path] | None = None,
     ) -> list[ChapterSegmentText]:
-        chapter_texts: list[ChapterSegmentText] = []
+        generated_segments: list[ChapterSegmentText] = []
         for item in drafted_segments:
             segment_index = int(item.index)
             segment_payload = item.segment
@@ -71,7 +71,7 @@ class GenerateChapterSegment:
                 text = (text + "\\n\\n" + "\\n".join(state_lines)).strip()
 
             segment_name = str(segment_payload.name).strip() or f"segment-{segment_index}"
-            chapter_texts.append(
+            generated_segments.append(
                 ChapterSegmentText(
                     section_title=segment_name,
                     section=f"segment-{segment_index}",
@@ -79,4 +79,4 @@ class GenerateChapterSegment:
                 )
             )
 
-        return chapter_texts
+        return generated_segments

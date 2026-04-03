@@ -53,8 +53,14 @@ When you finish these activity, do the following:
 2) For each chapters, call a GenAIChat 'send' method to create the chapter. The output JSON is at: ./templates/chapter.json
 4) After created the prompt , save the prompt in "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterPrompt.txt" file.  
 5) Save the output layout JSON to "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterParameter.json" file.
+6) Refine the layout JSON "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterParameter.json" file and create ChapterSegments prompts.
+7) XPath of ChapterSegment are at "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterSegments/Segment<segment-counter>"
+8) The SegmentParameter should in ChapterParameter.json, Prompt should be in ChapterPrompt.txt. 
+9) After executing the prompt, the results are to be stored at: "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterSegments/Segment<segment-counter>/SegmentOut"
+10) Content generated is in SegmentGenerated.txt
 
 
+There is nothing called '#sym:chapter_texts ' now. Everythings is ChapterSegment. Need to rewrite it. Let me provide you logic. 
 
 
 
@@ -138,18 +144,18 @@ Split the write.py features into 5 crew agent
 
 History message to be stored at each folder level. Each agent to have its own directory. The directory to be dynamically created at the folder level.
 Level:
-Global Level: .pkbook/_genai 
-Book Level: .pkbook/_workspace/<book_name>/_genai 
-Chapter Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/_genai 
-Segment Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/Segment<segment_count>/_genai 
+Global Level: .pkbook/_history 
+Book Level: .pkbook/_workspace/<book_name>/_history 
+Chapter Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/_history 
+Segment Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/Segment<segment_count>/_history 
 
 
 For each level, read the config:
 Identify the credential gen-ai provider type ( type ) and instance name ( name ).
-Global Level: .pkbook/_genai : here take copilot1 ( name ) as provider
-Book Level: .pkbook/_workspace/<book_name>/_genai : here take copilot1 ( name ) as provider
-Chapter Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/_genai : here take ollama1 ( name ) as provider
-Segment Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/Segment<segment_count>/_genai  : here take ollama2 ( name ) as provider
+Global Level: .pkbook/_history : here take copilot1 ( name ) as provider
+Book Level: .pkbook/_workspace/<book_name>/_history : here take copilot1 ( name ) as provider
+Chapter Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/_history : here take ollama1 ( name ) as provider
+Segment Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/Segment<segment_count>/_history  : here take ollama2 ( name ) as provider
 
 Do all these in write.py layer 
 

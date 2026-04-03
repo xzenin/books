@@ -13,8 +13,6 @@ from .agents import (
 )
 from .chapter_normalizers import (
     chapter_sort_key,
-    chapter_text_to_sections,
-    chapter_texts_to_text,
     extend_outline_characters,
     normalize_author_payload,
     normalize_chapter_payload,
@@ -328,7 +326,7 @@ def write_generated_content(
         )
         segment_provider = _resolve_provider_instance(genai_mapping, "segment_level_generation")
         segment_generate_agent.provider_instance_name = segment_provider
-        chapter_texts = segment_generate_agent.generate_segment_content(
+        generated_segments = segment_generate_agent.generate_segment_content(
             chapter_number=chapter_number,
             chapter_root=chapter_root,
             drafted_segments=drafted_segments,
@@ -337,6 +335,7 @@ def write_generated_content(
                 for item in drafted_segments
             },
         )
+        chapter_segment_payloads: list[dict[str, str]] = []
 
         # Persist segment artifacts in the configured Segment{s} structure.
         for drafted_item in drafted_segments:
@@ -361,10 +360,17 @@ def write_generated_content(
             generated_item = next(
                 (
                     item
-                    for item in chapter_texts
+                    for item in generated_segments
                     if item.section == f"segment-{segment_index}"
                 ),
                 None,
+            )
+            generated_text = "" if generated_item is None else generated_item.text
+            chapter_segment_payloads.append(
+                {
+                    "segment_title": str(drafted_item.segment.name).strip() or f"segment-{segment_index}",
+                    "segment_text": generated_text,
+                }
             )
 
             if segment_parameter_path is not None:
@@ -379,7 +385,7 @@ def write_generated_content(
                     "rationalize": drafted_item.segment.rationalize,
                     "subversion": drafted_item.segment.subversion,
                     "catharsis": drafted_item.segment.catharsis,
-                    "generated_text": "" if generated_item is None else generated_item.text,
+                    "generated_text": generated_text,
                 }
                 _write_json_with_runtime(
                     manager,
@@ -401,12 +407,8 @@ def write_generated_content(
                     is_out_file=True,
                     entry_name=f"segment-{segment_index}/{Path(segment_generated_path).name}",
                 )
-
-        chapter_text_dicts = [item.to_dict() for item in chapter_texts]
-
         chapter_json = dict(refined_payload)
-        chapter_json["chapter_texts"] = chapter_text_dicts
-        chapter_json["chapter_text"] = chapter_texts_to_text(chapter_texts)
+        chapter_json["chapter_segments"] = chapter_segment_payloads
         chapter_json = normalize_chapter_payload(chapter_json, chapter_number)
         _write_json_with_runtime(
             manager,
@@ -456,6 +458,7 @@ def write_authored_content(
     runtime_state = _build_runtime_state(manager)
 
     outline_path = manager.get_outline_path()
+    running_summary_path = manager.get_book_file_path("BookRunningSummary.txt")
     outline_payload: dict[str, Any]
     chapters: list[dict[str, Any]]
 
@@ -479,7 +482,7 @@ def write_authored_content(
                     "name": f"Chapter {number}",
                     "chapter_title": f"Chapter {number}",
                     "chapter_summary": "",
-                    "chapter_text": "",
+                    "chapter_segments": [],
                 },
                 number,
             )
@@ -546,13 +549,14 @@ def write_authored_content(
             f"Drafting chapter {chapter_number} using context: {relative_path_text(parameter_path)}",
             "draft.chapter.start",
         )
-        chapter_sections = chapter_parameter_payload.get("chapter_texts", [])
+        chapter_sections = chapter_parameter_payload.get("chapter_segments", [])
         if not isinstance(chapter_sections, list) or not chapter_sections:
-            chapter_sections = chapter_payload.get("chapter_texts", [])
+            chapter_sections = chapter_payload.get("chapter_segments", [])
         if not isinstance(chapter_sections, list) or not chapter_sections:
-            chapter_sections = [{"section-title": "part-1", "text": chapter_payload.get("chapter_text", "")}]
+            chapter_sections = [{"segment_title": "segment-1", "segment_text": ""}]
 
         aggregated_section_texts: list[str] = []
+        aggregated_segments: list[dict[str, str]] = []
         aggregated_characters: list[dict[str, str]] = []
         chapter_title = str(chapter_payload.get("chapter_title", "")).strip() or f"Chapter {chapter_number}"
         chapter_summary_parts: list[str] = []
@@ -561,20 +565,21 @@ def write_authored_content(
         for section_index, section_payload in enumerate(chapter_sections, start=1):
             if isinstance(section_payload, dict):
                 section_name = str(
-                    section_payload.get("section-title", section_payload.get("section", f"part-{section_index}"))
-                ).strip() or f"part-{section_index}"
-                section_seed_text = str(section_payload.get("text", "")).strip()
+                    section_payload.get(
+                        "segment_title",
+                        section_payload.get("section-title", section_payload.get("section", f"segment-{section_index}")),
+                    )
+                ).strip() or f"segment-{section_index}"
+                section_seed_text = str(section_payload.get("segment_text", section_payload.get("text", ""))).strip()
             else:
-                section_name = f"part-{section_index}"
+                section_name = f"segment-{section_index}"
                 section_seed_text = str(section_payload).strip()
 
             section_chapter_payload = dict(chapter_payload)
-            section_chapter_payload["chapter_texts"] = [{"section-title": section_name, "section": section_name, "text": section_seed_text}]
-            section_chapter_payload["chapter_text"] = section_seed_text
+            section_chapter_payload["chapter_segments"] = [{"segment_title": section_name, "segment_text": section_seed_text}]
 
             section_parameter_payload = dict(chapter_parameter_payload)
-            section_parameter_payload["chapter_texts"] = [{"section-title": section_name, "section": section_name, "text": section_seed_text}]
-            section_parameter_payload["chapter_text"] = section_seed_text
+            section_parameter_payload["chapter_segments"] = [{"segment_title": section_name, "segment_text": section_seed_text}]
 
             prompt = build_author_prompt(
                 settings=settings,
@@ -605,6 +610,12 @@ def write_authored_content(
             section_text = author_payload["chapter_text"].strip()
             if section_text:
                 aggregated_section_texts.append(section_text)
+                aggregated_segments.append(
+                    {
+                        "segment_title": section_name,
+                        "segment_text": section_text,
+                    }
+                )
 
             if author_payload["chapter_title"].strip():
                 chapter_title = author_payload["chapter_title"].strip()
@@ -672,10 +683,14 @@ def write_authored_content(
 
         chapter_payload["chapter_title"] = chapter_title
         chapter_payload["chapter_summary"] = chapter_summary
-        chapter_payload["chapter_texts"] = chapter_text_to_sections(chapter_text)
-        chapter_payload["chapter_text"] = chapter_text
-        chapter_payload["chatper_text"] = chapter_text
+        chapter_payload["chapter_segments"] = aggregated_segments
         outline_payload["running_summary"] = next_running_summary
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            running_summary_path,
+            next_running_summary + ("\n" if next_running_summary else ""),
+        )
         extend_outline_characters(outline_payload, next_characters)
 
         verbose_print(
