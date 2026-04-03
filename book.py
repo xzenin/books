@@ -66,6 +66,15 @@ def _default_json_log_mode(script_dir: Path) -> bool:
     return content_type == "json"
 
 
+def _print_console_text(text: str) -> None:
+    try:
+        print(text)
+    except UnicodeEncodeError:
+        stream_encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+        safe_text = text.encode(stream_encoding, errors="replace").decode(stream_encoding, errors="replace")
+        print(safe_text)
+
+
 def _normalize_argv(argv: list[str]) -> list[str]:
     commands = {"init", "list", "export", "import", "clone", "layout", "draft", "publish", "read", "rm", "purge"}
     global_option_values = {"--workspace-root", "--config-path", "--encoding"}
@@ -109,6 +118,18 @@ def _add_runtime_flags(parser: argparse.ArgumentParser) -> None:
         default=None,
         help="Emit machine-readable JSON lines for verbose events (default can come from .pkbook/config.json log.content-type).",
     )
+
+
+def _positive_int(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"invalid integer value: {value}") from exc
+
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("must be >= 1")
+
+    return parsed
 
 
 def parse_args() -> argparse.Namespace:
@@ -174,7 +195,7 @@ def parse_args() -> argparse.Namespace:
     init_parser.add_argument("--book-name", required=True, help="Book folder name to create under workspace root.")
     init_parser.add_argument(
         "--chapter-count",
-        type=int,
+        type=_positive_int,
         help="Optional. Number of chapter folders to create from the configured start chapter.",
     )
 
@@ -196,7 +217,7 @@ def parse_args() -> argparse.Namespace:
     layout_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
     layout_parser.add_argument(
         "--chapter-count",
-        type=int,
+        type=_positive_int,
         help="Optional. Number of chapter folders to create when layout auto-initializes a missing workspace.",
     )
     layout_parser.add_argument(
@@ -229,7 +250,7 @@ def parse_args() -> argparse.Namespace:
     draft_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
     draft_parser.add_argument(
         "--chapter-count",
-        type=int,
+        type=_positive_int,
         help="Optional. Number of chapter folders to create when draft auto-initializes a missing workspace.",
     )
     draft_parser.add_argument(
@@ -673,7 +694,7 @@ def run_read(args: argparse.Namespace) -> None:
     if not manager.path_exists(published_path):
         raise FileNotFoundError(f"Published file not found: {published_path}")
 
-    print(manager.read_text_file(published_path))
+    _print_console_text(manager.read_text_file(published_path))
 
     _emit_verbose(
         args,

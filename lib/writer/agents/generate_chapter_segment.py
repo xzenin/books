@@ -52,7 +52,10 @@ class GenerateChapterSegment:
                 payload = {"segment_text": str(payload)}
 
             segment_text = str(
-                payload.get("segment_text", payload.get("chapter_text", payload.get("text", "")))
+                payload.get(
+                    "segment_text",
+                    payload.get("generated_text", payload.get("chapter_text", payload.get("text", ""))),
+                )
             ).strip()
             physical_state = str(payload.get("physical_state", "")).strip()
             emotional_state = str(payload.get("emotional_state", "")).strip()
