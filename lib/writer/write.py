@@ -32,6 +32,7 @@ from .prompt_builders import (
     build_author_prompt,
     build_chapter_prompt,
     build_novel_prompt,
+    build_segment_prompt,
 )
 
 
@@ -191,7 +192,8 @@ def write_generated_content(
 
     novel_template = manager.load_template_payload("book.json")
     chapter_template = manager.load_template_payload("chapter.json")
-    verbose_print(verbose, json_logs, "Loaded book and chapter JSON templates", "templates.loaded")
+    segment_template = manager.load_template_payload("segment.json")
+    verbose_print(verbose, json_logs, "Loaded book, chapter, and segment JSON templates", "templates.loaded")
 
     book_provider = _resolve_provider_instance(genai_mapping, "book_level_generation")
     book_layout_agent = BookLayout(
@@ -320,9 +322,13 @@ def write_generated_content(
         )
 
         drafted_segments = segment_prompt_agent.draft_segment_prompts(
+            settings=settings,
+            gist=novel_gist,
             chapter_number=chapter_number,
+            outline_payload=outline_payload,
             chapter_payload=refined_payload,
             segments=segments,
+            template_payload=segment_template,
         )
         segment_provider = _resolve_provider_instance(genai_mapping, "segment_level_generation")
         segment_generate_agent.provider_instance_name = segment_provider
@@ -369,6 +375,14 @@ def write_generated_content(
             chapter_segment_payloads.append(
                 {
                     "segment_title": str(drafted_item.segment.name).strip() or f"segment-{segment_index}",
+                    "goal": drafted_item.segment.goal,
+                    "stakes": drafted_item.segment.stakes,
+                    "vulnerability": drafted_item.segment.vulnerability,
+                    "conflict": drafted_item.segment.conflict,
+                    "tension": drafted_item.segment.tension,
+                    "rationalize": drafted_item.segment.rationalize,
+                    "subversion": drafted_item.segment.subversion,
+                    "catharsis": drafted_item.segment.catharsis,
                     "segment_text": generated_text,
                 }
             )

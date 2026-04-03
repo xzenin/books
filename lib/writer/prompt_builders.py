@@ -107,6 +107,73 @@ def build_chapter_prompt(
         raise ValueError(f"Invalid chapter prompt template format in {template_path}: {exc}") from exc
 
 
+def build_segment_prompt(
+    *,
+    settings: ProjectSettings,
+    gist: str,
+    outline_payload: dict[str, Any],
+    chapter_payload: dict[str, Any],
+    segment_payload: dict[str, Any],
+    template_payload: Any,
+    segment_index: int,
+    carry_over: str,
+    encoding: str = "utf-8",
+) -> str:
+    chapter_json = json.dumps(chapter_payload, ensure_ascii=False, indent=2)
+    segment_json = json.dumps(segment_payload, ensure_ascii=False, indent=2)
+    template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
+    outline_context = json.dumps(
+        {
+            "novel_name": outline_payload.get("novel_name", ""),
+            "novel_long_title": outline_payload.get("novel_long_title", ""),
+            "generic": outline_payload.get("generic", ""),
+            "era": outline_payload.get("era", ""),
+            "language": outline_payload.get("language", ""),
+            "target_audience": outline_payload.get("target_audience", ""),
+            "running_summary": outline_payload.get("running_summary", ""),
+            "all_characters": outline_payload.get("all_characters", []),
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+    template_path = _templates_root() / "segment_prompt.txt"
+    template_text = read_text(template_path, encoding=encoding)
+
+    required_fields = {
+        "gist",
+        "outline_context",
+        "chapter_json",
+        "segment_json",
+        "template_json",
+        "segment_index",
+        "carry_over",
+    }
+    formatter = string.Formatter()
+    available_fields = {
+        field_name
+        for _, field_name, _, _ in formatter.parse(template_text)
+        if field_name
+    }
+    missing_fields = sorted(required_fields - available_fields)
+    if missing_fields:
+        raise ValueError(
+            f"Template {template_path} is missing required placeholders: {', '.join(missing_fields)}"
+        )
+
+    try:
+        return template_text.format(
+            gist=gist,
+            outline_context=outline_context,
+            chapter_json=chapter_json,
+            segment_json=segment_json,
+            template_json=template_json,
+            segment_index=segment_index,
+            carry_over=carry_over,
+        )
+    except (KeyError, ValueError) as exc:
+        raise ValueError(f"Invalid segment prompt template format in {template_path}: {exc}") from exc
+
+
 def build_author_prompt(
     *,
     settings: ProjectSettings,

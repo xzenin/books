@@ -105,6 +105,11 @@ def normalize_chapter_segments(raw_segments: Any) -> list[dict[str, Any]]:
 def normalize_chapter_payload(payload: dict[str, Any], chapter_number: int) -> dict[str, Any]:
     """Normalize chapter payload while preserving the new JSON structure with chapter_segments."""
     normalized = dict(payload)
+
+    # Remove deprecated chapter text fields so they do not get re-persisted.
+    normalized.pop("chapter_texts", None)
+    normalized.pop("chapter_text", None)
+    normalized.pop("chatper_text", None)
     
     # Preserve all top-level fields and just ensure required ones are set
     normalized["sl"] = chapter_sort_key(normalized, chapter_number)
