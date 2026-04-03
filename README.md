@@ -1,206 +1,125 @@
-# Book writing software
+# Book Writing Software
 
-Book workspace utility for structure initialization, listing, snapshot export/import, cloning, layout generation, chapter drafting, and publish assembly.
+## Introduction
 
-GenAI conversation history can now be scoped dynamically per call. The writer workflow uses book-level history under `<workspace>/<bookname>/.pkbook/_history/history` for novel layout calls and chapter-level history under `<workspace>/<bookname>/BookChapters/Chapter<n>/.pkbook/_history/history` for chapter generation and drafting calls.
+This project is a CLI-driven book production pipeline that creates and manages structured workspaces under `.pkbook/_workspace`, then generates and refines content chapter-by-chapter.
 
-## Main CLI
+It supports:
 
-Use `book.py` as the single entrypoint.
+- Workspace initialization and maintenance
+- Snapshot export/import and cloning
+- GenAI-based layout generation
+- Segment-first chapter drafting
+- Final manuscript publishing
 
-Global options such as `--workspace-root`, `--config-path`, and `--encoding` must be placed before the subcommand.
+The core entrypoint is [book.py](book.py). Internally, generation flows live in [lib/writer/write.py](lib/writer/write.py), and workspace IO is abstracted through snapshot managers in [lib/io/manager.py](lib/io/manager.py).
 
-`--verbose` prints progress details for major CLI, snapshot, layout/draft/publish, and GenAI workflow steps.
+## Workflow
 
-`--json` switches verbose events to machine-readable JSON lines.
+The current workflow is segment-centric (no `chapter_texts` as a canonical model).
 
-`--version` reads application metadata from `.pkbook/config.json`.
+1. `init`
+Creates the full workspace structure and base files.
 
-### Defaults
+2. `layout`
+Generates `BookOutline.json`, chapter prompts, chapter parameters, segment prompts, and segment generated files.
 
-- Workspace root: `.pkbook/_workspace`
-- Config template: `templates/init.json`
-- Snapshot file (init/export/import): `snapshots/<book-name>.json` when `--snapshot-path` is not provided
+3. `draft`
+Consumes chapter context and writes chapter outputs (`ChapterGenerated.txt`, `ChapterSummary.txt`, `ChapterCharacter.txt`) chapter-by-chapter.
 
-### Commands
+4. `publish`
+Combines all chapter generated content into one `BookPublished.txt`.
 
-```python
-python book.py --book-name IndiaDelhi
-python book.py init --book-name Sita
+### Data Flow (High Level)
+
+1. `BookOutline.json` provides chapter-level plan.
+2. Each chapter stores its structured context in `ChapterParameter.json` with `chapter_segments`.
+3. Segment prompt generation uses [templates/segment_prompt.txt](templates/segment_prompt.txt) and [templates/segment.json](templates/segment.json).
+4. Each segment output is written to `SegmentOut/SegmentGenerated.txt`.
+5. `ChapterGenerated.txt` is updated incrementally by appending segment blocks, prefixed with `Segment Title: ...`.
+
+### GenAI History Scoping
+
+History is stored in `_history` directories (not `_genai`).
+
+- Global: `.pkbook/_history`
+- Book: `.pkbook/_workspace/<book_name>/_history`
+- Chapter: `.pkbook/_workspace/<book_name>/BookChapters/Chapter<n>/_history`
+- Segment: `.pkbook/_workspace/<book_name>/BookChapters/Chapter<n>/ChapterSegments/Segment<s>/_history`
+
+## How To Use
+
+### Prerequisites
+
+- Python environment available (project often uses `.venv`)
+- Required dependencies installed from [requirements.txt](requirements.txt)
+- Configured `.pkbook/config.json` with provider credentials and mapping
+
+### Command Syntax
+
+Use:
+
+```bash
+python book.py [global-options] <command> [command-options]
+```
+
+Global options (must be before subcommand):
+
+- `--workspace-root`
+- `--config-path`
+- `--encoding`
+- `--verbose`
+- `--json`
+- `--debug`
+
+### Common Commands
+
+```bash
 python book.py init --book-name Sita --chapter-count 6
 python book.py list
+python book.py layout --book-name Sita --gist "A historical Bengali epic"
+python book.py draft --book-name Sita --gist "A historical Bengali epic"
+python book.py publish --book-name Sita
+python book.py read --book-name Sita
 python book.py export --book-name Sita
 python book.py import --book-name Sita
 python book.py clone --source-book-name Sita --target-book-name SitaCopy
-python book.py layout --book-name Sita --gist "A historical Bengali epic"
-python book.py layout --book-name Sita --mode dummy
-python book.py draft --book-name Sita --gist "A historical Bengali epic"
-python book.py publish --book-name Sita
-python book.py --verbose list
-python book.py --verbose layout --book-name Sita --gist "A historical Bengali epic"
-python book.py --verbose draft --book-name Sita
-python book.py --verbose publish --book-name Sita
-python book.py --verbose --json draft --book-name Sita
-python book.py --verbose --json publish --book-name Sita
-python book.py --verbose --json list
-python book.py --version
-```
-
-`python book.py --book-name IndiaDelhi` uses the implicit `init` behavior.
-
-`python book.py list` prints tab-separated `book_name` and `chapter_count` columns.
-
-### What Each Command Does
-
-- `init`: Creates the full workspace structure for a book under the workspace root.
-- `list`: Lists all books in the workspace with chapter counts.
-- `export`: Reads one book workspace and writes a snapshot JSON file.
-- `import`: Restores one book workspace from a snapshot JSON file.
-- `clone`: Copies one book workspace into another book name.
-- `layout`: Generates or fills layout/content files for a book.
-- `draft`: Writes chapter prose and chapter outputs from `BookOutline.json` and chapter parameter context.
-- `publish`: Compiles all chapter generated text into one `BookPublished.txt` manuscript file.
-
-### Layout Command
-
-`layout` supports two modes:
-
-- `--mode genai` (default): Uses GenAI to generate novel outline and chapter JSON content.
-- `--mode dummy`: Writes placeholder/sample content using the legacy dummy flow.
-
-If the target book is not initialized yet, `layout` auto-initializes the workspace first and creates `Settings.json` before generating content.
-
-GenAI memory behavior during `layout`:
-
-- Novel outline calls use the book folder as the history root.
-- Chapter parameter calls use the corresponding chapter folder as the history root.
-
-`--chapter-count` is supported on `layout` in both cases:
-
-- First run (book not initialized): creates chapter folders using the provided count.
-- Existing book (already initialized): updates chapter layout and `Settings.json` chapter count.
-
-Examples:
-
-```python
-python book.py layout --book-name Sita --gist "A historical Bengali epic"
-python book.py layout --book-name Sita --gist "A historical Bengali epic" --chapter-count 6
-python book.py layout --book-name Sita --mode dummy
-python book.py layout --book-name Sita --mode dummy --chapter-count 6
-python book.py --workspace-root .\.pkbook\_workspace layout --book-name Sita --mode dummy
-```
-
-### Init Command
-
-`init` also supports `--chapter-count` to control initial chapter folder creation.
-
-Examples:
-
-```python
-python book.py init --book-name Sita
-python book.py init --book-name Sita --chapter-count 6
-```
-
-### Draft Command
-
-`draft` reads the generated outline and chapter parameter context, then writes chapter outputs chapter-by-chapter.
-
-Inputs used per chapter:
-
-- `<workspace>/<bookname>/BookOutline.json`
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterParameter.json`
-
-Outputs written per chapter:
-
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterGenerated.txt`
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterSummary.txt`
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterCharacter.txt`
-
-Compatibility output (also written):
-
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterCharacter.txt`
-
-Book outline updates:
-
-- Updates `running_summary` in `<workspace>/<bookname>/BookOutline.json`
-- Extends `all_characters` with newly proposed characters
-
-Notes:
-
-- `draft` auto-initializes if the book workspace does not exist.
-- `draft` also supports `--chapter-count` for first-time initialization.
-- `draft` supports `--no-cache` and `--gist` override.
-- `draft` supports `--verbose` and `--json` for machine-readable progress logs.
-- Each chapter drafting call uses that chapter folder as the GenAI history root, so long-term memory is isolated per chapter.
-
-### GenAI History Override
-
-The public GenAI helpers in `lib/genai.py` accept an optional `history_root` path before each call:
-
-```python
-from pathlib import Path
-from lib.genai import chat
-
-response = chat(
-	"Create a chapter outline.",
-	conversation_id="demo-outline",
-	history_root=Path(".pkbook/_workspace/Sita"),
-)
-```
-
-If you are working with a persistent client directly, call `set_history_root(...)` before `send(...)`, or pass `history_root=...` to `send(...)` for that call.
-
-Examples:
-
-```python
-python book.py draft --book-name Sita
-python book.py draft --book-name Sita --gist "A historical Bengali epic"
-python book.py draft --book-name Sita --chapter-count 6 --verbose
-python book.py --workspace-root .\.pkbook\_workspace draft --book-name Sita --no-cache
-```
-
-### Publish Command
-
-`publish` reads chapter order from `<workspace>/<bookname>/BookOutline.json`, then appends chapter generated content from:
-
-- `<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterGenerated.txt`
-
-and writes the compiled manuscript to:
-
-- `<workspace>/<bookname>/BookPublished.txt`
-
-Optional override:
-
-- `--output-path` to write to a custom target file.
-
-Examples:
-
-```python
-python book.py publish --book-name Sita
-python book.py publish --book-name Sita --output-path .\snapshots\SitaPublished.txt
-python book.py --verbose --json publish --book-name Sita
-```
-
-### Important Argument Order
-
-Global options must appear before the subcommand.
-
-Correct:
-
-```python
-python book.py --workspace-root .\.pkbook\_workspace layout --book-name Sita --mode dummy
-```
-
-Incorrect:
-
-```python
-python book.py layout --book-name Sita --mode dummy --workspace-root .\.pkbook\_workspace
-```
-
-
-### Help
-
-```python
 python book.py --help
 ```
+
+### Recommended End-to-End Run
+
+```bash
+python book.py init --book-name demo --chapter-count 2 --verbose
+python book.py layout --book-name demo --gist "A historical Bengali epic" --verbose
+python book.py draft --book-name demo --verbose
+python book.py publish --book-name demo --verbose
+python book.py read --book-name demo
+```
+
+### Important Behaviors
+
+- `--chapter-count` must be `>= 1`.
+- `BookRunningSummary.txt` is appended per completed chapter during draft.
+- `ChapterSummary.txt` is written after all segments of a chapter are processed.
+- Segment output parsing accepts `segment_text` and `generated_text`.
+
+## Next Steps
+
+1. Add automated tests for critical flows:
+	- segment prompt generation
+	- `ChapterParameter.json` schema integrity
+	- incremental append behavior for `ChapterGenerated.txt` and `BookRunningSummary.txt`
+
+2. Add schema validation:
+	- validate `BookOutline.json`, `ChapterParameter.json`, and segment payloads before write
+
+3. Add recovery tooling:
+	- command to repair/migrate older workspaces containing deprecated keys
+
+4. Add observability improvements:
+	- optional per-command trace artifact for provider responses and parse outcomes
+
+5. Add docs examples for provider mapping strategy in `.pkbook/config.json`:
+	- book/chapter/segment routing and expected fallback behavior
 

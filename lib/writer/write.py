@@ -342,6 +342,15 @@ def write_generated_content(
             },
         )
         chapter_segment_payloads: list[dict[str, str]] = []
+        chapter_generated_path = manager.get_chapter_generated_path(chapter_number)
+        _write_text_with_runtime(
+            manager,
+            runtime_state,
+            chapter_generated_path,
+            "",
+            chapter_number=chapter_number,
+            is_out_file=True,
+        )
 
         # Persist segment artifacts in the configured Segment{s} structure.
         for drafted_item in drafted_segments:
@@ -421,6 +430,28 @@ def write_generated_content(
                     is_out_file=True,
                     entry_name=f"segment-{segment_index}/{Path(segment_generated_path).name}",
                 )
+                try:
+                    existing_chapter_generated = manager.read_text_file(chapter_generated_path).strip()
+                except OSError:
+                    existing_chapter_generated = ""
+
+                segment_title = str(drafted_item.segment.name).strip() or f"segment-{segment_index}"
+                segment_text = generated_item.text.strip()
+                segment_block = f"Segment Title: {segment_title}\n{segment_text}".strip()
+                if existing_chapter_generated:
+                    appended_chapter_generated = f"{existing_chapter_generated}\n\n{segment_block}".strip()
+                else:
+                    appended_chapter_generated = segment_block
+
+                _write_text_with_runtime(
+                    manager,
+                    runtime_state,
+                    chapter_generated_path,
+                    appended_chapter_generated + ("\n" if appended_chapter_generated else ""),
+                    chapter_number=chapter_number,
+                    is_out_file=True,
+                )
+
         chapter_json = dict(refined_payload)
         chapter_json["chapter_segments"] = chapter_segment_payloads
         chapter_json = normalize_chapter_payload(chapter_json, chapter_number)
@@ -699,11 +730,22 @@ def write_authored_content(
         chapter_payload["chapter_summary"] = chapter_summary
         chapter_payload["chapter_segments"] = aggregated_segments
         outline_payload["running_summary"] = next_running_summary
+        try:
+            existing_running_summary = manager.read_text_file(running_summary_path).strip()
+        except OSError:
+            existing_running_summary = ""
+
+        chapter_running_block = f"Chapter {chapter_number}:\n{next_running_summary}".strip()
+        if existing_running_summary:
+            appended_running_summary = f"{existing_running_summary}\n\n{chapter_running_block}".strip()
+        else:
+            appended_running_summary = chapter_running_block
+
         _write_text_with_runtime(
             manager,
             runtime_state,
             running_summary_path,
-            next_running_summary + ("\n" if next_running_summary else ""),
+            appended_running_summary + ("\n" if appended_running_summary else ""),
         )
         extend_outline_characters(outline_payload, next_characters)
 
