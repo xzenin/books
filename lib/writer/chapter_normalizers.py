@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .models import SnapshotConfig
+from lib.models import SnapshotConfig
 from .writables import ChapterSegmentText
 
 
@@ -101,55 +101,6 @@ def normalize_chapter_payload(payload: dict[str, Any], chapter_number: int) -> d
     return normalized
 
 
-def chapter_paths(book_path: Path, config: SnapshotConfig, chapter_number: int) -> tuple[Path, Path, Path]:
-    chapter_cfg = config.chapters
-    chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(chapter_number))
-    chapter_root = book_path / "BookChapters" / chapter_folder
-    prompt_name = chapter_cfg.chapterFiles[1].replace("{n}", str(chapter_number))
-    parameter_name = chapter_cfg.chapterFiles[0].replace("{n}", str(chapter_number))
-    return chapter_root, chapter_root / prompt_name, chapter_root / parameter_name
-
-
-def segment_paths(
-    chapter_root: Path,
-    config: SnapshotConfig,
-    chapter_number: int,
-    segment_number: int,
-) -> tuple[Path, Path | None, Path | None, Path | None]:
-    segments_cfg = config.chapters.segments
-    if segments_cfg is None:
-        return chapter_root, None, None, None
-
-    segment_folder = (
-        segments_cfg.segmentFolderPattern
-        .replace("{n}", str(chapter_number))
-        .replace("{s}", str(segment_number))
-    )
-    segment_root = chapter_root / segment_folder
-
-    parameter_path: Path | None = None
-    prompt_path: Path | None = None
-    generated_path: Path | None = None
-
-    if segments_cfg.segmentFiles:
-        parameter_name = segments_cfg.segmentFiles[0].replace("{n}", str(chapter_number)).replace("{s}", str(segment_number))
-        parameter_path = segment_root / parameter_name
-    if len(segments_cfg.segmentFiles) > 1:
-        prompt_name = segments_cfg.segmentFiles[1].replace("{n}", str(chapter_number)).replace("{s}", str(segment_number))
-        prompt_path = segment_root / prompt_name
-
-    if segments_cfg.segmentOutFiles:
-        out_folder = (
-            segments_cfg.segmentOutFolderPattern
-            .replace("{n}", str(chapter_number))
-            .replace("{s}", str(segment_number))
-        )
-        generated_name = segments_cfg.segmentOutFiles[-1].replace("{n}", str(chapter_number)).replace("{s}", str(segment_number))
-        generated_path = segment_root / out_folder / generated_name
-
-    return segment_root, parameter_path, prompt_path, generated_path
-
-
 def discover_chapter_numbers_from_workspace(book_path: Path, config: SnapshotConfig) -> list[int]:
     chapter_root = book_path / "BookChapters"
     if not chapter_root.exists():
@@ -181,54 +132,6 @@ def discover_chapter_numbers_from_workspace(book_path: Path, config: SnapshotCon
             continue
 
     return sorted(chapter_numbers)
-
-
-def iter_configured_files(book_path: Path, config: SnapshotConfig) -> list[Path]:
-    paths: list[Path] = []
-
-    for file_name in config.bookRootFiles:
-        paths.append(book_path / file_name)
-
-    chapter_root = book_path / "BookChapters"
-    chapter_cfg = config.chapters
-    for number in range(chapter_cfg.start, chapter_cfg.end + 1):
-        chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(number))
-        chapter_path = chapter_root / chapter_folder
-
-        for pattern in chapter_cfg.chapterFiles:
-            paths.append(chapter_path / pattern.replace("{n}", str(number)))
-
-        out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(number))
-        out_path = chapter_path / out_folder
-        for pattern in chapter_cfg.chapterOutFiles:
-            file_name = pattern.replace("{n}", str(number))
-            paths.append(out_path / file_name)
-
-        segments_cfg = chapter_cfg.segments
-        if segments_cfg is not None:
-            for segment_number in range(segments_cfg.start, segments_cfg.end + 1):
-                segment_folder = (
-                    segments_cfg.segmentFolderPattern
-                    .replace("{n}", str(number))
-                    .replace("{s}", str(segment_number))
-                )
-                segment_path = chapter_path / segment_folder
-
-                for pattern in segments_cfg.segmentFiles:
-                    file_name = pattern.replace("{n}", str(number)).replace("{s}", str(segment_number))
-                    paths.append(segment_path / file_name)
-
-                segment_out_folder = (
-                    segments_cfg.segmentOutFolderPattern
-                    .replace("{n}", str(number))
-                    .replace("{s}", str(segment_number))
-                )
-                segment_out_path = segment_path / segment_out_folder
-                for pattern in segments_cfg.segmentOutFiles:
-                    file_name = pattern.replace("{n}", str(number)).replace("{s}", str(segment_number))
-                    paths.append(segment_out_path / file_name)
-
-    return paths
 
 
 def normalize_author_payload(payload: dict[str, Any]) -> dict[str, Any]:

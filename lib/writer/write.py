@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any, Callable
 
@@ -12,64 +11,29 @@ from .agents import (
     RefinetChapter,
 )
 from .chapter_normalizers import (
-    chapter_paths,
     chapter_sort_key,
     chapter_text_to_sections,
     chapter_texts_to_text,
-    discover_chapter_numbers_from_workspace,
     extend_outline_characters,
-    iter_configured_files,
     normalize_author_payload,
     normalize_chapter_payload,
     render_character_text,
-    segment_paths,
 )
-from .io_helpers import (
+from ..io.io_helpers import (
     call_genai,
     extract_json_payload,
-    load_json_file,
-    load_project_settings,
     prompt_content_for_file,
     prompt_for_gist,
-    read_text,
     relative_path_text,
     verbose_print,
-    write_dummy_file,
-    write_json,
-    write_text,
 )
-from .manager import SnapshotManager
-from .models import SnapshotConfig
+from lib.io import build_snapshot_manager
+from lib.models import SnapshotConfig
 from .prompt_builders import (
     build_author_prompt,
     build_chapter_prompt,
     build_novel_prompt,
-    load_template_payload,
 )
-
-
-def _load_genai_mapping() -> dict[str, str]:
-    """Load provider-instance mapping from .pkbook/config.json."""
-    config_path = Path(__file__).resolve().parents[2] / ".pkbook" / "config.json"
-    try:
-        payload = json.loads(config_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return {}
-
-    if not isinstance(payload, dict):
-        return {}
-    genai_cfg = payload.get("genai", {})
-    if not isinstance(genai_cfg, dict):
-        return {}
-    mapping = genai_cfg.get("mapping", {})
-    if not isinstance(mapping, dict):
-        return {}
-
-    normalized: dict[str, str] = {}
-    for key, value in mapping.items():
-        if isinstance(key, str) and isinstance(value, str):
-            normalized[key.strip().lower()] = value.strip()
-    return normalized
 
 
 def _resolve_provider_instance(mapping: dict[str, str], level_key: str) -> str | None:
@@ -89,8 +53,15 @@ def write_dummy_content(
     json_logs: bool = False,
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
-    manager = SnapshotManager(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
-    book_path = manager.initialize_workspace(workspace_root, book_name, number_of_chapters=chapter_count)
+    manager = build_snapshot_manager(
+        config,
+        workspace_root=workspace_root,
+        book_name=book_name,
+        encoding=encoding,
+        verbose=verbose,
+        json_logs=json_logs,
+    )
+    book_path = manager.initialize_workspace(number_of_chapters=chapter_count)
     verbose_print(
         verbose,
         json_logs,
@@ -100,9 +71,9 @@ def write_dummy_content(
 
     provider = content_provider or prompt_content_for_file
 
-    for path in iter_configured_files(book_path, config):
+    for path in manager.iter_configured_files():
         content = provider(path)
-        write_dummy_file(path, content, encoding=encoding)
+        manager.write_dummy_file(path, content)
 
     verbose_print(verbose, json_logs, f"Dummy content write completed for: {book_name}", "dummy.done")
 
@@ -123,8 +94,7 @@ def write_generated_content(
     json_logs: bool = False,
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
-    genai_mapping = _load_genai_mapping()
-    manager = SnapshotManager(
+    manager = build_snapshot_manager(
         config,
         workspace_root=workspace_root,
         book_name=book_name,
@@ -132,10 +102,11 @@ def write_generated_content(
         verbose=verbose,
         json_logs=json_logs,
     )
+    genai_mapping = manager.load_genai_mapping()
     book_path = manager.get_book_path()
     book_history_root = book_path
 
-    settings = load_project_settings(book_path, encoding=encoding)
+    settings = manager.load_project_settings()
     verbose_print(
         verbose,
         json_logs,
@@ -149,8 +120,8 @@ def write_generated_content(
     if not novel_gist:
         raise ValueError("Novel gist is required.")
 
-    novel_template = load_template_payload("book.json", encoding=encoding)
-    chapter_template = load_template_payload("chapter.json", encoding=encoding)
+    novel_template = manager.load_template_payload("book.json")
+    chapter_template = manager.load_template_payload("chapter.json")
     verbose_print(verbose, json_logs, "Loaded book and chapter JSON templates", "templates.loaded")
 
     book_provider = _resolve_provider_instance(genai_mapping, "book_level_generation")
@@ -179,7 +150,7 @@ def write_generated_content(
         agent_name="LayoutChapter",
         provider_instance_name=None,  # Will be set per chapter
     )
-    segment_prompt_agent = DraftChapterSegment(encoding=encoding)
+    segment_prompt_agent = DraftChapterSegment(encoding=encoding, manager=manager)
     segment_generate_agent = GenerateChapterSegment(
         book_name=book_name,
         use_cache=use_cache,
@@ -193,8 +164,8 @@ def write_generated_content(
 
     base_book_prompt = build_novel_prompt(settings=settings, gist=novel_gist, template_payload=novel_template)
     book_prompt, outline_payload = book_layout_agent.create_master_plan(base_prompt=base_book_prompt)
-    book_prompt_path = book_path / "BookPrompt.txt"
-    write_text(book_prompt_path, book_prompt, encoding=encoding)
+    book_prompt_path = manager.get_book_prompt_path()
+    manager.write_text_file(book_prompt_path, book_prompt)
     verbose_print(
         verbose,
         json_logs,
@@ -202,8 +173,8 @@ def write_generated_content(
         "prompt.novel.saved",
     )
 
-    outline_path = book_path / "BookOutline.json"
-    write_json(outline_path, outline_payload, encoding=encoding)
+    outline_path = manager.get_outline_path()
+    manager.write_json_file(outline_path, outline_payload)
     verbose_print(
         verbose,
         json_logs,
@@ -229,8 +200,9 @@ def write_generated_content(
     for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
         chapter_number = chapter_sort_key(chapter_payload, fallback_index)
         chapter_payload = normalize_chapter_payload(chapter_payload, chapter_number)
-        chapter_root, prompt_path, parameter_path = chapter_paths(book_path, config, chapter_number)
-        chapter_root.mkdir(parents=True, exist_ok=True)
+        chapter_root = manager.get_chapter_path(chapter_number)
+        prompt_path, parameter_path = manager.get_chapter_file_paths(chapter_number)
+        manager.ensure_dir(chapter_root)
         chapter_history_root = manager.get_chapter_path(chapter_number)
 
         chapter_prompt = build_chapter_prompt(
@@ -241,7 +213,7 @@ def write_generated_content(
             template_payload=chapter_template,
             encoding=encoding,
         )
-        write_text(prompt_path, chapter_prompt, encoding=encoding)
+        manager.write_text_file(prompt_path, chapter_prompt)
         verbose_print(
             verbose,
             json_logs,
@@ -262,12 +234,11 @@ def write_generated_content(
             outline_payload=outline_payload,
             history_root=chapter_history_root,
         )
-        layout_prompt_path = chapter_root / "ChapterLayoutPrompt.txt"
-        write_text(layout_prompt_path, layout_prompt + "\n", encoding=encoding)
+        layout_prompt_path = manager.get_chapter_layout_prompt_path(chapter_number)
+        manager.write_text_file(layout_prompt_path, layout_prompt + "\n")
 
         drafted_segments = segment_prompt_agent.draft_segment_prompts(
             chapter_number=chapter_number,
-            chapter_root=chapter_root,
             chapter_payload=refined_payload,
             segments=segments,
         )
@@ -286,16 +257,14 @@ def write_generated_content(
         # Persist segment artifacts in the configured Segment{s} structure.
         for drafted_item in drafted_segments:
             segment_index = int(drafted_item.index)
-            segment_root, segment_parameter_path, segment_prompt_path, segment_generated_path = segment_paths(
-                chapter_root,
-                config,
+            segment_root, segment_parameter_path, segment_prompt_path, segment_generated_path = manager.get_segment_structured_paths(
                 chapter_number,
                 segment_index,
             )
-            segment_root.mkdir(parents=True, exist_ok=True)
+            manager.ensure_dir(segment_root)
 
             if segment_prompt_path is not None:
-                write_text(segment_prompt_path, drafted_item.prompt + "\n", encoding=encoding)
+                manager.write_text_file(segment_prompt_path, drafted_item.prompt + "\n")
 
             generated_item = next(
                 (
@@ -320,10 +289,10 @@ def write_generated_content(
                     "catharsis": drafted_item.segment.catharsis,
                     "generated_text": "" if generated_item is None else generated_item.text,
                 }
-                write_json(segment_parameter_path, parameter_payload, encoding=encoding)
+                manager.write_json_file(segment_parameter_path, parameter_payload)
 
             if segment_generated_path is not None and generated_item is not None:
-                write_text(segment_generated_path, generated_item.text + "\n", encoding=encoding)
+                manager.write_text_file(segment_generated_path, generated_item.text + "\n")
 
         chapter_text_dicts = [item.to_dict() for item in chapter_texts]
 
@@ -331,7 +300,7 @@ def write_generated_content(
         chapter_json["chapter_texts"] = chapter_text_dicts
         chapter_json["chapter_text"] = chapter_texts_to_text(chapter_texts)
         chapter_json = normalize_chapter_payload(chapter_json, chapter_number)
-        write_json(parameter_path, chapter_json, encoding=encoding)
+        manager.write_json_file(parameter_path, chapter_json)
         verbose_print(
             verbose,
             json_logs,
@@ -355,8 +324,7 @@ def write_authored_content(
     json_logs: bool = False,
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
-    genai_mapping = _load_genai_mapping()
-    manager = SnapshotManager(
+    manager = build_snapshot_manager(
         config,
         workspace_root=workspace_root,
         book_name=book_name,
@@ -364,21 +332,21 @@ def write_authored_content(
         verbose=verbose,
         json_logs=json_logs,
     )
+    genai_mapping = manager.load_genai_mapping()
     book_path = manager.get_book_path()
-    book_history_root = book_path
 
-    settings = load_project_settings(book_path, encoding=encoding)
+    settings = manager.load_project_settings()
     manager.initialize_workspace(
         number_of_chapters=settings.chapter_count,
     )
 
-    outline_path = book_path / "BookOutline.json"
+    outline_path = manager.get_outline_path()
     outline_payload: dict[str, Any]
     chapters: list[dict[str, Any]]
 
-    if outline_path.exists():
+    if manager.path_exists(outline_path):
         try:
-            loaded_outline = load_json_file(outline_path, encoding=encoding)
+            loaded_outline = manager.load_json_file(outline_path)
         except (ValueError, OSError):
             loaded_outline = {}
     else:
@@ -388,7 +356,7 @@ def write_authored_content(
         outline_payload = loaded_outline
         chapters = [item for item in loaded_outline.get("chapters", []) if isinstance(item, dict)]
     else:
-        chapter_numbers = discover_chapter_numbers_from_workspace(book_path, config)
+        chapter_numbers = manager.discover_chapter_numbers()
         chapters = [
             normalize_chapter_payload(
                 {
@@ -417,7 +385,7 @@ def write_authored_content(
 
     if not chapters:
         raise ValueError(
-            f"No chapters found for draft under: {book_path / 'BookChapters'}. "
+            f"No chapters found for draft under: {manager.get_chapter_root()}. "
             "Run layout first to generate chapter structure."
         )
 
@@ -439,16 +407,15 @@ def write_authored_content(
     for fallback_index, chapter_payload in enumerate(sorted_chapters, start=1):
         chapter_number = chapter_sort_key(chapter_payload, fallback_index)
         chapter_payload = normalize_chapter_payload(chapter_payload, chapter_number)
-        chapter_root, _, parameter_path = chapter_paths(book_path, config, chapter_number)
+        chapter_root = manager.get_chapter_path(chapter_number)
+        _, parameter_path = manager.get_chapter_file_paths(chapter_number)
         chapter_history_root = manager.get_chapter_path(chapter_number)
-        chapter_cfg = config.chapters
-        out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(chapter_number))
-        out_path = chapter_root / out_folder
-        out_path.mkdir(parents=True, exist_ok=True)
+        out_path = manager.get_chapter_out_path(chapter_number)
+        manager.ensure_dir(out_path)
 
-        if parameter_path.exists():
+        if manager.path_exists(parameter_path):
             try:
-                chapter_parameter_payload = load_json_file(parameter_path, encoding=encoding)
+                chapter_parameter_payload = manager.load_json_file(parameter_path)
             except (ValueError, OSError):
                 chapter_parameter_payload = chapter_payload
             if not isinstance(chapter_parameter_payload, dict):
@@ -546,14 +513,14 @@ def write_authored_content(
         next_characters = aggregated_characters
 
         generated_text = f"{chapter_text}".strip() + "\n"
-        chapter_generated_path = out_path / "ChapterGenerated.txt"
-        chapter_summary_path = out_path / "ChapterSummary.txt"
-        chapter_character_path = out_path / "ChapterCharacter.txt"
+        chapter_generated_path = manager.get_chapter_generated_path(chapter_number)
+        chapter_summary_path = manager.get_chapter_summary_path(chapter_number)
+        chapter_character_path = manager.get_chapter_character_path(chapter_number)
 
-        write_text(chapter_generated_path, generated_text, encoding=encoding)
-        write_text(chapter_summary_path, chapter_summary + "\n", encoding=encoding)
+        manager.write_text_file(chapter_generated_path, generated_text)
+        manager.write_text_file(chapter_summary_path, chapter_summary + "\n")
         character_text = render_character_text(next_characters)
-        write_text(chapter_character_path, character_text, encoding=encoding)
+        manager.write_text_file(chapter_character_path, character_text)
 
         verbose_print(
             verbose,
@@ -582,7 +549,7 @@ def write_authored_content(
             "draft.chapter.done",
         )
 
-    write_json(outline_path, outline_payload, encoding=encoding)
+    manager.write_json_file(outline_path, outline_payload)
     verbose_print(
         verbose,
         json_logs,
@@ -604,19 +571,26 @@ def publish_book_content(
     json_logs: bool = False,
 ) -> Path:
     config = SnapshotConfig.from_json_file(config_path)
-    book_path = Path(workspace_root) / book_name
-    outline_path = book_path / "BookOutline.json"
+    manager = build_snapshot_manager(
+        config,
+        workspace_root=workspace_root,
+        book_name=book_name,
+        encoding=encoding,
+        verbose=verbose,
+        json_logs=json_logs,
+    )
+    book_path = manager.get_book_path()
+    outline_path = manager.get_outline_path()
 
-    chapter_cfg = config.chapters
-    published_path = Path(output_path) if output_path else (book_path / "BookPublished.txt")
-    published_path.parent.mkdir(parents=True, exist_ok=True)
+    published_path = manager.get_published_path(output_path)
+    manager.ensure_dir(published_path.parent)
 
     chapter_numbers: list[int] = []
     chapter_titles: dict[int, str] = {}
 
-    if outline_path.exists():
+    if manager.path_exists(outline_path):
         try:
-            outline_payload = load_json_file(outline_path, encoding=encoding)
+            outline_payload = manager.load_json_file(outline_path)
             if isinstance(outline_payload, dict) and isinstance(outline_payload.get("chapters", []), list):
                 chapters = outline_payload.get("chapters", [])
                 sorted_chapters = sorted(
@@ -633,23 +607,23 @@ def publish_book_content(
                 verbose_print(
                     verbose,
                     json_logs,
-                    f"BookOutline.json is not in expected shape. Falling back to chapter folders under: {relative_path_text(book_path / 'BookChapters')}",
+                    f"BookOutline.json is not in expected shape. Falling back to chapter folders under: {relative_path_text(manager.get_chapter_root())}",
                     "publish.outline.fallback",
                 )
         except (ValueError, OSError):
             verbose_print(
                 verbose,
                 json_logs,
-                f"BookOutline.json is empty/invalid. Falling back to chapter folders under: {relative_path_text(book_path / 'BookChapters')}",
+                f"BookOutline.json is empty/invalid. Falling back to chapter folders under: {relative_path_text(manager.get_chapter_root())}",
                 "publish.outline.fallback",
             )
 
     if not chapter_numbers:
-        chapter_numbers = discover_chapter_numbers_from_workspace(book_path, config)
+        chapter_numbers = manager.discover_chapter_numbers()
 
     if not chapter_numbers:
         raise ValueError(
-            f"No chapters found to publish under: {book_path / 'BookChapters'}. "
+            f"No chapters found to publish under: {manager.get_chapter_root()}. "
             "Run layout/draft first to generate chapter content."
         )
 
@@ -662,15 +636,13 @@ def publish_book_content(
 
     chunks: list[str] = []
     for chapter_number in chapter_numbers:
-        chapter_folder = chapter_cfg.chapterFolderPattern.replace("{n}", str(chapter_number))
-        out_folder = chapter_cfg.chapterOutFolderPattern.replace("{n}", str(chapter_number))
-        generated_path = book_path / "BookChapters" / chapter_folder / out_folder / "ChapterGenerated.txt"
-        if not generated_path.exists():
+        generated_path = manager.get_chapter_generated_path(chapter_number)
+        if not manager.path_exists(generated_path):
             raise FileNotFoundError(f"Generated chapter content not found: {generated_path}")
 
         chapter_title = chapter_titles.get(chapter_number, "")
         heading = chapter_title or f"Chapter {chapter_number}"
-        content = read_text(generated_path, encoding=encoding).strip()
+        content = manager.read_text_file(generated_path).strip()
         chunks.append(f"Chapter {chapter_number}\n\n{heading}\n\n{content}\n===========================\n\n")
         verbose_print(
             verbose,
@@ -679,7 +651,7 @@ def publish_book_content(
             "publish.chapter.appended",
         )
 
-    write_text(published_path, "\n\n".join(chunks).strip() + "\n", encoding=encoding)
+    manager.write_text_file(published_path, "\n\n".join(chunks).strip() + "\n")
     verbose_print(
         verbose,
         json_logs,

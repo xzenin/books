@@ -10,7 +10,7 @@ from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from lib.writer import SnapshotManager
+from lib.writer import AbstractSnapshotManager, build_snapshot_manager_from_files
 from lib.writer.write import publish_book_content, write_authored_content, write_dummy_content, write_generated_content
 
 
@@ -306,9 +306,11 @@ def parse_args() -> argparse.Namespace:
     return args
 
 
-def _build_manager(args: argparse.Namespace) -> SnapshotManager:
-    return SnapshotManager.from_config_file(
-        args.config_path,
+def _build_manager(args: argparse.Namespace) -> AbstractSnapshotManager:
+    return build_snapshot_manager_from_files(
+        config_path=args.config_path,
+        workspace_root=args.workspace_root,
+        book_name=getattr(args, "book_name", None),
         encoding=args.encoding,
         verbose=args.verbose or args.json,
         json_logs=args.json,
@@ -365,7 +367,7 @@ class ProjectSettings:
     user: str
 
 
-def _build_project_settings(args: argparse.Namespace, manager: SnapshotManager) -> ProjectSettings:
+def _build_project_settings(args: argparse.Namespace, manager: AbstractSnapshotManager) -> ProjectSettings:
     chapter_count = args.chapter_count
     if chapter_count is None:
         chapters = manager.config.chapters
@@ -393,14 +395,14 @@ def run_init(args: argparse.Namespace) -> None:
         book_name=args.book_name,
         number_of_chapters=args.chapter_count,
     )
-    published_path = book_path / "BookPublished.txt"
-    published_path.touch(exist_ok=True)
+    published_path = manager.get_published_path(workspace_root=args.workspace_root, book_name=args.book_name)
+    manager.write_text_file(published_path, manager.read_text_file(published_path))
 
     settings = _build_project_settings(args, manager)
     settings_string = _serialize_project_settings(settings)
 
-    settings_path = book_path / "Settings.json"
-    settings_path.write_text(settings_string, encoding=args.encoding)
+    settings_path = manager.get_book_file_path("Settings.json", args.workspace_root, args.book_name)
+    manager.write_text_file(settings_path, settings_string)
 
     snapshot = manager.read_from_workspace(args.workspace_root, args.book_name)
     snapshot.rootFiles["Settings.json"] = settings_string
@@ -417,42 +419,30 @@ def run_list(args: argparse.Namespace) -> None:
     _emit_verbose(
         args,
         event="list.start",
-        message=f"Listing books under: {_relative_path_text(args.workspace_root)}",
+        message=f"Listing books under: .pkbook/_workspace",
     )
-    workspace_root = Path(args.workspace_root)
-    if not workspace_root.exists():
-        print(f"Workspace root does not exist: {workspace_root}")
-        return
-
-    book_names = sorted(
-        child.name
-        for child in workspace_root.iterdir()
-        if child.is_dir()
-    )
+    manager = _build_manager(args)
+    book_names = manager.list_book_names(args.workspace_root)
 
     if not book_names:
-        print(f"No books found in: {workspace_root}")
+        print(f"No books found in: .pkbook/_workspace")
         return
 
     print("book_name\tchapter_count")
     for book_name in book_names:
-        print(f"{book_name}\t{_resolve_book_chapter_count(workspace_root / book_name, args.encoding)}")
-
-
-def _resolve_book_chapter_count(book_path: Path, encoding: str) -> int | str:
-    settings_path = book_path / "Settings.json"
-    if settings_path.exists():
+        book_manager = build_snapshot_manager_from_files(
+            config_path=args.config_path,
+            workspace_root=args.workspace_root,
+            book_name=book_name,
+            encoding=args.encoding,
+        )
         try:
-            payload = json.loads(settings_path.read_text(encoding=encoding))
-            return int(payload["chapter_count"])
-        except (OSError, ValueError, TypeError, KeyError, json.JSONDecodeError):
-            pass
-
-    chapter_root = book_path / "BookChapters"
-    if chapter_root.exists():
-        return sum(1 for child in chapter_root.iterdir() if child.is_dir())
-
-    return "unknown"
+            settings = book_manager.load_project_settings()
+            chapter_count: int | str = settings.chapter_count
+        except (ValueError, OSError, KeyError):
+            chapter_count = book_manager.discover_chapter_numbers()
+            chapter_count = len(chapter_count) if chapter_count else "unknown"
+        print(f"{book_name}\t{chapter_count}")
 
 
 def run_export(args: argparse.Namespace) -> None:
@@ -496,16 +486,15 @@ def run_clone(args: argparse.Namespace) -> None:
 
 
 def _ensure_layout_initialized(args: argparse.Namespace) -> None:
-    book_path = Path(args.workspace_root) / args.book_name
-    settings_path = book_path / "Settings.json"
     manager = _build_manager(args)
+    settings_path = manager.get_book_file_path("Settings.json", args.workspace_root, args.book_name)
 
-    if settings_path.exists():
+    if manager.path_exists(settings_path):
         if args.chapter_count is None:
             return
 
         try:
-            payload = json.loads(settings_path.read_text(encoding=args.encoding))
+            payload = json.loads(manager.read_text_file(settings_path))
         except (OSError, json.JSONDecodeError):
             payload = {}
 
@@ -532,7 +521,7 @@ def _ensure_layout_initialized(args: argparse.Namespace) -> None:
         payload["date_created"] = str(payload.get("date_created", datetime.now(timezone.utc).isoformat()))
         payload["location"] = str(payload.get("location", platform.node() or "unknown"))
         payload["user"] = str(payload.get("user", os.environ.get("USERNAME") or os.environ.get("USER") or "unknown"))
-        settings_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding=args.encoding)
+        manager.write_text_file(settings_path, json.dumps(payload, ensure_ascii=False, indent=2))
         _emit_verbose(
             args,
             event="layout.reconfigure",
@@ -546,8 +535,7 @@ def _ensure_layout_initialized(args: argparse.Namespace) -> None:
         book_name=args.book_name,
         number_of_chapters=settings.chapter_count,
     )
-    settings_path.parent.mkdir(parents=True, exist_ok=True)
-    settings_path.write_text(_serialize_project_settings(settings), encoding=args.encoding)
+    manager.write_text_file(settings_path, _serialize_project_settings(settings))
     _emit_verbose(
         args,
         event="layout.autoinit",
@@ -634,17 +622,21 @@ def run_publish(args: argparse.Namespace) -> None:
 
 
 def run_read(args: argparse.Namespace) -> None:
-    published_path = Path(args.workspace_root) / args.book_name / "BookPublished.txt"
+    manager = _build_manager(args)
+    published_path = manager.get_published_path(
+        workspace_root=args.workspace_root,
+        book_name=args.book_name,
+    )
     _emit_verbose(
         args,
         event="read.start",
         message=f"Reading published output for '{args.book_name}'",
         extra={"path": _relative_path_text(published_path)},
     )
-    if not published_path.exists():
+    if not manager.path_exists(published_path):
         raise FileNotFoundError(f"Published file not found: {published_path}")
 
-    print(published_path.read_text(encoding=args.encoding))
+    print(manager.read_text_file(published_path))
 
     _emit_verbose(
         args,
@@ -723,61 +715,37 @@ def run_rm(args: argparse.Namespace) -> None:
     if not args.yes:
         raise ValueError("Refusing to delete without --yes. Example: book.py rm --book-name <name> --yes")
 
-    book_path = Path(args.workspace_root) / args.book_name
     _emit_verbose(
         args,
         event="rm.start",
         message=f"Removing book '{args.book_name}'",
-        extra={"path": _relative_path_text(book_path)},
     )
-
-    if not book_path.exists():
-        print(f"Book not found: {book_path}")
+    manager = _build_manager(args)
+    if args.book_name not in manager.list_book_names(args.workspace_root):
+        print(f"Book not found: .pkbook/_workspace/{args.book_name}")
         return
-    if not book_path.is_dir():
-        raise NotADirectoryError(f"Target is not a folder: {book_path}")
-
-    shutil.rmtree(book_path)
-    _emit_verbose(
-        args,
-        event="rm.done",
-        message=f"Removed book '{args.book_name}'",
-    )
-    print(f"Book removed: {book_path}")
+    manager.remove_book(args.workspace_root, args.book_name)
+    _emit_verbose(args, event="rm.done", message=f"Removed book '{args.book_name}'")
+    print(f"Book removed: .pkbook/_workspace/{args.book_name}")
 
 
 def run_purge(args: argparse.Namespace) -> None:
     if not args.yes:
         raise ValueError("Refusing to purge without --yes. Example: book.py purge --yes")
 
-    workspace_root = Path(args.workspace_root)
     _emit_verbose(
         args,
         event="purge.start",
-        message=f"Purging all books under: {_relative_path_text(workspace_root)}",
+        message="Purging all books under: .pkbook/_workspace",
     )
-
-    if not workspace_root.exists():
-        print(f"Workspace root does not exist: {workspace_root}")
-        return
-
-    removed_count = 0
-    for child in workspace_root.iterdir():
-        if child.is_dir():
-            shutil.rmtree(child)
-            removed_count += 1
-            _emit_verbose(
-                args,
-                event="purge.book.removed",
-                message=f"Removed: {_relative_path_text(child)}",
-            )
-
+    manager = _build_manager(args)
+    removed_count = manager.purge_workspace(args.workspace_root)
     _emit_verbose(
         args,
         event="purge.done",
         message=f"Purge completed. Removed {removed_count} book(s).",
     )
-    print(f"Purge completed. Removed {removed_count} book(s) from: {workspace_root}")
+    print(f"Purge completed. Removed {removed_count} book(s) from: .pkbook/_workspace")
 
 
 def main() -> None:

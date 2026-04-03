@@ -18,6 +18,11 @@ try:
 except ImportError:
     ollama = None
 
+try:
+    from groq import Groq  # type: ignore[import-not-found]
+except ImportError:
+    Groq = None
+
 
 DEFAULT_CONVERSATION_ID = "default"
 
@@ -367,6 +372,82 @@ class OllamaChat(GenAIChat):
         return response.message.content.strip()
 
 
+class GroqChat(GenAIChat):
+    DEFAULT_MODEL = "llama3-8b-8192"
+    DEFAULT_BASE_URL = "https://api.groq.com"
+
+    def __init__(
+        self,
+        model: str = DEFAULT_MODEL,
+        api_key: str = "",
+        base_url: Optional[str] = None,
+        **kwargs,
+    ) -> None:
+        self.model = model
+        self.api_key = api_key
+        raw_base_url = (base_url or self.DEFAULT_BASE_URL).strip()
+        # Groq SDK already appends '/openai/v1', so keep only host base.
+        sanitized = re.sub(r"/openai/v1/?$", "", raw_base_url, flags=re.IGNORECASE)
+        self.base_url = sanitized.rstrip("/") or self.DEFAULT_BASE_URL
+        super().__init__(**kwargs)
+
+    @classmethod
+    def from_config(
+        cls,
+        config: dict,
+        *,
+        provider_instance_name: Optional[str] = None,
+        **kwargs,
+    ) -> "GroqChat":
+        providers = config.get("genai", {}).get("credentials", [])
+        groq_cfg: dict = {}
+
+        if provider_instance_name:
+            normalized_instance = provider_instance_name.strip().lower()
+            for provider in providers if isinstance(providers, list) else []:
+                if not isinstance(provider, dict):
+                    continue
+                name = str(provider.get("name", "")).strip().lower()
+                provider_type = str(provider.get("type", "")).strip().lower()
+                if name == normalized_instance and provider_type == "groq":
+                    groq_cfg = provider
+                    break
+
+        if not groq_cfg and isinstance(providers, list):
+            for provider in providers:
+                if not isinstance(provider, dict):
+                    continue
+                provider_type = str(provider.get("type", "")).strip().lower()
+                if provider_type == "groq":
+                    groq_cfg = provider
+                    break
+
+        model = str(groq_cfg.get("model", cls.DEFAULT_MODEL)).strip() or cls.DEFAULT_MODEL
+        base_url = str(groq_cfg.get("url", cls.DEFAULT_BASE_URL)).strip() or cls.DEFAULT_BASE_URL
+        api_key = str(groq_cfg.get("key", "")).strip() or str(os.environ.get("GROQ_API_KEY", "")).strip()
+        return cls(model=model, api_key=api_key, base_url=base_url, **kwargs)
+
+    async def _request_model(self, prompt: str) -> str:
+        if Groq is None:
+            raise ModuleNotFoundError(
+                "Groq provider requires the 'groq' package. Install it with: pip install groq"
+            )
+        if not self.api_key:
+            raise ValueError(
+                "Groq API key is missing. Set it in .pkbook/config.json credential key or GROQ_API_KEY env var."
+            )
+
+        def _sync_request() -> str:
+            client = Groq(api_key=self.api_key, base_url=self.base_url)
+            response = client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            return str(response.choices[0].message.content or "").strip()
+
+        return await asyncio.to_thread(_sync_request)
+
+
 def _find_credential_by_instance_name(config: dict, instance_name: str) -> tuple[str, dict]:
     """Find credential config by instance name and return (provider_type, credential_config)."""
     genai_cfg = config.get("genai", {})
@@ -395,9 +476,31 @@ def _resolve_provider_name(config: dict) -> str:
 
     genai_cfg = config.get("genai", {})
     if not isinstance(genai_cfg, dict):
-        return "ollama"
-    provider = str(genai_cfg.get("provider", "ollama")).strip().lower()
-    return provider or "ollama"
+        return ""
+
+    provider = str(genai_cfg.get("provider", "")).strip().lower()
+    if provider:
+        return provider
+
+    mapping = genai_cfg.get("mapping", {})
+    if isinstance(mapping, dict):
+        default_instance = str(mapping.get("default", "")).strip().lower()
+        if default_instance:
+            return default_instance
+
+    return ""
+
+
+def _resolve_mapping_default_instance(config: dict) -> str:
+    genai_cfg = config.get("genai", {})
+    if not isinstance(genai_cfg, dict):
+        return ""
+
+    mapping = genai_cfg.get("mapping", {})
+    if not isinstance(mapping, dict):
+        return ""
+
+    return str(mapping.get("default", "")).strip().lower()
 
 
 def _copilot_timeout_seconds(config: dict) -> float:
@@ -443,6 +546,13 @@ def _create_provider_client(
     if provider == "copilot":
         return CopilotAIChat(**kwargs)
 
+    if provider == "groq":
+        return GroqChat.from_config(
+            config,
+            provider_instance_name=provider_instance_name,
+            **kwargs,
+        )
+
     # Default and fallback provider is Ollama.
     return OllamaChat.from_config(
         config,
@@ -461,9 +571,15 @@ def _default_client(
     provider_instance_name: Optional[str] = None,
 ) -> GenAIChat:
     resolved_instance_name: Optional[str] = provider_instance_name
+    provider = ""
+
     if provider_instance_name:
         provider_type, credential = _find_credential_by_instance_name(_RUNTIME_CONFIG, provider_instance_name)
-        provider = provider_type if credential else _resolve_provider_name(_RUNTIME_CONFIG)
+        if credential:
+            provider = provider_type
+        else:
+            configured_provider = _resolve_provider_name(_RUNTIME_CONFIG)
+            provider = configured_provider
     else:
         configured_provider = _resolve_provider_name(_RUNTIME_CONFIG)
         provider_type, credential = _find_credential_by_instance_name(_RUNTIME_CONFIG, configured_provider)
@@ -473,6 +589,17 @@ def _default_client(
         else:
             # Backward compatible mode: provider is a type (copilot/ollama/etc.)
             provider = configured_provider
+
+    if not provider or provider not in {"copilot", "ollama", "groq", "azure"}:
+        mapping_default = _resolve_mapping_default_instance(_RUNTIME_CONFIG)
+        if mapping_default:
+            provider_type, credential = _find_credential_by_instance_name(_RUNTIME_CONFIG, mapping_default)
+            if credential:
+                provider = provider_type
+                resolved_instance_name = mapping_default
+
+    if not provider:
+        provider = "ollama"
 
     storage_key = str(storage_root) if storage_root is not None else ""
     history_key = str(Path(history_root).resolve()) if history_root is not None else ""
