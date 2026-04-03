@@ -14,11 +14,15 @@ class SnapshotManager:
         self,
         config: SnapshotConfig,
         *,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
         encoding: str = "utf-8",
         verbose: bool = False,
         json_logs: bool = False,
     ) -> None:
         self.config = config
+        self.workspace_root = Path(workspace_root) if workspace_root is not None else None
+        self.book_name = book_name
         self.encoding = encoding
         self.verbose = verbose
         self.json_logs = json_logs
@@ -28,36 +32,107 @@ class SnapshotManager:
         cls,
         config_path: str | Path,
         *,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
         encoding: str = "utf-8",
         verbose: bool = False,
         json_logs: bool = False,
     ) -> "SnapshotManager":
         config = SnapshotConfig.from_json_file(config_path)
-        return cls(config, encoding=encoding, verbose=verbose, json_logs=json_logs)
+        return cls(
+            config,
+            workspace_root=workspace_root,
+            book_name=book_name,
+            encoding=encoding,
+            verbose=verbose,
+            json_logs=json_logs,
+        )
 
-    def read_from_workspace(self, workspace_root: str | Path, book_name: str) -> WorkspaceSnapshot:
-        root = Path(workspace_root)
-        book_path = root / book_name
-        chapter_root = book_path / "BookChapters"
+    # Path getter methods
+    def get_book_path(self, workspace_root: str | Path | None = None, book_name: str | None = None) -> Path:
+        """Get the book directory path."""
+        root = Path(workspace_root) if workspace_root is not None else self.workspace_root
+        name = book_name or self.book_name
+        if root is None or name is None:
+            raise ValueError("workspace_root and book_name must be provided or set during initialization")
+        return root / name
+
+    def get_chapter_root(self, workspace_root: str | Path | None = None, book_name: str | None = None) -> Path:
+        """Get the BookChapters directory path."""
+        book_path = self.get_book_path(workspace_root, book_name)
+        return book_path / "BookChapters"
+
+    def get_chapter_path(
+        self,
+        chapter_number: int,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
+    ) -> Path:
+        """Get a specific chapter directory path."""
+        chapter_root = self.get_chapter_root(workspace_root, book_name)
+        chapter_folder = self._configured_chapter_folder(chapter_number)
+        return chapter_root / chapter_folder
+
+    def get_chapter_out_path(
+        self,
+        chapter_number: int,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
+    ) -> Path:
+        """Get a chapter's out directory path."""
+        chapter_path = self.get_chapter_path(chapter_number, workspace_root, book_name)
+        out_folder = self._configured_out_folder(chapter_number)
+        return chapter_path / out_folder
+
+    def get_segment_path(
+        self,
+        chapter_number: int,
+        segment_number: int,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
+    ) -> Path:
+        """Get a specific segment directory path."""
+        chapter_path = self.get_chapter_path(chapter_number, workspace_root, book_name)
+        segment_folder = self._configured_segment_folder(chapter_number, segment_number)
+        return chapter_path / segment_folder
+
+    def get_segment_out_path(
+        self,
+        chapter_number: int,
+        segment_number: int,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
+    ) -> Path:
+        """Get a segment's out directory path."""
+        segment_path = self.get_segment_path(chapter_number, segment_number, workspace_root, book_name)
+        out_folder = self._configured_segment_out_folder(chapter_number, segment_number)
+        return segment_path / out_folder
+
+    def read_from_workspace(self, workspace_root: str | Path | None = None, book_name: str | None = None) -> WorkspaceSnapshot:
+        root = workspace_root or self.workspace_root
+        name = book_name or self.book_name
+        if root is None or name is None:
+            raise ValueError("workspace_root and book_name must be provided")
+
+        book_path = self.get_book_path(root, name)
+        chapter_root = self.get_chapter_root(root, name)
 
         self._verbose_print(f"Reading workspace snapshot from: {self._relative_path_text(book_path)}")
 
-        snapshot = WorkspaceSnapshot(bookName=book_name)
+        snapshot = WorkspaceSnapshot(bookName=str(name))
 
         for filename in self.config.bookRootFiles:
             snapshot.rootFiles[filename] = self._read_text(book_path / filename)
 
         chapter_cfg = self.config.chapters
         for number in range(chapter_cfg.start, chapter_cfg.end + 1):
-            chapter_folder = self._configured_chapter_folder(number)
-            chapter_path = chapter_root / chapter_folder
-            chapter_out_folder = self._configured_out_folder(number)
-            out_path = self._resolve_existing_path(chapter_path, chapter_out_folder, number)
+            chapter_path = self.get_chapter_path(number, root, name)
+            chapter_out_path = self.get_chapter_out_path(number, root, name)
 
             chapter = ChapterSnapshot(
                 chapterNumber=number,
-                chapterFolder=chapter_folder,
-                outFolder=chapter_out_folder,
+                chapterFolder=self._configured_chapter_folder(number),
+                outFolder=self._configured_out_folder(number),
             )
 
             for pattern in chapter_cfg.chapterFiles:
@@ -67,29 +142,33 @@ class SnapshotManager:
 
             for pattern in chapter_cfg.chapterOutFiles:
                 file_name = pattern.replace("{n}", str(number))
-                source_path = self._resolve_existing_path(out_path, file_name, number)
+                source_path = self._resolve_existing_path(chapter_out_path, file_name, number)
                 chapter.outFiles[file_name] = self._read_text(source_path)
 
             snapshot.chapters.append(chapter)
 
         self._verbose_print(
-            f"Collected snapshot for {book_name} with {len(snapshot.rootFiles)} root files and {len(snapshot.chapters)} chapters"
+            f"Collected snapshot for {name} with {len(snapshot.rootFiles)} root files and {len(snapshot.chapters)} chapters"
         )
         return snapshot
 
     def initialize_workspace(
         self,
-        workspace_root: str | Path,
-        book_name: str,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
         *,
         number_of_chapters: int | None = None,
     ) -> Path:
-        root = Path(workspace_root)
-        book_path = root / book_name
-        chapter_root = book_path / "BookChapters"
+        root = workspace_root or self.workspace_root
+        name = book_name or self.book_name
+        if root is None or name is None:
+            raise ValueError("workspace_root and book_name must be provided")
+
+        book_path = self.get_book_path(root, name)
+        chapter_root = self.get_chapter_root(root, name)
 
         self._verbose_print(
-            f"Initializing workspace for {book_name} at: {self._relative_path_text(book_path)}"
+            f"Initializing workspace for {name} at: {self._relative_path_text(book_path)}"
         )
 
         book_path.mkdir(parents=True, exist_ok=True)
@@ -107,30 +186,54 @@ class SnapshotManager:
             chapter_end = chapter_start + number_of_chapters - 1
 
         for number in range(chapter_start, chapter_end + 1):
-            chapter_folder = self._configured_chapter_folder(number)
-            chapter_path = chapter_root / chapter_folder
+            chapter_path = self.get_chapter_path(number, root, name)
             chapter_path.mkdir(parents=True, exist_ok=True)
 
             for pattern in chapter_cfg.chapterFiles:
                 file_name = pattern.replace("{n}", str(number))
                 self._ensure_file(chapter_path / file_name)
 
-            chapter_out_folder = self._configured_out_folder(number)
-            out_path = chapter_path / chapter_out_folder
-            out_path.mkdir(parents=True, exist_ok=True)
+            chapter_out_path = self.get_chapter_out_path(number, root, name)
+            chapter_out_path.mkdir(parents=True, exist_ok=True)
 
             for pattern in chapter_cfg.chapterOutFiles:
                 file_name = pattern.replace("{n}", str(number))
-                self._ensure_file(out_path / file_name)
+                self._ensure_file(chapter_out_path / file_name)
+
+            segments_cfg = chapter_cfg.segments
+            if segments_cfg is not None:
+                for segment_number in range(segments_cfg.start, segments_cfg.end + 1):
+                    segment_path = self.get_segment_path(number, segment_number, root, name)
+                    segment_path.mkdir(parents=True, exist_ok=True)
+
+                    for pattern in segments_cfg.segmentFiles:
+                        file_name = self._render_segment_pattern(pattern, number, segment_number)
+                        self._ensure_file(segment_path / file_name)
+
+                    segment_out_path = self.get_segment_out_path(number, segment_number, root, name)
+                    segment_out_path.mkdir(parents=True, exist_ok=True)
+
+                    for pattern in segments_cfg.segmentOutFiles:
+                        file_name = self._render_segment_pattern(pattern, number, segment_number)
+                        self._ensure_file(segment_out_path / file_name)
 
         self._verbose_print(f"Workspace ready with chapters {chapter_start} to {chapter_end}")
         return book_path
 
-    def restore_to_workspace(self, snapshot: WorkspaceSnapshot, workspace_root: str | Path, *, book_name: str | None = None) -> None:
-        target_book_name = book_name or snapshot.bookName
-        root = Path(workspace_root)
-        book_path = root / target_book_name
-        chapter_root = book_path / "BookChapters"
+    def restore_to_workspace(
+        self,
+        snapshot: WorkspaceSnapshot,
+        workspace_root: str | Path | None = None,
+        *,
+        book_name: str | None = None,
+    ) -> None:
+        root = workspace_root or self.workspace_root
+        name = book_name or self.book_name or snapshot.bookName
+        if root is None or name is None:
+            raise ValueError("workspace_root and book_name must be provided")
+
+        book_path = self.get_book_path(root, name)
+        chapter_root = self.get_chapter_root(root, name)
 
         self._verbose_print(
             f"Restoring snapshot {snapshot.bookName} into: {self._relative_path_text(book_path)}"
@@ -142,22 +245,56 @@ class SnapshotManager:
 
         for chapter in snapshot.chapters:
             chapter_number = chapter.chapterNumber
-            chapter_folder = self._configured_chapter_folder(chapter_number)
-            chapter_path = chapter_root / chapter_folder
+            chapter_path = self.get_chapter_path(chapter_number, root, name)
 
             for pattern in self.config.chapters.chapterFiles:
                 filename = pattern.replace("{n}", str(chapter_number))
                 content = self._lookup_snapshot_content(chapter.files, filename, chapter_number)
                 self._write_text(chapter_path / filename, content)
 
-            out_folder = self._configured_out_folder(chapter_number)
-            out_path = chapter_path / out_folder
+            chapter_out_path = self.get_chapter_out_path(chapter_number, root, name)
             for pattern in self.config.chapters.chapterOutFiles:
                 filename = pattern.replace("{n}", str(chapter_number))
                 content = self._lookup_snapshot_content(chapter.outFiles, filename, chapter_number)
-                self._write_text(out_path / filename, content)
+                self._write_text(chapter_out_path / filename, content)
 
-        self._verbose_print(f"Snapshot restore completed for: {target_book_name}")
+        self._verbose_print(f"Snapshot restore completed for: {name}")
+
+    def export_workspace_to_json(
+        self,
+        workspace_root: str | Path | None = None,
+        book_name: str | None = None,
+        snapshot_path: str | Path | None = None,
+    ) -> WorkspaceSnapshot:
+        root = workspace_root or self.workspace_root
+        name = book_name or self.book_name
+        if root is None or name is None:
+            raise ValueError("workspace_root and book_name must be provided")
+
+        self._verbose_print(
+            f"Exporting workspace '{name}' to snapshot: {self._relative_path_text(snapshot_path)}"
+        )
+        snapshot = self.read_from_workspace(root, name)
+        if snapshot_path is not None:
+            self.write_snapshot_json(snapshot, snapshot_path)
+        return snapshot
+
+    def clone_workspace(
+        self,
+        workspace_root: str | Path | None = None,
+        source_book_name: str | None = None,
+        target_book_name: str | None = None,
+    ) -> WorkspaceSnapshot:
+        root = workspace_root or self.workspace_root
+        src_name = source_book_name or self.book_name
+        if root is None or src_name is None or target_book_name is None:
+            raise ValueError("workspace_root, source_book_name, and target_book_name must be provided")
+
+        self._verbose_print(f"Cloning workspace '{src_name}' -> '{target_book_name}'")
+        snapshot = self.read_from_workspace(root, src_name)
+        snapshot.bookName = target_book_name
+        self.restore_to_workspace(snapshot, root, book_name=target_book_name)
+        return snapshot
 
     def write_snapshot_json(self, snapshot: WorkspaceSnapshot, snapshot_path: str | Path) -> None:
         self._verbose_print(f"Writing snapshot JSON to: {self._relative_path_text(snapshot_path)}")
@@ -166,26 +303,6 @@ class SnapshotManager:
     def load_snapshot_json(self, snapshot_path: str | Path) -> WorkspaceSnapshot:
         self._verbose_print(f"Loading snapshot JSON from: {self._relative_path_text(snapshot_path)}")
         return WorkspaceSnapshot.from_json_file(snapshot_path)
-
-    def export_workspace_to_json(self, workspace_root: str | Path, book_name: str, snapshot_path: str | Path) -> WorkspaceSnapshot:
-        self._verbose_print(
-            f"Exporting workspace '{book_name}' to snapshot: {self._relative_path_text(snapshot_path)}"
-        )
-        snapshot = self.read_from_workspace(workspace_root, book_name)
-        self.write_snapshot_json(snapshot, snapshot_path)
-        return snapshot
-
-    def clone_workspace(
-        self,
-        workspace_root: str | Path,
-        source_book_name: str,
-        target_book_name: str,
-    ) -> WorkspaceSnapshot:
-        self._verbose_print(f"Cloning workspace '{source_book_name}' -> '{target_book_name}'")
-        snapshot = self.read_from_workspace(workspace_root, source_book_name)
-        snapshot.bookName = target_book_name
-        self.restore_to_workspace(snapshot, workspace_root, book_name=target_book_name)
-        return snapshot
 
     def _verbose_print(self, message: str) -> None:
         if self.verbose:
@@ -218,6 +335,21 @@ class SnapshotManager:
 
     def _configured_out_folder(self, chapter_number: int) -> str:
         return self.config.chapters.chapterOutFolderPattern.replace("{n}", str(chapter_number))
+
+    def _configured_segment_folder(self, chapter_number: int, segment_number: int) -> str:
+        segments_cfg = self.config.chapters.segments
+        if segments_cfg is None:
+            raise ValueError("Segment config is not defined.")
+        return self._render_segment_pattern(segments_cfg.segmentFolderPattern, chapter_number, segment_number)
+
+    def _configured_segment_out_folder(self, chapter_number: int, segment_number: int) -> str:
+        segments_cfg = self.config.chapters.segments
+        if segments_cfg is None:
+            raise ValueError("Segment config is not defined.")
+        return self._render_segment_pattern(segments_cfg.segmentOutFolderPattern, chapter_number, segment_number)
+
+    def _render_segment_pattern(self, pattern: str, chapter_number: int, segment_number: int) -> str:
+        return pattern.replace("{n}", str(chapter_number)).replace("{s}", str(segment_number))
 
     def _resolve_existing_path(self, parent: Path, name: str, chapter_number: int) -> Path:
         for candidate in self._name_candidates(name, chapter_number):

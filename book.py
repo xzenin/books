@@ -119,10 +119,10 @@ def parse_args() -> argparse.Namespace:
         epilog=(
             "Examples:\n"
             "  python book.py --book-name Ramayan\n"
-            "  python book.py --workspace-root .\\.pkbook\\_wokspace init --book-name Sita\n"
+            "  python book.py --workspace-root .\\.pkbook\\_workspace init --book-name Sita\n"
             "  python book.py init --book-name Sita --chapter-count 8\n"
             "  python book.py list\n"
-            "  python book.py --workspace-root .\\.pkbook\\_wokspace list\n"
+            "  python book.py --workspace-root .\\.pkbook\\_workspace list\n"
             "  python book.py export --book-name Ramayan\n"
             "  python book.py export --book-name Ramayan --snapshot-path snapshots/ramayan.json\n"
             "  python book.py import --book-name Ramayan\n"
@@ -148,7 +148,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--workspace-root",
-        default=str(script_dir / ".pkbook" / "_wokspace"),
+        default=str(script_dir / ".pkbook" / "_workspace"),
         help="Optional. Root directory where the book folder will be created.",
     )
     parser.add_argument(
@@ -205,6 +205,16 @@ def parse_args() -> argparse.Namespace:
         "--no-cache",
         action="store_true",
         help="Disable GenAI response caching for the layout command.",
+    )
+    layout_parser.add_argument(
+        "--human-in-loop",
+        action="store_true",
+        help="Enable optional per-chapter manual refinement note during layout.",
+    )
+    layout_parser.add_argument(
+        "--no-randomize-thoughts",
+        action="store_true",
+        help="Disable randomized refinement thought injection for chapter context.",
     )
 
     draft_parser = subparsers.add_parser(
@@ -568,6 +578,8 @@ def run_layout(args: argparse.Namespace) -> None:
         encoding=args.encoding,
         gist=args.gist,
         use_cache=not args.no_cache,
+        randomize_thoughts=not args.no_randomize_thoughts,
+        human_in_loop=args.human_in_loop,
         verbose=args.verbose or args.json,
         json_logs=args.json,
     )

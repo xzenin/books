@@ -7,6 +7,30 @@ from typing import Any
 
 
 @dataclass
+class SegmentConfig:
+    start: int
+    end: int
+    segmentFolderPattern: str
+    segmentFiles: list[str]
+    segmentOutFolderPattern: str
+    segmentOutFiles: list[str]
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "SegmentConfig":
+        return cls(
+            start=int(payload["start"]),
+            end=int(payload["end"]),
+            segmentFolderPattern=str(payload["segmentFolderPattern"]),
+            segmentFiles=[str(item) for item in payload.get("segmentFiles", [])],
+            segmentOutFolderPattern=str(payload["segmentOutFolderPattern"]),
+            segmentOutFiles=[str(item) for item in payload.get("segmentOutFiles", [])],
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class ChapterConfig:
     start: int
     end: int
@@ -14,9 +38,11 @@ class ChapterConfig:
     chapterFiles: list[str]
     chapterOutFolderPattern: str
     chapterOutFiles: list[str]
+    segments: SegmentConfig | None = None
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "ChapterConfig":
+        segments_payload = payload.get("segments")
         return cls(
             start=int(payload["start"]),
             end=int(payload["end"]),
@@ -24,6 +50,7 @@ class ChapterConfig:
             chapterFiles=[str(item) for item in payload.get("chapterFiles", [])],
             chapterOutFolderPattern=str(payload["chapterOutFolderPattern"]),
             chapterOutFiles=[str(item) for item in payload.get("chapterOutFiles", [])],
+            segments=SegmentConfig.from_dict(segments_payload) if isinstance(segments_payload, dict) else None,
         )
 
     def to_dict(self) -> dict[str, Any]:

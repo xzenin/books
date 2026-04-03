@@ -18,26 +18,46 @@
         }
     },
     "genai": {
-        "provider": "copilot",
+        "provider": "ollama1",
         "credentials": [
             {
-                "name": "copilot",
+                "name": "copilot1",
+                "type": "copilot",
                 "key": "copilot_key",
                 "model": "gpt-4o",
-                "url": "https://api.copilot.xzen.in/v1/generate"
+                "url": "https://api.copilot.xzen.in/v1/generate",
+                "timeout_seconds": 240
             },
             {
-                "name": "azure",
+                "name": "azure1",
+                "type": "azure",
                 "key": "azure_key",
                 "model": "gpt-4o",
-                "url": "https://api.azure.xzen.in/v1/generate"
-        },
+                "url": "https://api.azure.xzen.in/v1/generate",
+                "timeout_seconds": 240
+            },
             {
-                "name":"ollama",
-                "key":"ollama_key", 
-                "model":"gemma3:27b",
-                "url":"http://localhost:11434"     
+                "name": "ollama1",
+                "type": "ollama",
+                "key": "ollama_key",
+                "model": "qwen3.5:9b",
+                "url": "http://localhost:11434",
+                "timeout_seconds": 240
+            },
+             {
+                "name": "ollama2",
+                "type": "ollama",
+                "key": "ollama_key",
+                "model": "qwen3.5:9b",
+                "url": "http://localhost:11434",
+                "timeout_seconds": 240
             }
-        ]
+        ],
+        "mapping": {
+            "default": "ollama1",
+            "segment_level_generation": "ollama2",
+            "chapter_level_generation": "ollama2",
+            "book_level_generation": "ollama2"                
+        }
     }
 }

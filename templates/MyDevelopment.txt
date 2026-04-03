@@ -84,3 +84,82 @@ Add one argument 'publish'
 For all the chapter mentioned in Book. The book context is provided. Refer file "<workspace>/<bookname>/BookOutline.json"
 Append the content from  generated output at: "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterOut/ChapterGenerated.txt"     
 Append the content in textfile "<workspace>/<bookname>/BookPublished.txt"
+
+
+
+Split the write.py features into 5 crew agent 
+1) BookLayout (it will create master plan for the book) 
+    - The Hook: Start as close to the action as possible.
+    - The Goal: Remind the reader what the character wants right now.
+    - The Conflict: Introduce obstacles that prevent the goal.
+    - The Reaction: The character processes the disaster (Rationalize).
+    - The Dilemma: They realize they have no easy choices left.
+    - The Decision: They pick a new Goal, which starts the next chapter.
+
+2) RefinetChapter (It will put additional context to book a) randomize thoughts and optional human in the loop 
+    - Goal: Is it clear what the character wants in this chapter?
+    = Conflict: Is the obstacle actually difficult, or is it too easy to solve?
+    - Logic: Did anything happen that contradicts an earlier chapter?
+    - Sensory: Did I include at least two senses other than sight?
+    - Ending: Is there a "hook" that leads into the next chapter's Rationalization?
+
+3) LayoutChapter ( It will create multiple segment of the story for the chapter.
+    - Goal: What do they want?
+    - Stakes: What happens if they fail? (Adds Worry)
+    - Vulnerability: Why is this hard for them specifically? (Adds Connection)
+    - Conflict: What stands in their way? (Adds Friction)
+    - Tension: Why must they do it now? (Adds Speed)
+    - Rationalize: How do they process the failure and pivot? (Adds Logic)
+    - Subversion: What unexpected thing just changed the game? (Adds Surprise)
+    - Catharsis: What is the final emotional release? (Adds Satisfaction) 
+4) DraftChapterSegment (It will actually create self independent prompt and save it) 
+    - Chapter Mission: Escape the city before the gates close.
+    - Segment 1 Prep:
+        - Goal: Get to the horse stables.
+        - Conflict: The main road is blocked by guards.
+        - Therefore: He must take the muddy back alleys.
+    - Segment 2 Prep:
+        - Carry-over: He is covered in mud and frustrated (Emotional temperature).
+        - Goal: Sneak past the stable boy.
+        - Conflict: He trips and makes a noise.
+    - But: Instead of getting caught, he realizes the stable boy is asleep.
+    - Segment 3 Prep:
+        - Pivot: He has the horse, but now he hears the gate bells ringing (Tension/Ticking clock).
+        - Goal: Race to the gate before it shuts.
+5) GenerateChapterSegment (It will actually create the content for a segment based on the prompt created in previous step) 
+    - Generate content per segement. Add to the chapter_text array.
+    - Physical State: What is the character holding? Are they injured? Where are they standing?
+    - Emotional State: Is the character feeling more desperate or more confident than they were 5 minutes ago?
+    - Information State: What does the character know now that they didn't know at the start of this segment?
+
+
+
+
+
+History message to be stored at each folder level. Each agent to have its own directory. The directory to be dynamically created at the folder level.
+Level:
+Global Level: .pkbook/_genai 
+Book Level: .pkbook/_workspace/<book_name>/_genai 
+Chapter Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/_genai 
+Segment Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/Segment<segment_count>/_genai 
+
+
+For each level, read the config:
+Identify the credential gen-ai provider type ( type ) and instance name ( name ).
+Global Level: .pkbook/_genai : here take copilot1 ( name ) as provider
+Book Level: .pkbook/_workspace/<book_name>/_genai : here take copilot1 ( name ) as provider
+Chapter Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/_genai : here take ollama1 ( name ) as provider
+Segment Level: .pkbook/_workspace/<book_name>/BookChapters/Chapter<chapter_count>/Segment<segment_count>/_genai  : here take ollama2 ( name ) as provider
+
+Do all these in write.py layer 
+
+
+Config has got changed. Now mapping of genai provider added:
+ "mapping": {
+            "default": "ollama1",
+            "segment_level_generation": "ollama2",
+            "chapter_level_generation": "ollama2",
+            "book_level_generation": "ollama2"                
+        }
+
+Read the config and apply the genai provider dynamically        
