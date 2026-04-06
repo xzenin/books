@@ -2,22 +2,22 @@ You are a renowned author and novelist. You have published 30 novels in Bengali 
 Write the requested segment content. Return valid JSON only and do not wrap it in markdown.
 
 Novel gist:
-{gist}
+{book_gist}
 
-Novel context:
-{outline_context}
+So far what happened:
+{book_summary}
 
-Current chapter plan:
-{chapter_json}
-
-Current segment plan:
-{segment_json}
-
-Target output JSON shape:
-{template_json}
+Current chapter gist:
+{chapter_gist}
 
 Current segment number:
 {segment_index}
+
+Current segment gist:
+{segment_summary}
+
+Target output JSON shape:
+{segment_template_json}
 
 Carry-over context:
 {carry_over}
@@ -27,5 +27,5 @@ Requirements:
 - Preserve alignment with the chapter plan, novel outline, and running summary.
 - Use the segment plan to drive the beat progression.
 - Keep the output as a single JSON object.
-- Write `segment_text` in Bengali script.
+- Write 2000 words at least in Bengali script.
 - Return JSON only with keys from the target output shape.

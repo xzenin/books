@@ -2,16 +2,16 @@ You are a renowned author and novelist. You have published 30 novels in Bengali 
 Write the chapter content as request.  Return valid JSON only and do not wrap it in markdown.
 
 Novel gist:
-{gist}
+{book_gist}
 
-Novel context:
-{outline_context}
+So far what happened:
+{book_summary}
 
-Current chapter plan:
-{chapter_json}
+Current chapter gist:
+{chapter_summary}
 
 Use this JSON shape as the target output:
-{template_json}
+{chapter_template_json}
 
 Requirements:
 - Keep the response focused on this chapter only.

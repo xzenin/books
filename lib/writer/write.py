@@ -276,12 +276,21 @@ def write_generated_content(
         manager.ensure_dir(chapter_root)
         chapter_history_root = manager.get_chapter_path(chapter_number)
 
+        # Extract book_summary and chapter_summary as plain text
+        book_summary = outline_payload.get("running_summary", "")
+        chapter_summary = chapter_payload.get("chapter_summary", "")
+        # If they are dicts, rationalize to text
+        if isinstance(book_summary, dict):
+            book_summary = book_summary.get("running_summary", "")
+        if isinstance(chapter_summary, dict):
+            chapter_summary = chapter_summary.get("chapter_summary", "")
         chapter_prompt = build_chapter_prompt(
             settings=settings,
-            gist=novel_gist,
-            outline_payload=outline_payload,
+            book_gist=novel_gist,
+            book_summary=book_summary,
+            chapter_summary=chapter_summary,
             chapter_payload=chapter_payload,
-            template_payload=chapter_template,
+            chapter_template_json=chapter_template,
             encoding=encoding,
         )
         _write_text_with_runtime(
