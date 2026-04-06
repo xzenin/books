@@ -44,13 +44,24 @@ class DraftChapterSegment:
                 "subversion": segment.subversion,
                 "catharsis": segment.catharsis,
             }
+            # Extract and rationalize new template parameters
+            book_summary = outline_payload.get("running_summary", "")
+            chapter_summary = chapter_payload.get("chapter_summary", "")
+            segment_summary = segment_payload.get("segment_summary", "")
+            segment_template_json = template_payload
+            if isinstance(book_summary, dict):
+                book_summary = book_summary.get("running_summary", "")
+            if isinstance(chapter_summary, dict):
+                chapter_summary = chapter_summary.get("chapter_summary", "")
+            if isinstance(segment_summary, dict):
+                segment_summary = segment_summary.get("segment_summary", "")
             prompt = build_segment_prompt(
                 settings=settings,
                 gist=gist,
-                outline_payload=outline_payload,
-                chapter_payload=chapter_payload,
-                segment_payload=segment_payload,
-                template_payload=template_payload,
+                book_summary=book_summary,
+                chapter_summary=chapter_summary,
+                segment_summary=segment_summary,
+                segment_template_json=segment_template_json,
                 segment_index=index,
                 carry_over=carry_over,
                 encoding=self.encoding,

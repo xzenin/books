@@ -19,13 +19,13 @@ def load_template_payload(template_name: str, *, encoding: str) -> Any:
 
 
 def build_novel_prompt(*, settings: ProjectSettings, gist: str, template_payload: Any) -> str:
-    template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
+    book_template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
     template_path = _templates_root() / "book_prompt.txt"
     template_text = read_text(template_path, encoding="utf-8")
 
     required_fields = {
-        "gist",
-        "template_json",
+        "book_gist",
+        "book_template_json",
         "chapter_count",
     }
     formatter = string.Formatter()
@@ -42,8 +42,8 @@ def build_novel_prompt(*, settings: ProjectSettings, gist: str, template_payload
 
     try:
         return template_text.format(
-            gist=gist,
-            template_json=template_json,
+            book_gist=gist,
+            book_template_json=book_template_json,
             chapter_count=settings.chapter_count,
         )
     except (KeyError, ValueError) as exc:
@@ -53,36 +53,22 @@ def build_novel_prompt(*, settings: ProjectSettings, gist: str, template_payload
 def build_chapter_prompt(
     *,
     settings: ProjectSettings,
-    gist: str,
-    outline_payload: dict[str, Any],
+    book_gist: str,
+    book_summary: str,
+    chapter_summary: str,
     chapter_payload: dict[str, Any],
-    template_payload: Any,
+    chapter_template_json: Any,
     encoding: str = "utf-8",
 ) -> str:
-    chapter_json = json.dumps(chapter_payload, ensure_ascii=False, indent=2)
-    template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
-    outline_context = json.dumps(
-        {
-            "novel_name": outline_payload.get("novel_name", ""),
-            "novel_long_title": outline_payload.get("novel_long_title", ""),
-            "generic": outline_payload.get("generic", ""),
-            "era": outline_payload.get("era", ""),
-            "language": outline_payload.get("language", ""),
-            "target_audience": outline_payload.get("target_audience", ""),
-            "running_summary": outline_payload.get("running_summary", ""),
-            "all_characters": outline_payload.get("all_characters", []),
-        },
-        ensure_ascii=False,
-        indent=2,
-    )
+    chapter_template_json_str = json.dumps(chapter_template_json, ensure_ascii=False, indent=2)
     template_path = _templates_root() / "chapter_prompt.txt"
     template_text = read_text(template_path, encoding=encoding)
 
     required_fields = {
-        "gist",
-        "outline_context",
-        "chapter_json",
-        "template_json",
+        "book_gist",
+        "book_summary",
+        "chapter_summary",
+        "chapter_template_json",
     }
     formatter = string.Formatter()
     available_fields = {
@@ -96,12 +82,18 @@ def build_chapter_prompt(
             f"Template {template_path} is missing required placeholders: {', '.join(missing_fields)}"
         )
 
+    # Rationalize book_summary and chapter_summary if needed
+    if isinstance(book_summary, dict):
+        book_summary = book_summary.get("running_summary", "")
+    if isinstance(chapter_summary, dict):
+        chapter_summary = chapter_summary.get("chapter_summary", "")
+
     try:
         return template_text.format(
-            gist=gist,
-            outline_context=outline_context,
-            chapter_json=chapter_json,
-            template_json=template_json,
+            book_gist=book_gist,
+            book_summary=book_summary,
+            chapter_summary=chapter_summary,
+            chapter_template_json=chapter_template_json_str,
         )
     except (KeyError, ValueError) as exc:
         raise ValueError(f"Invalid chapter prompt template format in {template_path}: {exc}") from exc
@@ -110,41 +102,25 @@ def build_chapter_prompt(
 def build_segment_prompt(
     *,
     settings: ProjectSettings,
-    gist: str,
-    outline_payload: dict[str, Any],
-    chapter_payload: dict[str, Any],
-    segment_payload: dict[str, Any],
-    template_payload: Any,
+    book_gist: str,
+    book_summary: str,
+    chapter_gist: str,
+    segment_summary: str,
+    segment_template_json: Any,
     segment_index: int,
     carry_over: str,
     encoding: str = "utf-8",
 ) -> str:
-    chapter_json = json.dumps(chapter_payload, ensure_ascii=False, indent=2)
-    segment_json = json.dumps(segment_payload, ensure_ascii=False, indent=2)
-    template_json = json.dumps(template_payload, ensure_ascii=False, indent=2)
-    outline_context = json.dumps(
-        {
-            "novel_name": outline_payload.get("novel_name", ""),
-            "novel_long_title": outline_payload.get("novel_long_title", ""),
-            "generic": outline_payload.get("generic", ""),
-            "era": outline_payload.get("era", ""),
-            "language": outline_payload.get("language", ""),
-            "target_audience": outline_payload.get("target_audience", ""),
-            "running_summary": outline_payload.get("running_summary", ""),
-            "all_characters": outline_payload.get("all_characters", []),
-        },
-        ensure_ascii=False,
-        indent=2,
-    )
+    segment_template_json_str = json.dumps(segment_template_json, ensure_ascii=False, indent=2)
     template_path = _templates_root() / "segment_prompt.txt"
     template_text = read_text(template_path, encoding=encoding)
 
     required_fields = {
-        "gist",
-        "outline_context",
-        "chapter_json",
-        "segment_json",
-        "template_json",
+        "book_gist",
+        "book_summary",
+        "chapter_gist",
+        "segment_summary",
+        "segment_template_json",
         "segment_index",
         "carry_over",
     }
@@ -162,11 +138,11 @@ def build_segment_prompt(
 
     try:
         return template_text.format(
-            gist=gist,
-            outline_context=outline_context,
-            chapter_json=chapter_json,
-            segment_json=segment_json,
-            template_json=template_json,
+            book_gist=book_gist,
+            book_summary=book_summary,
+            chapter_gist=chapter_gist,
+            segment_summary=segment_summary,
+            segment_template_json=segment_template_json_str,
             segment_index=segment_index,
             carry_over=carry_over,
         )
