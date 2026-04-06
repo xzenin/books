@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
 from __future__ import annotations
+
 
 import argparse
 import json
 import os
 import platform
 import shutil
-import sys
+import sys  # Ensure sys is imported at the top
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -174,12 +176,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--workspace-root",
-        default=str(script_dir / ".pkbook" / "_workspace"),
+        default=".pkbook/_workspace",
         help="Optional. Root directory where the book folder will be created.",
     )
     parser.add_argument(
         "--config-path",
-        default=str(script_dir / "templates" / "init.json"),
+        default="templates/init.json",
         help="Optional. Path to JSON config template.",
     )
     parser.add_argument(
@@ -189,131 +191,42 @@ def parse_args() -> argparse.Namespace:
     )
     _add_runtime_flags(parser)
 
-    subparsers = parser.add_subparsers(dest="command")
 
-    init_parser = subparsers.add_parser("init", help="Create book folder and file structure")
-    init_parser.add_argument("--book-name", required=True, help="Book folder name to create under workspace root.")
-    init_parser.add_argument(
-        "--chapter-count",
-        type=_positive_int,
-        help="Optional. Number of chapter folders to create from the configured start chapter.",
-    )
+    # First argument is always the command (positional), all others are optional flags
+    import sys
+    # Stage 1: Parse the command as the first positional argument
+    if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help"):
+        parser.print_help()
+        sys.exit(1)
+    command = sys.argv[1]
+    valid_commands = [
+        "init", "list", "export", "import", "clone", "layout", "draft", "publish", "read", "rm", "purge"
+    ]
+    if command not in valid_commands:
+        parser.print_help()
+        print(f"\nError: Unknown command '{command}'.")
+        sys.exit(2)
 
-    list_parser = subparsers.add_parser("list", help="List book folders under workspace root")
+    # Stage 2: Parse the rest as flags
+    flag_parser = argparse.ArgumentParser(prog=f"book.py {command}")
+    flag_parser.add_argument("command", choices=valid_commands, help="Command to run (required)")
+    flag_parser.add_argument("--book-name", help="Book folder name to create or use under workspace root.")
+    flag_parser.add_argument("--chapter-count", type=_positive_int, help="Number of chapter folders to create.")
+    flag_parser.add_argument("--snapshot-path", help="Snapshot JSON path for export/import.")
+    flag_parser.add_argument("--source-book-name", help="Source book folder name for clone.")
+    flag_parser.add_argument("--target-book-name", help="Target book folder name for clone.")
+    flag_parser.add_argument("--mode", choices=["genai", "dummy"], default="genai", help="Layout mode.")
+    flag_parser.add_argument("--gist", help="Novel gist for layout/draft.")
+    flag_parser.add_argument("--no-cache", action="store_true", help="Disable GenAI response caching.")
+    flag_parser.add_argument("--human-in-loop", action="store_true", help="Enable human-in-the-loop mode.")
+    flag_parser.add_argument("--no-randomize-thoughts", action="store_true", help="Disable randomization of thoughts.")
+    flag_parser.add_argument("--output-path", help="Output file path for publish.")
+    flag_parser.add_argument("--yes", action="store_true", help="Confirmation flag for destructive commands.")
+    _add_runtime_flags(flag_parser)
 
-    export_parser = subparsers.add_parser("export", help="Read workspace files and write one snapshot JSON")
-    export_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
-    export_parser.add_argument("--snapshot-path", help="Output snapshot JSON path (default: snapshots/<book-name>.json)")
-
-    import_parser = subparsers.add_parser("import", help="Read one snapshot JSON and restore workspace files")
-    import_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    import_parser.add_argument("--snapshot-path", help="Input snapshot JSON path (default: snapshots/<book-name>.json)")
-
-    clone_parser = subparsers.add_parser("clone", help="Clone one workspace book into another book folder")
-    clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
-    clone_parser.add_argument("--target-book-name", required=True, help="New target book folder name")
-
-    layout_parser = subparsers.add_parser("layout", help="Generate prompts/content for a book or use the legacy dummy writer")
-    layout_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    layout_parser.add_argument(
-        "--chapter-count",
-        type=_positive_int,
-        help="Optional. Number of chapter folders to create when layout auto-initializes a missing workspace.",
-    )
-    layout_parser.add_argument(
-        "--mode",
-        choices=("genai", "dummy"),
-        default="genai",
-        help="Layout mode. 'genai' creates prompts and JSON from the model; 'dummy' keeps the old sample-content flow.",
-    )
-    layout_parser.add_argument("--gist", help="Optional novel gist. If omitted in genai mode, you will be prompted.")
-    layout_parser.add_argument(
-        "--no-cache",
-        action="store_true",
-        help="Disable GenAI response caching for the layout command.",
-    )
-    layout_parser.add_argument(
-        "--human-in-loop",
-        action="store_true",
-        help="Enable optional per-chapter manual refinement note during layout.",
-    )
-    layout_parser.add_argument(
-        "--no-randomize-thoughts",
-        action="store_true",
-        help="Disable randomized refinement thought injection for chapter context.",
-    )
-
-    draft_parser = subparsers.add_parser(
-        "draft",
-        help="Write chapter-by-chapter story outputs from BookOutline and ChapterParameter context",
-    )
-    draft_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    draft_parser.add_argument(
-        "--chapter-count",
-        type=_positive_int,
-        help="Optional. Number of chapter folders to create when draft auto-initializes a missing workspace.",
-    )
-    draft_parser.add_argument(
-        "--gist",
-        help="Optional novel gist override. If omitted, gist is read from BookOutline.json when available.",
-    )
-    draft_parser.add_argument(
-        "--no-cache",
-        action="store_true",
-        help="Disable GenAI response caching for the draft command.",
-    )
-
-    publish_parser = subparsers.add_parser(
-        "publish",
-        help="Append chapter generated text into a single BookPublished.txt file",
-    )
-    publish_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    publish_parser.add_argument(
-        "--output-path",
-        help="Optional output file path (default: <workspace>/<book-name>/BookPublished.txt)",
-    )
-
-    read_parser = subparsers.add_parser(
-        "read",
-        help="Read and print BookPublished.txt for a book",
-    )
-    read_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-
-    rm_parser = subparsers.add_parser(
-        "rm",
-        help="Remove one book folder from workspace root",
-    )
-    rm_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
-    rm_parser.add_argument(
-        "--yes",
-        action="store_true",
-        help="Required confirmation flag for deletion.",
-    )
-
-    purge_parser = subparsers.add_parser(
-        "purge",
-        help="Remove all book folders under workspace root",
-    )
-    purge_parser.add_argument(
-        "--yes",
-        action="store_true",
-        help="Required confirmation flag for deleting all books.",
-    )
-
-    for command_parser in (
-        init_parser,
-        list_parser,
-        export_parser,
-        import_parser,
-        clone_parser,
-        layout_parser,
-        draft_parser,
-        publish_parser,
-        read_parser,
-        rm_parser,
-        purge_parser,
-    ):
-        _add_runtime_flags(command_parser)
+    # Parse from sys.argv[1:] so the command is included as a positional
+    args = flag_parser.parse_args(sys.argv[1:])
+    return args
 
     argv = sys.argv[1:]
     if not argv:
@@ -331,6 +244,351 @@ def parse_args() -> argparse.Namespace:
         args.debug = False
     return args
 
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    # Subcommands
+    init_parser = subparsers.add_parser("init", help="Initialize a new book workspace")
+    init_parser.add_argument("--book-name", required=True, help="Book folder name to create under workspace root.")
+    init_parser.add_argument("--chapter-count", type=int, help="Number of chapter folders to create (optional)")
+
+    list_parser = subparsers.add_parser("list", help="List all books in workspace")
+
+    export_parser = subparsers.add_parser("export", help="Export workspace to JSON snapshot")
+    export_parser.add_argument("--book-name", required=True, help="Book folder name under workspace root")
+    export_parser.add_argument("--snapshot-path", help="Output snapshot JSON path (default: snapshots/<book-name>.json)")
+
+    import_parser = subparsers.add_parser("import", help="Import workspace from JSON snapshot")
+    import_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    import_parser.add_argument("--snapshot-path", help="Input snapshot JSON path (default: snapshots/<book-name>.json)")
+
+    clone_parser = subparsers.add_parser("clone", help="Clone a book workspace")
+    clone_parser.add_argument("--source-book-name", required=True, help="Existing source book folder name")
+    clone_parser.add_argument("--target-book-name", required=True, help="New target book folder name")
+
+    layout_parser = subparsers.add_parser("layout", help="Layout book structure and generate content")
+    layout_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    layout_parser.add_argument("--gist", help="Short summary or gist for the book")
+    layout_parser.add_argument("--chapter-count", type=int, help="Number of chapters (optional)")
+    layout_parser.add_argument("--mode", default="default", choices=["default", "dummy"], help="Layout mode (default or dummy)")
+    layout_parser.add_argument("--no-cache", action="store_true", help="Disable cache usage")
+    layout_parser.add_argument("--no-randomize-thoughts", action="store_true", help="Disable randomization of thoughts")
+    layout_parser.add_argument("--human-in-loop", action="store_true", help="Enable human-in-the-loop mode")
+
+    draft_parser = subparsers.add_parser("draft", help="Draft chapters for a book")
+    draft_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    draft_parser.add_argument("--chapter-count", type=int, help="Number of chapters (optional)")
+    draft_parser.add_argument("--gist", help="Short summary or gist for the book (optional)")
+    draft_parser.add_argument("--no-cache", action="store_true", help="Disable cache usage")
+
+    publish_parser = subparsers.add_parser("publish", help="Append chapter generated text into a single BookPublished.txt file")
+    publish_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    publish_parser.add_argument("--output-path", help="Optional output file path (default: <workspace>/<book-name>/BookPublished.txt)")
+
+    read_parser = subparsers.add_parser("read", help="Read and print BookPublished.txt for a book")
+    read_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+
+    rm_parser = subparsers.add_parser("rm", help="Remove one book folder from workspace root")
+    rm_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+    rm_parser.add_argument("--yes", action="store_true", help="Required confirmation flag for deletion.")
+
+    purge_parser = subparsers.add_parser("purge", help="Remove all book folders under workspace root")
+    purge_parser.add_argument("--yes", action="store_true", help="Required confirmation flag for deleting all books.")
+
+    # Add runtime flags to all subcommands
+    for command_parser in (
+        init_parser, list_parser, export_parser, import_parser, clone_parser,
+        layout_parser, draft_parser, publish_parser, read_parser, rm_parser, purge_parser
+    ):
+        _add_runtime_flags(command_parser)
+
+    args = parser.parse_args()
+    if not hasattr(args, 'json'):
+        args.json = False
+    if not hasattr(args, 'debug'):
+        args.debug = False
+    return parser, args
+# Add runtime flags to a subcommand parser
+def _add_runtime_flags(parser):
+    parser.add_argument('--json', action='store_true', help='Emit JSON logs for all output')
+    parser.add_argument('--debug', action='store_true', help='Show full stack trace on error')
+    parser.add_argument('--verbose', action='store_true', help='Show verbose output')
+# Ensure global variables are initialized
+_GLOBAL_SNAPSHOT_MANAGER = None
+_GLOBAL_WORKSPACE_SNAPSHOT = None
+
+import argparse
+import json
+from dataclasses import dataclass
+# Import asdict for dataclass serialization
+from dataclasses import asdict
+# from __future__ import annotations
+from pathlib import Path
+from lib.io.factory import AbstractSnapshotManager
+from lib.io import build_snapshot_manager_from_files
+# Import WorkspaceSnapshot for singleton management
+from lib.models.workspace import WorkspaceSnapshot
+# Import datetime and timezone for timestamps
+from datetime import datetime, timezone
+# Import platform for system information
+import platform
+# Import os for environment variables
+import os
+# Import write_generated_content for layout
+from lib.writer.write import write_generated_content
+# Import WorkspaceSnapshot for singleton management
+from lib.models.workspace import WorkspaceSnapshot
+# Import datetime and timezone for timestamps
+from datetime import datetime, timezone
+# Import platform for system information
+import platform
+# Import WorkspaceSnapshot for singleton management
+from lib.models.workspace import WorkspaceSnapshot
+# Import datetime and timezone for timestamps
+from datetime import datetime, timezone
+# Import WorkspaceSnapshot for singleton management
+from lib.models.workspace import WorkspaceSnapshot
+# Minimal placeholder for _ensure_config to fix NameError
+
+
+# --- Author class with all public run_* methods ---
+class Author:
+    @staticmethod
+    def run_init(args: argparse.Namespace) -> None:
+        _emit_verbose(args, event="init.start", message=f"Running init for '{args.book_name}'")
+        manager = _build_manager(args)
+        book_path = manager.initialize_workspace(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            number_of_chapters=args.chapter_count,
+        )
+        published_path = manager.get_published_path(workspace_root=args.workspace_root, book_name=args.book_name)
+        manager.write_text_file(published_path, manager.read_text_file(published_path))
+
+        settings = _build_project_settings(args, manager)
+        settings_string = _serialize_project_settings(settings)
+
+        settings_path = manager.get_book_file_path("Settings.json", args.workspace_root, args.book_name)
+        manager.write_text_file(settings_path, settings_string)
+
+        snapshot = manager.read_from_workspace(args.workspace_root, args.book_name)
+        snapshot.rootFiles["Settings.json"] = settings_string
+        snapshot_path = _resolve_snapshot_path(args)
+        manager.write_snapshot_json(snapshot, snapshot_path)
+
+        print(f"Structure created at: {book_path}")
+        print(f"Settings initialized at: {settings_path}")
+        print(f"Publish target initialized at: {published_path}")
+        print(f"Snapshot exported: {snapshot_path}")
+
+    @staticmethod
+    def run_list(args: argparse.Namespace) -> None:
+        _emit_verbose(
+            args,
+            event="list.start",
+            message=f"Listing books under: .pkbook/_workspace",
+        )
+        manager = _build_manager(args)
+        book_names = manager.list_book_names(args.workspace_root)
+
+        if not book_names:
+            print(f"No books found in: .pkbook/_workspace")
+            return
+
+        print("book_name\tchapter_count")
+        for book_name in book_names:
+            manager.book_name = book_name
+            try:
+                settings = manager.load_project_settings()
+                chapter_count: int | str = settings.chapter_count
+            except (ValueError, OSError, KeyError):
+                chapter_count = manager.discover_chapter_numbers()
+                chapter_count = len(chapter_count) if chapter_count else "unknown"
+            print(f"{book_name}\t{chapter_count}")
+
+    @staticmethod
+    def run_export(args: argparse.Namespace) -> None:
+        _emit_verbose(args, event="export.start", message=f"Running export for '{args.book_name}'")
+        manager = _build_manager(args)
+        snapshot_path = _resolve_snapshot_path(args)
+        manager.export_workspace_to_json(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            snapshot_path=snapshot_path,
+        )
+        print(f"Snapshot exported: {snapshot_path}")
+
+    @staticmethod
+    def run_import(args: argparse.Namespace) -> None:
+        _emit_verbose(args, event="import.start", message=f"Running import for '{args.book_name}'")
+        manager = _build_manager(args)
+        snapshot_path = _resolve_snapshot_path(args)
+        snapshot = manager.load_snapshot_json(snapshot_path)
+        manager.restore_to_workspace(
+            snapshot=snapshot,
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+        )
+        print(f"Snapshot imported: {snapshot_path}")
+
+    @staticmethod
+    def run_clone(args: argparse.Namespace) -> None:
+        _emit_verbose(
+            args,
+            event="clone.start",
+            message=f"Running clone from '{args.source_book_name}' to '{args.target_book_name}'",
+        )
+        manager = _build_manager(args)
+        manager.clone_workspace(
+            workspace_root=args.workspace_root,
+            source_book_name=args.source_book_name,
+            target_book_name=args.target_book_name,
+        )
+        print(f"Book cloned: {args.source_book_name} -> {args.target_book_name}")
+
+    @staticmethod
+    def run_layout(args: argparse.Namespace) -> None:
+        _emit_verbose(args, event="layout.start", message=f"Running layout for '{args.book_name}' in mode '{args.mode}'")
+        _ensure_layout_initialized(args)
+        if args.mode == "dummy":
+            book_path = write_dummy_content(
+                workspace_root=args.workspace_root,
+                book_name=args.book_name,
+                config_path=args.config_path,
+                chapter_count=args.chapter_count,
+                encoding=args.encoding,
+                verbose=args.verbose or args.json,
+                json_logs=args.json,
+            )
+            print(f"Dummy content written to: {book_path}")
+            return
+
+        book_path = write_generated_content(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            config_path=args.config_path,
+            encoding=args.encoding,
+            gist=args.gist,
+            use_cache=not args.no_cache,
+            randomize_thoughts=not args.no_randomize_thoughts,
+            human_in_loop=args.human_in_loop,
+            verbose=args.verbose or args.json,
+            json_logs=args.json,
+        )
+        print(f"Generated content written to: {book_path}")
+
+    @staticmethod
+    def run_draft(args: argparse.Namespace) -> None:
+        _emit_verbose(
+            args,
+            event="draft.start",
+            message=f"Running draft for '{args.book_name}'",
+            extra={"use_cache": not args.no_cache, "chapter_count": args.chapter_count},
+        )
+        _ensure_layout_initialized(args)
+        book_path = write_authored_content(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            config_path=args.config_path,
+            encoding=args.encoding,
+            gist=args.gist,
+            use_cache=not args.no_cache,
+            verbose=args.verbose or args.json,
+            json_logs=args.json,
+        )
+        _emit_verbose(
+            args,
+            event="draft.done",
+            message=f"Draft completed for '{args.book_name}'",
+            extra={"path": _relative_path_text(book_path)},
+        )
+        print(f"Draft chapter outputs written to: {book_path}")
+
+    @staticmethod
+    def run_publish(args: argparse.Namespace) -> None:
+        _emit_verbose(args, event="publish.start", message=f"Running publish for '{args.book_name}'")
+        output_path = publish_book_content(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+            config_path=args.config_path,
+            output_path=args.output_path,
+            encoding=args.encoding,
+            verbose=args.verbose or args.json,
+            json_logs=args.json,
+        )
+        _emit_verbose(
+            args,
+            event="publish.done",
+            message=f"Publish completed for '{args.book_name}'",
+            extra={"path": _relative_path_text(output_path)},
+        )
+        print(f"Published book output: {output_path}")
+
+    @staticmethod
+    def run_read(args: argparse.Namespace) -> None:
+        manager = _build_manager(args)
+        published_path = manager.get_published_path(
+            workspace_root=args.workspace_root,
+            book_name=args.book_name,
+        )
+        _emit_verbose(
+            args,
+            event="read.start",
+            message=f"Reading published output for '{args.book_name}'",
+            extra={"path": _relative_path_text(published_path)},
+        )
+        if not manager.path_exists(published_path):
+            raise FileNotFoundError(f"Published file not found: {published_path}")
+
+        _print_console_text(manager.read_text_file(published_path))
+
+        _emit_verbose(
+            args,
+            event="read.done",
+            message=f"Read completed for '{args.book_name}'",
+        )
+
+    @staticmethod
+    def run_rm(args: argparse.Namespace) -> None:
+
+# (Argument parsing and parser setup should be handled in a function, not at the module level)
+            parser = argparse.ArgumentParser(description="Book workflow CLI")
+            subparsers = parser.add_subparsers(dest="command", required=True)
+
+            # Subcommands
+            init_parser = subparsers.add_parser("init", help="Initialize a new book workspace")
+            list_parser = subparsers.add_parser("list", help="List all books in workspace")
+            export_parser = subparsers.add_parser("export", help="Export workspace to JSON snapshot")
+            import_parser = subparsers.add_parser("import", help="Import workspace from JSON snapshot")
+            clone_parser = subparsers.add_parser("clone", help="Clone a book workspace")
+            layout_parser = subparsers.add_parser("layout", help="Layout book structure and generate content")
+            draft_parser = subparsers.add_parser("draft", help="Draft chapters for a book")
+            publish_parser = subparsers.add_parser("publish", help="Append chapter generated text into a single BookPublished.txt file")
+            publish_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+            publish_parser.add_argument("--output-path", help="Optional output file path (default: <workspace>/<book-name>/BookPublished.txt)")
+            read_parser = subparsers.add_parser("read", help="Read and print BookPublished.txt for a book")
+            read_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+            rm_parser = subparsers.add_parser("rm", help="Remove one book folder from workspace root")
+            rm_parser.add_argument("--book-name", required=True, help="Target book folder name under workspace root")
+            rm_parser.add_argument("--yes", action="store_true", help="Required confirmation flag for deletion.")
+            purge_parser = subparsers.add_parser("purge", help="Remove all book folders under workspace root")
+            purge_parser.add_argument("--yes", action="store_true", help="Required confirmation flag for deleting all books.")
+
+            # Add runtime flags to all subcommands
+            for command_parser in (
+                init_parser, list_parser, export_parser, import_parser, clone_parser,
+                layout_parser, draft_parser, publish_parser, read_parser, rm_parser, purge_parser
+            ):
+                _add_runtime_flags(command_parser)
+            return parser
+
+
+            parser = build_parser()
+            args = parser.parse_args()
+            if not hasattr(args, 'json'):
+                args.json = False
+            if not hasattr(args, 'debug'):
+                args.debug = False
+            return parser, args
 
 def _resolve_entry_book_name(args: argparse.Namespace) -> str | None:
     if hasattr(args, "book_name") and args.book_name:
@@ -343,23 +601,21 @@ def _resolve_entry_book_name(args: argparse.Namespace) -> str | None:
 
 
 def _bootstrap_entrypoint_singletons(args: argparse.Namespace) -> None:
-    global _GLOBAL_SNAPSHOT_MANAGER
-    global _GLOBAL_WORKSPACE_SNAPSHOT
 
-    if _GLOBAL_SNAPSHOT_MANAGER is not None and _GLOBAL_WORKSPACE_SNAPSHOT is not None:
-        return
 
     entry_book_name = _resolve_entry_book_name(args)
+    encoding = getattr(args, "encoding", "utf-8")
     manager = build_snapshot_manager_from_files(
         config_path=args.config_path,
         workspace_root=args.workspace_root,
         book_name=entry_book_name,
-        encoding=args.encoding,
+        encoding=encoding,
         verbose=args.verbose or args.json,
         json_logs=args.json,
     )
     snapshot = manager.initialize_workspace_snapshot(book_name=entry_book_name)
     WorkspaceSnapshot.set_singleton(snapshot)
+    global _GLOBAL_SNAPSHOT_MANAGER, _GLOBAL_WORKSPACE_SNAPSHOT
     _GLOBAL_SNAPSHOT_MANAGER = manager
     _GLOBAL_WORKSPACE_SNAPSHOT = snapshot
 
@@ -705,47 +961,47 @@ def run_read(args: argparse.Namespace) -> None:
 
 def _dispatch_command(args: argparse.Namespace) -> None:
     if args.command == "init":
-        run_init(args)
+        Author.run_init(args)
         return
 
     if args.command == "list":
-        run_list(args)
+        Author.run_list(args)
         return
 
     if args.command == "export":
-        run_export(args)
+        Author.run_export(args)
         return
 
     if args.command == "import":
-        run_import(args)
+        Author.run_import(args)
         return
 
     if args.command == "clone":
-        run_clone(args)
+        Author.run_clone(args)
         return
 
     if args.command == "layout":
-        run_layout(args)
+        Author.run_layout(args)
         return
 
     if args.command == "draft":
-        run_draft(args)
+        Author.run_draft(args)
         return
 
     if args.command == "publish":
-        run_publish(args)
+        Author.run_publish(args)
         return
 
     if args.command == "read":
-        run_read(args)
+        Author.run_read(args)
         return
 
     if args.command == "rm":
-        run_rm(args)
+        Author.run_rm(args)
         return
 
     if args.command == "purge":
-        run_purge(args)
+        Author.run_purge(args)
         return
 
     raise RuntimeError(f"Unsupported command: {args.command}")
@@ -806,9 +1062,11 @@ def run_purge(args: argparse.Namespace) -> None:
     print(f"Purge completed. Removed {removed_count} book(s) from: .pkbook/_workspace")
 
 
-def main() -> None:
-    _ensure_config(Path(__file__).resolve().parent)
-    args: argparse.Namespace | None = None
+
+# Entrypoint for CLI and for importable use
+def main():
+    args = None
+    import traceback
     try:
         args = parse_args()
         _bootstrap_entrypoint_singletons(args)
@@ -820,12 +1078,10 @@ def main() -> None:
     except SystemExit:
         raise
     except Exception as error:
-        if args is not None and getattr(args, "debug", False):
-            raise
-
         command = args.command if args is not None and hasattr(args, "command") else "startup"
         message = _format_business_error(command, error)
-        if args is not None and (args.verbose or args.json):
+        traceback.print_exc()
+        if args is not None and (getattr(args, "verbose", False) or getattr(args, "json", False)):
             _emit_verbose(
                 args,
                 event=f"{command}.error",
@@ -837,7 +1093,6 @@ def main() -> None:
             )
         print(message)
         raise SystemExit(1)
-
 
 if __name__ == "__main__":
     main()

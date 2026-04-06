@@ -17,5 +17,4 @@ Requirements:
 - Keep the response focused on this chapter only.
 - Preserve alignment with the novel outline and running summary.
 - Keep the output as a single JSON object.
-- Write 'chapter_text' at least 4000 words.
-- All the content to in bengali script.
+- Generate at least 6 Segments per chapter.

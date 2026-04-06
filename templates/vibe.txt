@@ -1,0 +1,48 @@
+
+This is a {Book} writing project. This is a human and machine collaboration. Workflow uses input variables and folder/file naming conventions from ./templates/init.json.
+
+User input:
+- {Book}Gist (Input/Start)
+
+Workflow1 (Book Layout):
+    - Create Layout (Process Container):
+        - Create workspace folder: ./pkbook/{Book}/
+        - Create book root files: {Settings.json}, {BookPrompt.txt}, {BookOutline.json}, {BookRunningSummary.txt}, {BookPublished.txt}
+    - HumanTemplate: ./templates/book_prompt.txt
+    - OutputJson: ./templates/book.json
+    - Generate Prompt: Save as ./pkbook/{Book}/BookPrompt.txt
+    - Call AI
+    - SaveOutput: Save as ./pkbook/{Book}/BookPromptResult.txt
+    - ProvideOutputJson: Extract JSON, save as ./pkbook/{Book}/BookOutline.json
+    - Run Workflow2 for each chapter in BookOutline.json
+
+Workflow2 (Chapter Layout):
+    - For each chapter (from {start} to {end}, folder: {chapterFolderPattern}):
+        - Create folder: ./pkbook/{Book}/Chapters/{chapterFolderPattern}
+        - Create chapter files: {ChapterParameter.json}, {ChapterPrompt.txt}
+        - HumanTemplate: ./templates/chapter_prompt.txt
+        - OutputJson: ./templates/chapter.json
+        - Generate Prompt: Save as ./pkbook/{Book}/Chapters/{chapterFolderPattern}/ChapterPrompt.txt
+        - Call AI
+        - SaveOutput: Save as ./pkbook/{Book}/Chapters/{chapterFolderPattern}/ChapterPromptResult.txt
+        - ProvideOutputJson: Extract JSON, save as ./pkbook/{Book}/Chapters/{chapterFolderPattern}/ChapterParameter.json
+        - Create chapter out folder: {chapterOutFolderPattern}, files: {ChapterSummary.txt}, {ChapterCharacter.txt}, {ChapterGenerated.txt}
+        - Run Workflow3 for each segment in chapter
+
+Workflow3 (Segment Layout):
+    - For each segment (from {segments.start} to {segments.end}, folder: {segmentFolderPattern}):
+        - Create folder: ./pkbook/{Book}/Chapters/{chapterFolderPattern}/{segmentFolderPattern}
+        - Create segment files: {SegmentParameter.json}, {SegmentPrompt.txt}
+        - HumanTemplate: ./templates/segment_prompt.txt
+        - OutputJson: ./templates/segment.json
+        - Generate Prompt: Save as ./pkbook/{Book}/Chapters/{chapterFolderPattern}/{segmentFolderPattern}/SegmentPrompt.txt
+        - Call AI
+        - SaveOutput: Save as ./pkbook/{Book}/Chapters/{chapterFolderPattern}/{segmentFolderPattern}/SegmentPromptResult.txt
+        - ProvideOutputJson: Extract JSON, save as ./pkbook/{Book}/Chapters/{chapterFolderPattern}/{segmentFolderPattern}/SegmentParameter.json
+        - Create segment out folder: {segmentOutFolderPattern}, files: {SegmentGenerated.txt}
+
+Notes:
+- Use variables from init.json: {Book}, {chapterFolderPattern}, {segmentFolderPattern}, etc.
+- All file/folder names should match the patterns and lists in ./templates/init.json.
+- Update Workflow1 variable "History" (array) after each item is completed.
+

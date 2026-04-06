@@ -94,6 +94,8 @@ Append the content in textfile "<workspace>/<bookname>/BookPublished.txt"
 
 
 Split the write.py features into 5 crew agent 
+
+BookModel
 1) BookLayout (it will create master plan for the book) 
     - The Hook: Start as close to the action as possible.
     - The Goal: Remind the reader what the character wants right now.
@@ -102,14 +104,15 @@ Split the write.py features into 5 crew agent
     - The Dilemma: They realize they have no easy choices left.
     - The Decision: They pick a new Goal, which starts the next chapter.
 
-2) RefinetChapter (It will put additional context to book a) randomize thoughts and optional human in the loop 
+ChapterModel
+1) RefinetChapter (It will put additional context to book a) randomize thoughts and optional human in the loop 
     - Goal: Is it clear what the character wants in this chapter?
     = Conflict: Is the obstacle actually difficult, or is it too easy to solve?
     - Logic: Did anything happen that contradicts an earlier chapter?
     - Sensory: Did I include at least two senses other than sight?
     - Ending: Is there a "hook" that leads into the next chapter's Rationalization?
 
-3) LayoutChapter ( It will create multiple segment of the story for the chapter.
+2) LayoutChapter ( It will create multiple segment of the story for the chapter.
     - Goal: What do they want?
     - Stakes: What happens if they fail? (Adds Worry)
     - Vulnerability: Why is this hard for them specifically? (Adds Connection)
@@ -118,7 +121,10 @@ Split the write.py features into 5 crew agent
     - Rationalize: How do they process the failure and pivot? (Adds Logic)
     - Subversion: What unexpected thing just changed the game? (Adds Surprise)
     - Catharsis: What is the final emotional release? (Adds Satisfaction) 
-4) DraftChapterSegment (It will actually create self independent prompt and save it) 
+
+ChapterSegmentModel
+
+1) DraftChapterSegment (It will actually create self independent prompt and save it) 
     - Chapter Mission: Escape the city before the gates close.
     - Segment 1 Prep:
         - Goal: Get to the horse stables.
@@ -132,7 +138,7 @@ Split the write.py features into 5 crew agent
     - Segment 3 Prep:
         - Pivot: He has the horse, but now he hears the gate bells ringing (Tension/Ticking clock).
         - Goal: Race to the gate before it shuts.
-5) GenerateChapterSegment (It will actually create the content for a segment based on the prompt created in previous step) 
+2) GenerateChapterSegment (It will actually create the content for a segment based on the prompt created in previous step) 
     - Generate content per segement. Add to the chapter_text array.
     - Physical State: What is the character holding? Are they injured? Where are they standing?
     - Emotional State: Is the character feeling more desperate or more confident than they were 5 minutes ago?

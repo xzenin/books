@@ -309,7 +309,7 @@ class CopilotAIChat(GenAIChat):
 
 
 class OllamaChat(GenAIChat):
-    DEFAULT_MODEL = "llama3"
+    DEFAULT_MODEL = "qwen3.5:9b"
     DEFAULT_HOST = "http://127.0.0.1:11434"
 
     def __init__(
