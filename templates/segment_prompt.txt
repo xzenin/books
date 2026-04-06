@@ -27,5 +27,5 @@ Requirements:
 - Preserve alignment with the chapter plan, novel outline, and running summary.
 - Use the segment plan to drive the beat progression.
 - Keep the output as a single JSON object.
-- Write 2000 words at least in Bengali script.
+- Write 200 words at least in Bengali script.
 - Return JSON only with keys from the target output shape.

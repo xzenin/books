@@ -1,7 +1,7 @@
 ﻿{
     "appname": "book",
     "owner": "xzen.in@gmail.com",
-    "version": "1.0.2",
+    "version": "1.0.1",
     "website": "https://www.xzen.in",
     "installed_on": "2026-04-03T00:00:00Z",
     "licence": "lic",
@@ -55,7 +55,7 @@
              {
                 "name": "xzen_groq1",
                 "type": "groq",
-                "key": "xxxxxx",
+                "key": "xxxxxxxxxxxxxxxxx",
                 "model": "llama-3.1-8b-instant",
                 "url": "https://api.groq.com/openai/v1",
                 "timeout_seconds": 240
@@ -63,7 +63,7 @@
             {
                 "name": "editor_groq1",
                 "type": "groq",
-                "key": "xxxxxx",
+                "key": "xxxxxxxxxxxxxxxx",
                 "model": "llama-3.1-8b-instant",
                 "url": "https://api.groq.com/openai/v1",
                 "timeout_seconds": 240
@@ -71,18 +71,27 @@
             {
                 "name": "pareena_groq2",
                 "type": "groq",
-                "key": "xxxxxx",
+                "key": "xxxxxxxxxxxxxxxx",
                 "model": "llama-3.1-8b-instant",
                 "url": "https://api.groq.com/openai/v1",
                 "timeout_seconds": 240
             }
         ],
-        "mapping": {    
-          "default": "ollama1",
-            "segment_level_generation": "ollama1",
-            "chapter_level_generation": "ollama1",
-            "book_level_generation": "ollama1"              
-        }
+                "mapping": {
+                    "default": "ollama1",
+                        "segment_level_generation": "ollama1",
+                        "chapter_level_generation": "ollama1",
+                        "book_level_generation": "ollama1"              
+                }
+    },
+    "chapters": {
+        "start": 1,
+        "end": 3,
+        "chapterFolderPattern": "BookChapters/Chapter{n}",
+        "chapterFiles": ["chapter.txt"],
+        "chapterOutFolderPattern": "BookChapters/Chapter{n}/out",
+        "chapterOutFiles": ["chapter_out.txt"],
+        "count": 3,
+        "titles": ["Chapter 1", "Chapter 2", "Chapter 3"]
     }
 }
-

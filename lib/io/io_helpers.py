@@ -65,6 +65,7 @@ def load_json_file(path: Path, *, encoding: str) -> Any:
 def extract_json_payload(raw: str) -> Any:
     stripped = raw.strip()
     if not stripped:
+        print("[debug][extract_json_payload] Model response is empty or blank. Raw response:", repr(raw))
         raise ValueError("Model response is empty.")
 
     try:

@@ -79,7 +79,7 @@ class SnapshotConfig:
     @classmethod
     def from_json_file(cls, path: str | Path) -> "SnapshotConfig":
         json_path = Path(path)
-        with json_path.open("r", encoding="utf-8") as handle:
+        with json_path.open("r", encoding="utf-8-sig") as handle:
             payload = json.load(handle)
         return cls.from_dict(payload)
 
