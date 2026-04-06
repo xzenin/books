@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import json
@@ -12,7 +12,7 @@ from pathlib import Path
 
 from lib.writer import AbstractSnapshotManager, build_snapshot_manager_from_files
 from lib.models import WorkspaceSnapshot
-from lib.writer.author_assistant import AuthorAssistant
+from lib.writer.write import publish_book_content, write_authored_content, write_dummy_content, write_generated_content
 
 
 _GLOBAL_SNAPSHOT_MANAGER: AbstractSnapshotManager | None = None
@@ -605,7 +605,7 @@ def run_layout(args: argparse.Namespace) -> None:
     _emit_verbose(args, event="layout.start", message=f"Running layout for '{args.book_name}' in mode '{args.mode}'")
     _ensure_layout_initialized(args)
     if args.mode == "dummy":
-        book_path = AuthorAssistant.write_dummy_content(
+        book_path = write_dummy_content(
             workspace_root=args.workspace_root,
             book_name=args.book_name,
             config_path=args.config_path,
@@ -617,7 +617,7 @@ def run_layout(args: argparse.Namespace) -> None:
         print(f"Dummy content written to: {book_path}")
         return
 
-    book_path = AuthorAssistant.write_generated_content(
+    book_path = write_generated_content(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
         config_path=args.config_path,
@@ -640,7 +640,7 @@ def run_draft(args: argparse.Namespace) -> None:
         extra={"use_cache": not args.no_cache, "chapter_count": args.chapter_count},
     )
     _ensure_layout_initialized(args)
-    book_path = AuthorAssistant.write_authored_content(
+    book_path = write_authored_content(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
         config_path=args.config_path,
@@ -661,7 +661,7 @@ def run_draft(args: argparse.Namespace) -> None:
 
 def run_publish(args: argparse.Namespace) -> None:
     _emit_verbose(args, event="publish.start", message=f"Running publish for '{args.book_name}'")
-    output_path = AuthorAssistant.publish_book_content(
+    output_path = publish_book_content(
         workspace_root=args.workspace_root,
         book_name=args.book_name,
         config_path=args.config_path,
