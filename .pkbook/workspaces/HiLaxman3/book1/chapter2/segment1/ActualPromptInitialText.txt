@@ -3,30 +3,36 @@ You have already provided me the storyline and chapter details. Now it is your t
 Since, we have decided to write the chapter segment by segment.
 
 Provided Book summary:
-{book_seed}
-{book_summary}
+রাজা বল্লাল ও যুবরাজ লক্ষ্মণণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।
+রাজা বল্লাল ও যুবরাজ লক্ষ্মণণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।
 
 Current chapter seed:
-{chapter_summary}
+Chapter GoalChapter GoalChapter GoalChapter Goal
 
 Your task is to write the next segment content of a chapter of the book. Return valid JSON only and do not wrap it in markdown.
 
 Write the detailed chapter content and here is the segment segment seed: 
-{segment_seed}
-Try to answer how '{segment_title}' is applied on segment seed.
+লক্ষণ সেনের দিগ্বিজয় যাত্রার প্রথম ধাপ এবং সামন্তদের সাথে তার রাজনৈতিক দ্বন্দ্বের ইঙ্গিত
+Try to answer how 'Chapter Goal' is applied on segment seed.
 
 
 Requirements:
 - Keep the response focused on this segment only.
 - Preserve alignment with the chapter plan, book outline, and running summary.
 - Use the segment plan to drive the beat progression.
-- Randomize the text on {segment_title} , this is very much important to achieve.
-- Write about {number_of_words_per_segment} words at least.
+- Randomize the text on Chapter Goal , this is very much important to achieve.
+- Write about 100 words at least.
 - Return JSON only with keys from the target output shape
 
 All the text must be in Bengali language.
 
 Generate chapter content in 'segment_content' tag in the output shape. Use this JSON shape as the target output:
-{segment_template_json}
+{
+  "segment_index": 1,
+  "segment_title": "জাগরণ",
+  "segment_mood": "উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক",
+  "total_words": 1500,
+  "segment_content": "বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।"
+}
 
 Provide JSON only.

@@ -1,8 +1,10 @@
 {
-  "book_seed": "",
-  "book_summary": "",
-  "chapter_summary": "",
-  "segment_index": "",
-  "segment_seed": "",
-  "segment_template_json": ""
+  "book_seed": "রাজা বল্লাল ও যুবরাজ লক্ষ্মণণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।",
+  "book_summary": "রাজা বল্লাল ও যুবরাজ লক্ষ্মণণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।",
+  "chapter_summary": "নতুন সূর্যের সূচনানতুন সূর্যের সূচনানতুন সূর্যের সূচনানতুন সূর্যের সূচনা",
+  "segment_index": 1,
+  "segment_seed": "লক্ষ্মণ সেনের উত্থান এবং বল্লাল সেনের ভবিষ্যৎ পরিকল্পনা—কনৌজের পতন আসন্ন, কিন্তু তার জয় হবে।",
+  "segment_template_json": "{\r\n  \"segment_index\": 1,\r\n  \"segment_title\": \"জাগরণ\",\r\n  \"segment_mood\": \"উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক\",\r\n  \"total_words\": 1500,\r\n  \"segment_content\": \"বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।\"\r\n}",
+  "segment_title": "নতুন সূর্যের সূচনা",
+  "number_of_words_per_segment": 100
 }
