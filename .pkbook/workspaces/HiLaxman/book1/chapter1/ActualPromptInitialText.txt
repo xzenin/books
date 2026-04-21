@@ -2,21 +2,91 @@ You are a renowned author and novelist. You have published 30 books in Bengali L
 Write the chapter content as request.  Return valid JSON only and do not wrap it in markdown.
 
 Book Summary Or Gist:
-{book_seed}
-{book_summary}
+রাজা বল্লাল ও যুবরাজ লক্ষ্মণণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।
+একাদশ শতাব্দীর শেষভাগ। বল্লাল সেন গৌড়ের সিংহাসনে আসীন। তিনি শুধু রাজ্য জয় করেননি, সমাজ সংস্কার (কৌলিন্য প্রথা) এবং সাহিত্যচর্চাতেও মগ্ন। অন্যদিকে তরুণ রাজপুত্র লক্ষ্মণ সেন একজন অজেয় যোদ্ধা হিসেবে গড়ে উঠছেন, যার লক্ষ্য কনৌজ বিজয় করে আর্যাবর্তে সেন সাম্রাজ্যের শ্রেষ্ঠত্ব প্রমাণ করা। রাজধানী নবদ্বীপে রাজসভায় অর্থনৈতিক সমৃদ্ধির ছবি ফুটে ওঠে।
 
 Your task is to layout the chapter segment for current chapter.
- - chapter summary: {chapter_summary}
+ - chapter summary: একাদশ শতাব্দীর শেষভাগ। বল্লাল সেন গৌড়ের সিংহাসনে আসীন। তিনি শুধু রাজ্য জয় করেননি, সমাজ সংস্কার (কৌলিন্য প্রথা) এবং সাহিত্যচর্চাতেও মগ্ন। অন্যদিকে তরুণ রাজপুত্র লক্ষ্মণ সেন একজন অজেয় যোদ্ধা হিসেবে গড়ে উঠছেন, যার লক্ষ্য কনৌজ বিজয় করে আর্যাবর্তে সেন সাম্রাজ্যের শ্রেষ্ঠত্ব প্রমাণ করা। রাজধানী নবদ্বীপে রাজসভায় অর্থনৈতিক সমৃদ্ধির ছবি ফুটে ওঠে।
 
 Requirements:
-- Create layout of {number_of_segments} segments of chapter.
+- Create layout of 8 segments of chapter.
 - Preserve alignment with the Book Summary and chapter summary.
 - Keep the output as a single JSON object.
 - Follow these examples segments to write the chapter better. The enagement attributes are: 
-	{list_of_paragraphs}
+	
+  - setting_the_scene : স্থান, কাল বা পরিবেশের বর্ণনা দিয়ে গল্পের আবহ তৈরি করা
+  - character_debut : প্রধান চরিত্র বা গুরুত্বপূর্ণ ব্যক্তিত্বের প্রথম উপস্থিতি ও পরিচিতি
+  - initial_mystery : একটি প্রশ্ন, ধাঁধা বা রহস্যের ইঙ্গিত দিয়ে কৌতূহল জাগানো
+  - foreshadowing_hint : ভবিষ্যৎ ঘটনার আবছা ইঙ্গিত বা সম্ভাব্য সংঘাতের পূর্বাভাস
+  - establishing_tone : গল্পের সামগ্রিক মেজাজ বা সুর নির্ধারণ করা (যেমন: নাটকীয়, হাস্যরসাত্মক, রহস্যময়)
+  - hook_moment : পাঠক বা শ্রোতাকে আকৃষ্ট করার জন্য একটি আকর্ষণীয় বাক্য বা ঘটনা
+  - status_quo_description : গল্প শুরুর আগে পরিস্থিতি বা সাধারণ জীবনযাত্রার বর্ণনা
+  - thematic_glimpse : গল্পের মূল বিষয়বস্তু বা বার্তার প্রাথমিক ঝলক
+  - call_to_attention : গুরুত্বপূর্ণ একটি বিষয় বা ধারণার প্রতি মনোযোগ আকর্ষণ
 
 All the text should be in Bengali language.
 Use this JSON shape as the target output:
-{chapter_template_json}
+{
+  "chapter_index": 1,
+  "name": "উচ্চাকাঙ্ক্ষার উদয়",
+  "chapter_title": "সিংহাসনের ছায়া",
+  "book_name": "LAXMANSEN",
+  "book_long_title": "কনৌজ বিজয়: বাংলার গৌরবময় অধ্যায় – বল্লাল সেন ও লক্ষ্মণ সেনের অমর কাহিনি",
+  "chapter_summary": "লক্ষ্মণ সেন শুধু রাজ্য জয় করেননি, সমাজ সংস্কার এবং সাহিত্যচর্চাতেও মগ্ন। অন্যদিকে তরুণ রাজপুত্র লক্ষ্মণ সেন একজন অজেয় যোদ্ধা হিসেবে গড়ে উঠছেন, যার লক্ষ্য কনৌজ বিজয় করে আর্যাবর্তে সেন সাম্রাজ্যের শ্রেষ্ঠত্ব প্রমাণ করা।",
+  "chapter_segments": [
+    {
+      "segment_index": 1,
+      "name": "segment-1",
+      "segment_title": "Chapter Goal",
+      "segment_seed": "লক্ষণ সেনের দিগ্বিজয় যাত্রার প্রথম ধাপ এবং সামন্তদের সাথে তার রাজনৈতিক দ্বন্দ্বের ইঙ্গিত"
+    },
+    {
+      "segment_index": 2,
+      "name": "segment-2",
+      "segment_title": "Chapter Stakes",
+      "segment_seed": "তৎকালীন বাংলার রাজনৈতিক পরিস্থিতি এবং সেন রাজবংশের বংশগত পরম্পরার ঐতিহাসিক তথ্যের বিশ্লেষণ এখানে দিতে হবে।"
+    }
+  ],
+  "references": [
+    {
+      "no": "1",
+      "reference": "History of the Senas - R.C. Majumdar",
+      "weblink": "https://archive.org/details/historyofbengal01maju"
+    },
+    {
+      "no": "2",
+      "reference": "Ballala Charita (English Translation)",
+      "weblink": "https://google.com/search?q=Ballala+Charita+summary"
+    }
+  ],
+  "included_characters": [
+    {
+      "sl": 1,
+      "friendly_name": "বিশ্বরূপ বিশ্বাস (নাট্যকার/লক্ষণ সেনের রূপকার)"
+    },
+    {
+      "sl": 2,
+      "friendly_name": "মোহিত কাঞ্জিলাল (নির্দেশক)"
+    },
+    {
+      "sl": 3,
+      "friendly_name": "বল্লাল সেন (মহারাজ)"
+    },
+    {
+      "sl": 4,
+      "friendly_name": "লক্ষ্মণ সেন (যুবরাজ)"
+    }
+  ],
+  "historical_accuracy": "তৎকালীন বাংলার রাজনৈতিক পরিস্থিতি এবং সেন রাজবংশের বংশগত পরম্পরার ঐতিহাসিক তথ্যের বিশ্লেষণ এখানে দিতে হবে।",
+  "human_in_the_loop": "লেখক হিসেবে আপনি কীভাবে আধুনিক জাতীয়তাবাদ ও প্রাচীন গৌরবের মধ্যে সেতুবন্ধন করেছেন তার ব্যাখ্যা।",
+  "literary_style": "ধ্রুপদী বাংলা এবং আধুনিক সংলাপের সংমিশ্রণ।",
+  "symbolism_and_motifs": "বাতায়ন, তরবারি, দিল্লির ময়দান বনাম বিক্রমপুরের রাজপ্রাসাদের রূপক।",
+  "history": [
+    {
+      "segment_count": 1,
+      "running_summary": "পরবর্তী অধ্যায়ে লক্ষণ সেনের দিগ্বিজয় যাত্রার প্রথম ধাপ এবং সামন্তদের সাথে তার রাজনৈতিক দ্বন্দ্বের ইঙ্গিত।"
+    }
+  ]
+}
 
 Provide JSON only.
