@@ -1,0 +1,24 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 6,
+  "ParentKey": "275a7037-627c-4f7d-aa11-4cb48c0b0a8b",
+  "Key": "6fe59e9b-a924-4229-9068-6493a9df7244",
+  "Name": "segment",
+  "InstanceName": "segment6",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment(6)",
+    "Index": 6,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "RadhikaQa/book1/chapter2/segment6"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}
