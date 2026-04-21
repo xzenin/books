@@ -1,0 +1,13 @@
+{
+  "Name": "ChapterWorkflowActivity",
+  "MethodName": "Layout",
+  "ActivityType": "ChapterWorkflowActivity",
+  "Index": 1,
+  "ParentActivity": "Layout",
+  "Stage": 90,
+  "WorkflowActivityType": 0,
+  "Error": null,
+  "ValidReturn": true,
+  "CreatedOn": "2026-04-21T23:55:38.5243032+05:30",
+  "UpdatedOn": "2026-04-21T23:56:04.3314023+05:30"
+}
