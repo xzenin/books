@@ -1,7 +1,1 @@
-{
-  "segment_index": 1,
-  "segment_title": "জাগরণ",
-  "segment_mood": "উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক",
-  "total_words": 1500,
-  "segment_content": "বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।"
-}
+"```json\n{\n  \"segment_index\": 1,\n  \"segment_title\": \"জাগরণ\",\n  \"segment_mood\": \"উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক\",\n  \"total_words\": 1500,\n  \"segment_content\": \" eighteenth-century Bengal was a landscape perpetually shadowed by British influence. The then-paramount power of the Sena dynasty, anchored in a formidable network of territories, was constrained by the Crown’s relentless expansion.  The political landscape was a precarious balance, with the Sena rulers constantly navigating the complexities of regional power struggles and attempts at legitimacy.  The seeds of change, however, were beginning to sprout, stirring whispers of rebellion and a yearning for autonomy – the nascent stages of ‘লক্ষণ সেনের দিগ্বিজয় যাত্রার প্রথম ধাপ’ – a pivotal moment that would reshape the very foundations of Bengal’s future.  The kingdom’s prosperity hinged on a delicate equilibrium, reliant on controlling trade and exploiting resources, which facilitated a shift from mere military dominance toward a more strategically-focused model, creating a new avenue for economic growth.  This burgeoning potential, fueled by burgeoning trade routes, offered a beacon of hope, showcasing the Sena’s capacity to establish significant economic influence, positioning them as a key player in the evolving imperial landscape.\"\n}\n```"
