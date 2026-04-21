@@ -1,0 +1,4 @@
+System.ArgumentNullException: Value cannot be null. (Parameter 'source')
+   at System.Linq.ThrowHelper.ThrowArgumentNullException(ExceptionArgument argument)
+   at System.Linq.Enumerable.Append[TSource](IEnumerable`1 source, TSource element)
+   at kobi.workflows.SegmentWorkflowActivity.Internal_Draft() in D:\lab\visualstudio\xzen\BookWriter\kobi\workflows\SegmentWorkflowActivity.cs:line 243
