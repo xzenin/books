@@ -1,0 +1,24 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 4,
+  "ParentKey": "a2723970-39e7-4f20-bf03-72b0ef2eb387",
+  "Key": "5ef3e89e-a2a5-4bc9-bcac-9f102a6d0b75",
+  "Name": "segment",
+  "InstanceName": "segment4",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment(6)",
+    "Index": 4,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "Ghora/book1/chapter2/segment4"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

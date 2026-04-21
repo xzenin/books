@@ -1,0 +1,24 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 6,
+  "ParentKey": "36d3cc53-b9be-4442-b826-fc2b2bd23e49",
+  "Key": "843dbf4a-5dac-4c9d-94ee-68c2c8af9703",
+  "Name": "segment",
+  "InstanceName": "segment6",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment(6)",
+    "Index": 6,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "RastaMand/book1/chapter2/segment6"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

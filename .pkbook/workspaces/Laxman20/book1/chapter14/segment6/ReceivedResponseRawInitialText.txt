@@ -1,0 +1,1 @@
+"{\"error\":\"HTTP TooManyRequests: {\\\"error\\\":\\\"you (yetagile) have reached your session usage limit, upgrade for higher limits: https://ollama.com/upgrade (ref: 027a000f-7d7b-4a17-af62-78bdbea1c4da)\\\"}\\n\"}"

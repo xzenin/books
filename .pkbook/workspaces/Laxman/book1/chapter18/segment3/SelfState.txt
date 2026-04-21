@@ -1,0 +1,24 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 3,
+  "ParentKey": "8bed6816-7d85-43f0-a8c2-361264e94fa2",
+  "Key": "f7d28b69-6c8c-4c9a-99a7-1138e2d035e2",
+  "Name": "segment",
+  "InstanceName": "segment3",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment(6)",
+    "Index": 3,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "Laxman/book1/chapter18/segment3"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

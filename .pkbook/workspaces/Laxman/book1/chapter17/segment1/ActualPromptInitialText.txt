@@ -1,0 +1,38 @@
+You are a renowned author and novelist. You have published 30 books in Bengali Literature.
+You have already provided me the storyline and chapter details. Now it is your turn to write the actual content of the chapter.
+Since, we have decided to write the chapter segment by segment.
+
+Write the requested segment content of a chapter of the book. Return valid JSON only and do not wrap it in markdown.
+
+Book summary:
+রাজা বল্লাল ও যুবরাজ লক্ষ্মণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।
+কনৌজ বিজয়: বাংলার গৌরবময় অধ্যায় – বল্লাল সেন ও লক্ষ্মণ সেনের অমর কাহিনি
+
+Current chapter seed:
+বখতিয়ার খিলজির ছদ্মবেশী আক্রমণ এবং নবদ্বীপের পতন। মাত্র আঠারো জন অশ্বারোহী নিয়ে ঘোড়া ব্যবসায়ীর বেশে রাজপ্রাসাদে অতর্কিতে হানা। মধ্যাহ্ন ভোজনে লিপ্ত লক্ষ্মণ সেনের অপ্রস্তুত অবস্থা এবং নিরুপায় হয়ে পেছনের দরজা দিয়ে নৌকায় বিক্রমপুরের দিকে যাত্রা। বাংলার ইতিহাসের এক চরম নাটকীয় ও করুণ মুহূর্ত।
+
+Write the paragraphs for Segment index: 1
+
+Here is your topic of the segment and details of segment seed: ইখতিয়ার উদ্দিন বখতিয়ার খিলজির লক্ষ্য ছিল সামনাসামনি যুদ্ধ এড়িয়ে বুদ্ধিবৃত্তিক চালে গৌড়ের হৃৎপিণ্ড নবদ্বীপ দখল করা। তিনি জানতেন সেনদের বিশাল বাহিনীর সাথে সমানে সমান যুদ্ধ জেতা দুঃসাধ্য, তাই তিনি ঘোড়া ব্যবসায়ীর ছদ্মবেশ নিলেন।
+
+
+Requirements:
+- Keep the response focused on this segment only.
+- Preserve alignment with the chapter plan, book outline, and running summary.
+- Use the segment plan to drive the beat progression.
+- Keep the output as a single JSON object.
+- Write about 100 words at least.
+- Return JSON only with keys from the target output shape
+
+All the text must be in Bengali language.
+
+Use this JSON shape as the target output:
+{
+  "segment_index": 1,
+  "segment_title": "জাগরণ",
+  "segment_mood": "উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক",
+  "total_words": 1500,
+  "segment_content": "বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।"
+}
+
+Provide JSON only.

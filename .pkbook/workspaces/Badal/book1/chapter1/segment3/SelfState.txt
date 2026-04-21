@@ -1,0 +1,24 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 3,
+  "ParentKey": "2db55b44-d6ce-445b-9598-32f1b7d1fddc",
+  "Key": "5a89fa60-465f-4f26-a6ee-bc05a7c4af55",
+  "Name": "segment",
+  "InstanceName": "segment3",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment(6)",
+    "Index": 3,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "Badal/book1/chapter1/segment3"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

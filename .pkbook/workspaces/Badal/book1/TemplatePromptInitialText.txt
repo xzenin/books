@@ -1,0 +1,19 @@
+You are a renowned author and novelist. You have published 30 books in Bengali Literature. Your task is to write a book based on the provided book seed. 
+Create a JSON for a book layout for a given book seed.     
+  
+Book Summary Or Gist:
+{book_seed}
+ 
+Requirements:
+- Layout the book in a structured format with chapters.
+- Make the storyline engaging and captivating for readers.
+- Chapter details should include chapter title, and chapter summary.
+- Please generate exactly {chapter_count} chapters.
+- Fill the chapter_title, chapter_summary ( with minimum {chapter_summary_word_count} words) fields for each chapter. It is a must.
+- Keep the output as a single JSON object.
+
+Use this JSON shape as the target output:
+{book_template_json}
+
+All the text should be in Bengali language.
+Return valid JSON only and do not wrap it in markdown.

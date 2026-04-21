@@ -1,0 +1,24 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 1,
+  "ParentKey": "85309b66-2ef2-4d44-9132-83e5a89b9c86",
+  "Key": "9b00149e-f001-422a-8f77-b0629e123721",
+  "Name": "segment",
+  "InstanceName": "segment1",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment(3)",
+    "Index": 1,
+    "InstanceCount": 3,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "Bari/book2/chapter1/segment1"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}
