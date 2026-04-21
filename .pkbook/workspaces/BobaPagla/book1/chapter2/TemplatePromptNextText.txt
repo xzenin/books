@@ -1,0 +1,13 @@
+Write the Next Chapter:
+
+Current chapter summary:
+{chapter_summary}
+
+Here are enagement attributes. Your task is to create segment for each one of them are: 
+   {list_of_paragraphs}
+
+All the text should be in Bengali language.
+Use this JSON shape as the target output:
+{chapter_template_json}
+
+Provide JSON only.
