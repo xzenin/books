@@ -1,10 +1,8 @@
 {
-  "book_seed": "রাজা বল্লাল ও যুবরাজ লক্ষ্মণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।",
-  "book_summary": "রাজা বল্লাল ও যুবরাজ লক্ষ্মণের আদর্শগত পার্থক্য এবং গৌড়ের সামরিক উত্থানের সূচনা।",
+  "book_seed": "",
+  "book_summary": "",
   "chapter_summary": "",
-  "segment_index": 4,
-  "segment_seed": "কনৌজের রাজনৈতিক ক্ষমতা কিভাবে বৃদ্ধি পাচ্ছে? লক্ষ্মণ সেন কিভাবে নিজের throne-এ ascended-এর লক্ষ্য প্রমাণ করা?",
-  "segment_template_json": "{\r\n  \"segment_index\": 1,\r\n  \"segment_title\": \"জাগরণ\",\r\n  \"segment_mood\": \"উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক\",\r\n  \"total_words\": 1500,\r\n  \"segment_content\": \"বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।\"\r\n}",
-  "segment_title": null,
-  "number_of_words_per_segment": 100
+  "segment_index": "",
+  "segment_seed": "",
+  "segment_template_json": ""
 }

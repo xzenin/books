@@ -4,8 +4,8 @@
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
   "Id": 1,
-  "ParentKey": "a61a6967-a48c-4d25-8618-80907b897e0c",
-  "Key": "d44ba089-4ae2-4d4d-a238-dae7f441d570",
+  "ParentKey": "7e3ea266-c608-4a96-af37-bb349b258ce3",
+  "Key": "6298834a-954d-4c74-b6d7-e11959187dbd",
   "Name": "segment",
   "InstanceName": "segment1",
   "MetaData": {
