@@ -1,1 +1,0 @@
-Get-Process | Select-Object -First 10 | copilot -p "What are these processes doing?" -s 

@@ -1,0 +1,130 @@
+﻿{
+  "appname": "book",
+  "owner": "xzen.in@gmail.com",
+  "version": "1.0.1",
+  "website": "https://www.xzen.in",
+  "installed_on": "2026-04-03T00:00:00Z",
+  "licence": "lic",
+  "log": {
+    "level": "info",
+    "file": ".pkbook/_logs/book.log",
+    "file_roling": "daily",
+    "content_type": "json"
+  },
+  "snapshot": {
+    "storage-type": "filesystem",
+    "config": {
+      "base_path": ".pkbook/snapshots"
+    }
+  },
+  "project": {
+
+  },
+  "genai": {
+    "usecase": {
+      "default": "ollama_pool",
+      "segment_generation": "all_pool",
+      "chapter_generation": "ollama_pool",
+      "book_generation": "ollama_pool"
+    },
+    "pools": {
+      "default_client": [ "localai1" ],
+      "ollama_pool": [ "ollama1", "ollama2" ],
+      "copilot_pool": [ "geminicli1" ],
+      "google_pool": [ "pool10", "pool20", "pool30", "pool40" ],
+      "all_pool": [ "ollama1", "pool10", "ollama2", "pool20", "geminicli1", "pool30", "ollama3", "pool40" ]
+    },
+    "credentials": [
+      {
+        "name": "localai1",
+        "email": "localai@gmail.com",
+        "model": "gemma-4-e4b-it",
+        "key": "fake-key-for-local-testing",
+        "sdktype": "localai",
+        "url": "http://localhost:8080",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "geminicli1",
+        "email": "localai@gmail.com",
+        "model": "gemma-4-e4b-it",
+        "key": "fake-key-for-local-testing",
+        "sdktype": "localai",
+        "url": "http://localhost:8080",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "copilot1",
+        "email": "account1@gmail.com",
+        "type": "copilot",
+        "key": "copilot_key",
+        "model": "gpt-4o",
+        "url": "https://api.copilot.xzen.in/v1/generate",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "ollama1",
+        "email": "account1@gmail.com",
+        "sdktype": "ollama",
+        "key": "ollama_key",
+        "model": "gemini-3-flash-preview:cloud",
+        "url": "http://localhost:11434",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "ollama2",
+        "email": "account1@gmail.com",
+        "sdktype": "ollama",
+        "key": "ollama_key",
+        "model": "gemini-3-flash-preview",
+        "url": "http://localhost:11434",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "ollama3",
+        "email": "account1@gmail.com",
+        "sdktype": "ollama",
+        "key": "ollama_key",
+        "model": "gemini-3-flash-preview:cloud",
+        "url": "http://localhost:11434",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "pool10",
+        "email": "yet.agile@gmail.com",
+        "model": "gemini-2.5-flash-lite",
+        "key": "--todo--",
+        "sdktype": "google",
+        "url": "https://api.copilot.xzen.in/v1/generate",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "pool20",
+        "email": "xzen.in@gmail.com",
+        "model": "gemini-2.5-flash-lite",
+        "key": "--todo--",
+        "sdktype": "google",
+        "url": "https://api.copilot.xzen.in/v1/generate",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "pool30",
+        "email": "ankika.oncloud@gmail.com",
+        "model": "gemini-2.5-flash-lite",
+        "key": "--todo--",
+        "sdktype": "google",
+        "url": "https://api.copilot.xzen.in/v1/generate",
+        "timeout_seconds": 240
+      },
+      {
+        "name": "pool40",
+        "email": "pareenaom@gmail.com",
+        "model": "gemini-2.5-flash-lite",
+        "key": "--todo--",
+        "sdktype": "google",
+        "url": "https://api.copilot.xzen.in/v1/generate",
+        "timeout_seconds": 240
+      }
+    ]    
+  }
+}

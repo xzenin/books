@@ -1,1 +1,0 @@
-Create a segmented chapter plan with 3 to 7 segments. For each segment, specify: Goal, Stakes, Vulnerability, Conflict, Tension, Rationalize, Subversion, Catharsis. Return JSON only.
