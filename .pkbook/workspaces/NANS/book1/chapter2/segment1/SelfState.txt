@@ -1,0 +1,25 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": null,
+  "Id": 1,
+  "ParentKey": "3a9b9113-b961-489a-9232-ad118a70aafa",
+  "Key": "5cea01e2-84d5-4ae7-b978-1d86e495d03d",
+  "Name": "segment",
+  "InstanceName": "segment1",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 1,
+    "InstanceCount": 4,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "NANS/book1/chapter2/segment1"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}
