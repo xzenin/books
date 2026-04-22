@@ -1,0 +1,16 @@
+Thanks for writing the previous segment of the chapter.
+Can you write the next detailed segment content. Here is the segment seeds: গান কেবল সুর নয়, গান হলো নিজেকে জানার আয়না। ভবানন্দের ছোট ছোট গুনগুনানি আসলে তার আত্মার এক গভীর আর্তনাদ, যা পরমাত্মার সাথে মিলনের পথ খুঁজছে।
+
+Try to answer how 'আত্মার অন্বেষণ' is applied on segment seed.
+Randomize the text on আত্মার অন্বেষণ , this is very much important to achieve.
+
+Generate chapter content in 'segment_content' tag in the output shape. Use this JSON shape as the target output:
+{
+  "segment_index": 1,
+  "segment_title": "জাগরণ",
+  "segment_mood": "উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক",
+  "total_words": 1500,
+  "segment_content": "বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।"
+}
+
+Provide JSON only.

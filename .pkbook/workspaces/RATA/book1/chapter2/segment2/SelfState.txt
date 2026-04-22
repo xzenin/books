@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 2,
+    "name": "character_debut",
+    "segment_title": "ভবা পাগলার নবজন্ম",
+    "segment_seed": "সাধারণ যুবক ভবানন্দ এখন সর্বজনবিদিত ভবা পাগলা। এলোমেলো চুল, কপালে তিলক, অঙ্গে সামান্য বসন কিন্তু চোখে এক অপার্থিব উজ্জ্বলতা। তাঁর উপস্থিতিতেই এক শান্তিময় গাম্ভীর্য নেমে আসে, যা তাঁকে সাধারণের ভিড়েও অনন্য করে তোলে।"
+  },
   "Id": 2,
-  "ParentKey": "d0fbdead-5403-450f-a730-0ae6298a277c",
-  "Key": "9b3b7ce5-b238-4703-ab26-de431b02d7d4",
+  "ParentKey": "2f1ba876-da82-4e32-8fbb-84163db49e11",
+  "Key": "2784a376-3a7f-40ad-8251-54c60b2b548f",
   "Name": "segment",
   "InstanceName": "segment2",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 2,
-    "InstanceCount": 4,
+    "InstanceCount": 2,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "RATA/book1/chapter2/segment2"
   },

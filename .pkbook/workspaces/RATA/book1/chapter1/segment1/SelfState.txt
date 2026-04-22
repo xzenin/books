@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 1,
+    "name": "setting_the_scene",
+    "segment_title": "প্রকৃতির আঙিনায় এক শান্ত সকাল",
+    "segment_seed": "পদ্মা তীরের এক নামহীন গ্রাম, যেখানে ভোরের কুয়াশা মেখে নদীর জল গান গায়। আম্রকাননের ছায়া আর ধানের ক্ষেতের সবুজ গালিচায় মোড়া এই পল্লীপ্রান্তরই ভবানন্দের বেড়ে ওঠার শৈল্পিক ক্যানভাস।"
+  },
   "Id": 1,
-  "ParentKey": "3b9eac21-b729-4449-b9c2-952675ff3eee",
-  "Key": "067c6300-09bb-4d85-9f78-3ba3b29dbb8a",
+  "ParentKey": "650b4c61-1b4f-49d7-8794-adf8d939b7e7",
+  "Key": "7231cb7e-102b-4945-ab20-05635ad23a21",
   "Name": "segment",
   "InstanceName": "segment1",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 1,
-    "InstanceCount": 4,
+    "InstanceCount": 1,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "RATA/book1/chapter1/segment1"
   },

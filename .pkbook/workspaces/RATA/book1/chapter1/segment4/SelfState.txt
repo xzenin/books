@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 4,
+    "name": "initial_mystery",
+    "segment_title": "বাতাসের ফিসফিসানি",
+    "segment_seed": "নদীর ধারে একাকী বসে থাকা ভবানন্দ কার সাথে কথা বলে? বাতাসের শব্দে সে কি কোনো গোপন বার্তা পায়, যা সাধারণ মানুষের কানে পৌঁছায় না? তার এই অন্যমনস্কতা কি পাগলামি নাকি দিব্যজ্ঞান?"
+  },
   "Id": 4,
-  "ParentKey": "3b9eac21-b729-4449-b9c2-952675ff3eee",
-  "Key": "8e71ee9f-4c37-4cc4-be77-04f84cdde7fd",
+  "ParentKey": "650b4c61-1b4f-49d7-8794-adf8d939b7e7",
+  "Key": "e79da8c2-3629-422f-98fb-a5d6c56d05d0",
   "Name": "segment",
   "InstanceName": "segment4",
   "MetaData": {

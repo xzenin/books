@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 6,
+    "name": "hook_moment",
+    "segment_title": "একতারা যখন গর্জে ওঠে",
+    "segment_seed": "গানের সুরে সুর মিলিয়ে এক অন্ধ কিশোর হঠাৎ দেখতে পায় মনের আলো। ভবা পাগলা চিৎকার করে বলেন, 'দৃষ্টি বাইরে নয়, ভিতরে ফেরাও!' এই অভাবনীয় মুহূর্তটি পাঠককে গল্পের গভীরে টেনে নিয়ে যায়।"
+  },
+  "Id": 6,
+  "ParentKey": "2f1ba876-da82-4e32-8fbb-84163db49e11",
+  "Key": "16a77936-1864-41f3-ad0b-a0a078cd8d98",
+  "Name": "segment",
+  "InstanceName": "segment6",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 6,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "RATA/book1/chapter2/segment6"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

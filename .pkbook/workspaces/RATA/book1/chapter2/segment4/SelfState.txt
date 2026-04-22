@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 4,
+    "name": "foreshadowing_hint",
+    "segment_title": "অগ্নিপরীক্ষার পূর্বাভাস",
+    "segment_seed": "গানের মাঝেই একদল গোঁড়া মৌলবাদী ও জমিদারী লাঠিয়ালদের আগমনের সংবাদ পাওয়া যায়। ভবার উদার দর্শন ও সব ধর্মের ঊর্ধ্বে মানবতার জয়গান কি সমাজের স্থিতাবস্থাকে বিপন্ন করবে? কোনো বড় সংঘাতের ছায়া দানা বাঁধছে।"
+  },
   "Id": 4,
-  "ParentKey": "d0fbdead-5403-450f-a730-0ae6298a277c",
-  "Key": "69e596d3-5a9b-4d33-8d33-5b6aec8645bb",
+  "ParentKey": "2f1ba876-da82-4e32-8fbb-84163db49e11",
+  "Key": "07224dac-8d8c-46e3-85db-18fd1483cdc8",
   "Name": "segment",
   "InstanceName": "segment4",
   "MetaData": {

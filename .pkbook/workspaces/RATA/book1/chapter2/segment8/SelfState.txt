@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 8,
+    "name": "thematic_glimpse",
+    "segment_title": "মানবতাই পরম ধর্ম",
+    "segment_seed": "ভবা পাগলার গানের মূল নির্যাস—মানুষের সেবাই ঈশ্বরের সেবা। হিন্দু-মুসলিম ভেদাভেদ ভুলে একতারা হাতে মানুষে মানুষে মিলনের যে বীজ তিনি বপন করছেন, তা-ই এই উপন্যাসের মূল দর্শনের প্রতিফলন।"
+  },
+  "Id": 8,
+  "ParentKey": "2f1ba876-da82-4e32-8fbb-84163db49e11",
+  "Key": "ef54cd1a-b55a-4b02-8a55-cb6d325639d4",
+  "Name": "segment",
+  "InstanceName": "segment8",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 8,
+    "InstanceCount": 8,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "RATA/book1/chapter2/segment8"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}
