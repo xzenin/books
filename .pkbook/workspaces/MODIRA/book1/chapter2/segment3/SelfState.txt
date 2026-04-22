@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 3,
+    "name": "initial_mystery",
+    "segment_title": "প্রাণের মাঝে অদেখা পাখি",
+    "segment_seed": "তিনি হঠাৎ গাইতে শুরু করলেন 'মন তুই দেখলি না কি'। গানের কথায় এক গভীর প্রশ্ন—যাকে আমরা খুঁজি সে কি দূরে নাকি শরীরেরই কোনো অজানা কুঠুরিতে লুকিয়ে আছে? এই রহস্যই শ্রোতাদের মনে কৌতূহল জাগায়।"
+  },
   "Id": 3,
-  "ParentKey": "feda97f1-0696-49af-b2a1-41721be67929",
-  "Key": "6db06a8d-a826-4318-b858-a1a601f0c37f",
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "c7d5430e-de8e-4ace-859b-5027ce411437",
   "Name": "segment",
   "InstanceName": "segment3",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 3,
-    "InstanceCount": 4,
+    "InstanceCount": 3,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "MODIRA/book1/chapter2/segment3"
   },

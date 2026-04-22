@@ -1,0 +1,1326 @@
+{
+  "SkipLayoutConfig": {},
+  "Name": "MODIRA",
+  "Template": "book",
+  "Cache": {},
+  "RootActivity": {
+    "Pattern": "workflows/trigger",
+    "Id": 0,
+    "ParentKey": null,
+    "Key": "1f7451a7-b89e-48f8-ae9d-42e220bd4d2b",
+    "Name": "MODIRA",
+    "InstanceName": null,
+    "MetaData": {
+      "Name": "MODIRA",
+      "Description": "This is the root activity of the workflow",
+      "Type": "Trigger",
+      "Index": 1,
+      "InstanceCount": 1,
+      "SourceRelativeKey": "",
+      "TargetRelativeKey": "MODIRA"
+    },
+    "IsDryrun": true,
+    "MaxRetryCount": 3,
+    "SubActivities": [
+      {
+        "BookName": null,
+        "ChapterCount": 0,
+        "PageCount": 0,
+        "Pattern": "workflows/book/chapter(2)",
+        "Model": {
+          "book_name": "ভাব পাগলার গান",
+          "book_long_title": "ভাব পাগলার আধ্যাত্মিক গান: বাংলার লোক-সাধকের দর্শন ও বাউল সুরের মহিমা",
+          "generic": "Folk Literature / Spiritual Biography / Musicology",
+          "era": "Late 19th Century - Early 20th Century",
+          "language": "Bengali",
+          "target_audience": "general public, music lovers, spiritual seekers, students of Bengali culture",
+          "chapter_count": 2,
+          "created_at": "2026-04-22",
+          "user_name": "pijush",
+          "book_seed": "ভাব পাগলা ছিলেন বাংলার এক প্রখ্যাত লোক-সাধক ও গীতিকার, যার হাজার হাজার আধ্যাত্মিক গান গভীর দর্শন ও সরল ভাষায় বাউল ও ভক্তিগীতিতে এক স্থায়ী প্রভাব ফেলেছে।",
+          "book_summary": "এই গ্রন্থটি বাংলার লোক-সাধক ভাব পাগলার জীবন ও তাঁর সঙ্গীতের এক অন্বেষণ। ভাব পাগলা, যিনি তাঁর আধ্যাত্মিক গানগুলির মাধ্যমে বাংলার জনমানসে গভীর প্রভাব ফেলেছিলেন, তিনি ছিলেন বাউল এবং ভক্তিগীতির এক অদ্বিতীয় ধারক ও বাহক। তাঁর গানগুলিতে জীবনের গভীর দার্শনিক প্রশ্নগুলির উত্তর খুঁজে পাওয়া যায়, যা অত্যন্ত সরল এবং প্রাঞ্জল ভাষায় প্রকাশিত। এই বইটিতে ভাব পাগলার জীবনের নানা দিক, তাঁর গানের উৎস, তাঁর আধ্যাত্মিক সাধনা এবং তাঁর সঙ্গীতের মাধ্যমে তিনি সমাজের উপর যে প্রভাব ফেলেছিলেন, তা বিস্তারিতভাবে আলোচনা করা হয়েছে। তাঁর গানের মূল সুরগুলি, যেমন - প্রেম, বিরহ, ঈশ্বর অন্বেষণ, মানব জীবনের নশ্বরতা এবং আত্মার মুক্তি - এগুলি কীভাবে সাধারণ মানুষের হৃদয়ে পৌঁছে গিয়েছিল, তার এক জীবন্ত চিত্র এখানে অঙ্কিত হয়েছে। ভাব পাগলার গান শুধু সঙ্গীত নয়, তা এক জীবন দর্শন, যা আজও মানুষকে পথ দেখায়। তাঁর আধ্যাত্মিকতা এবং মানবতাবোধের প্রকাশ তাঁর প্রতিটি গানেই বিদ্যমান। এই বইয়ের মাধ্যমে পাঠক ভাব পাগলার সেই জগতে প্রবেশ করতে পারবেন, যেখানে সঙ্গীত, দর্শন এবং আধ্যাত্মিকতা মিলেমিশে একাকার হয়ে গেছে।",
+          "chapters": [
+            {
+              "chapter_index": 1,
+              "name": "Chapter 1",
+              "chapter_title": "ভাবের জন্ম: এক সাধকের উদয়",
+              "chapter_summary": "এই অধ্যায়টি ভাব পাগলার জীবনের প্রারম্ভিক পর্যায় এবং তাঁর আধ্যাত্মিক যাত্রার সূচনাকে কেন্দ্র করে আবর্তিত হবে। বাংলার কোনো এক নিভৃত পল্লীগ্রামে তাঁর জন্ম, যেখানে প্রকৃতির সান্নিধ্য এবং সরল জীবনযাত্রা তাঁর মনে গভীর প্রভাব ফেলেছিল। ছোটবেলা থেকেই তিনি ছিলেন অন্যরকম – চঞ্চল প্রকৃতির চেয়েও বেশি নিবিষ্ট, প্রশ্নশীল এবং আধ্যাত্মিকতার প্রতি তাঁর ছিল এক অমোঘ আকর্ষণ। সমাজের প্রচলিত রীতিনীতি, ধর্মীয় গোঁড়ামি এবং মানুষের দুঃখ-কষ্ট তাঁকে ব্যথিত করত। এই অধ্যায়ে বর্ণিত হবে কীভাবে তিনি তাঁর পার্থিব জীবনের বন্ধন ছিন্ন করে এক আধ্যাত্মিক সাধকের পথে যাত্রা শুরু করেন। তাঁর প্রথম গুরু কে ছিলেন, অথবা তিনি কীভাবে নিজেই নিজের পথ খুঁজে নিলেন, সেইসব রহস্যময় অধ্যায়গুলি এখানে উন্মোচিত হবে। তাঁর গানের প্রথম সুর কীভাবে তাঁর হৃদয় থেকে উৎসারিত হয়েছিল, সেই অলৌকিক মুহূর্তের সাক্ষী থাকবে এই অধ্যায়। সেই সময়ে বাংলার সামাজিক ও ধর্মীয় প্রেক্ষাপট কেমন ছিল, যেখানে বাউল ও লোক-সাধনার ধারা প্রচলিত ছিল, তার একটি চিত্রও এখানে তুলে ধরা হবে। ভাব পাগলার গানগুলি কেবল তাঁর ব্যক্তিগত অনুভূতির প্রকাশ ছিল না, বরং সেগুলি ছিল সেই সময়ের বাংলার সাধারণ মানুষের আশা-আকাঙ্ক্ষা, দুঃখ-কষ্ট এবং ঈশ্বর অন্বেষণের প্রতিচ্ছবি। তাঁর সরল অথচ গভীর দর্শন, যা জীবনের অর্থ, ঈশ্বরের স্বরূপ এবং আত্মার মুক্তি নিয়ে প্রশ্ন উত্থাপন করত, তা এখানে বিস্তারিতভাবে আলোচনা করা হবে। এই অধ্যায়ের শেষে পাঠক ভাব পাগলার এক উদীয়মান সত্তার সঙ্গে পরিচিত হবেন, যিনি পরবর্তীকালে বাংলার আধ্যাত্মিক সঙ্গীতে এক নতুন দিগন্ত উন্মোচন করবেন।"
+            },
+            {
+              "chapter_index": 2,
+              "name": "Chapter 2",
+              "chapter_title": "গানের ঝর্ণাধারা: দর্শন ও লোকজীবনের মেলবন্ধন",
+              "chapter_summary": "এই অধ্যায়টি ভাব পাগলার গীতিকার জীবনের স্বর্ণযুগের উপর আলোকপাত করবে। তাঁর রচিত হাজার হাজার আধ্যাত্মিক গান, যা আজও বাংলার ঘরে ঘরে গীত হয়, সেই গানগুলির অন্তর্নিহিত দর্শন, সুর এবং লোকজীবনের সঙ্গে তাদের নিবিড় সম্পর্ক এখানে বিশ্লেষণ করা হবে। ভাব পাগলার গানের প্রধান বৈশিষ্ট্য ছিল তাঁর সরল, প্রাঞ্জল ভাষা এবং গভীর আধ্যাত্মিক ভাব। তিনি ঈশ্বরকে কোনো বিমূর্ত সত্তা হিসেবে নয়, বরং মানুষের হৃদয়ের কাছাকাছি, প্রেমের এবং মিলনের এক অনির্বচনীয় অনুভূতি হিসেবে চিত্রিত করেছেন। তাঁর গানে প্রকৃতির রূপ, ঋতুচক্র, মানব জীবনের নশ্বরতা এবং ক্ষণস্থায়ী সুখ-দুঃখের এক অপূর্ব সমন্বয় দেখা যায়। এই অধ্যায়ে তাঁর বিখ্যাত কিছু গানের বিশ্লেষণ করা হবে, যেখানে তিনি আধ্যাত্মিকতার সঙ্গে জাগতিক জীবনের নানা দিককে যুক্ত করেছেন। যেমন - 'মন তুই দেখলি না কি', 'আমার এই ঘরখানি', 'আয়রে আয় তোরা' - এই ধরনের গানগুলিতে তিনি কীভাবে জীবনের গভীরতম সত্যগুলিকে সাধারণ মানুষের বোধগম্য ভাষায় প্রকাশ করেছেন, তা ব্যাখ্যা করা হবে। তাঁর গানগুলি কেবল ধর্মীয় বা আধ্যাত্মিক স্তরেই সীমাবদ্ধ ছিল না, বরং সেগুলি ছিল সামাজিক জাগরণেরও এক মাধ্যম। তিনি তাঁর গানের মাধ্যমে কুসংস্কার, ভেদাভেদ এবং অন্যায়ের বিরুদ্ধে এক নীরব প্রতিবাদ গড়ে তুলেছিলেন। এই অধ্যায়ে ভাব পাগলার বাউল সম্প্রদায়ের সঙ্গে সম্পর্ক এবং তাঁদের উপর তাঁর প্রভাব নিয়েও আলোচনা করা হবে। তাঁর আধ্যাত্মিক দর্শন কীভাবে পরবর্তী প্রজন্মের বাউল ও লোক-শিল্পীদের অনুপ্রাণিত করেছে, তার একটি চিত্র এখানে তুলে ধরা হবে। সবশেষে, এই অধ্যায়টি ভাব পাগলার সঙ্গীতকে কেবল তাঁর কালের নয়, বরং চিরন্তন এক উত্তরাধিকার হিসেবে প্রতিষ্ঠা করবে, যা আজও মানুষকে আধ্যাত্মিকতার পথে চালিত করে।"
+            }
+          ],
+          "all_characters": [
+            {
+              "character_id": 1,
+              "friendly_name": "ভাব পাগলা",
+              "role": "প্রখ্যাত লোক-সাধক ও গীতিকার",
+              "identity": {
+                "age": "অনির্দিষ্ট (জীবদ্দশায়)",
+                "sex": "পুরুষ",
+                "caste": "অনির্দিষ্ট (লোক-সাধক)"
+              },
+              "psychological_depth": "অন্তর্মুখী, গভীর দার্শনিক চিন্তাভাবনা সম্পন্ন, প্রকৃতির সান্নিধ্যে আধ্যাত্মিক শান্তি অন্বেষণকারী। তাঁর গানে প্রেম, বিরহ, ঈশ্বর অন্বেষণ এবং মানব জীবনের নশ্বরতা ফুটে উঠেছে।"
+            },
+            {
+              "character_id": 2,
+              "friendly_name": "গ্রামের মানুষ",
+              "role": "ভাব পাগলার গানের শ্রোতা ও ভাব-অনুসারী",
+              "identity": {
+                "age": "বিভিন্ন",
+                "sex": "পুরুষ ও মহিলা",
+                "caste": "বিভিন্ন"
+              },
+              "psychological_depth": "সাধারণ গ্রামীণ মানুষ, যারা ভাব পাগলার গান শুনে শান্তি ও আধ্যাত্মিকতার সন্ধান পেত। তারা তাঁর সরল দর্শন ও জীবনযাত্রায় অনুপ্রাণিত হত।"
+            },
+            {
+              "character_id": 3,
+              "friendly_name": "সমকালীন বাউল সাধক",
+              "role": "ভাব পাগলার সমসাময়িক বাউল শিল্পী",
+              "identity": {
+                "age": "বিভিন্ন",
+                "sex": "পুরুষ",
+                "caste": "বাউল সম্প্রদায়"
+              },
+              "psychological_depth": "ভাব পাগলার গানের গভীরতা ও সরলতাকে সম্মান করতেন এবং তাঁর দ্বারা প্রভাবিত হয়েছিলেন। তারা তাঁর আধ্যাত্মিকতাকে নিজেদের সাধনার অংশ করে নিয়েছিল।"
+            }
+          ],
+          "history": [
+            {
+              "chapter_count": 2,
+              "running_summary": "পরবর্তী অধ্যায়গুলিতে ভাব পাগলার গানের প্রভাব, তাঁর আধ্যাত্মিকতার গভীরতা এবং পরবর্তী প্রজন্মের উপর তাঁর দীর্ঘস্থায়ী উত্তরাধিকার নিয়ে আলোচনা করা হবে।"
+            }
+          ]
+        },
+        "Id": 1,
+        "ParentKey": "1f7451a7-b89e-48f8-ae9d-42e220bd4d2b",
+        "Key": "d6303e49-5243-40ca-9cd9-223d86e19c20",
+        "Name": "book",
+        "InstanceName": "book1",
+        "MetaData": {
+          "Name": "book",
+          "Description": "",
+          "Type": "book",
+          "Index": 1,
+          "InstanceCount": 1,
+          "SourceRelativeKey": "/book",
+          "TargetRelativeKey": "MODIRA/book1"
+        },
+        "IsDryrun": true,
+        "MaxRetryCount": 3,
+        "SubActivities": [
+          {
+            "BookName": null,
+            "ChapterCount": 0,
+            "PageCount": 0,
+            "Pattern": "workflows/book/chapters/chapter(1)",
+            "Model": {
+              "chapter_index": 1,
+              "name": "Chapter 1",
+              "chapter_title": "ভাবের জন্ম: এক সাধকের উদয়",
+              "chapter_summary": "এই অধ্যায়টি ভাব পাগলার জীবনের প্রারম্ভিক পর্যায় এবং তাঁর আধ্যাত্মিক যাত্রার সূচনাকে কেন্দ্র করে আবর্তিত হবে। বাংলার কোনো এক নিভৃত পল্লীগ্রামে তাঁর জন্ম, যেখানে প্রকৃতির সান্নিধ্য এবং সরল জীবনযাত্রা তাঁর মনে গভীর প্রভাব ফেলেছিল। ছোটবেলা থেকেই তিনি ছিলেন অন্যরকম – চঞ্চল প্রকৃতির চেয়েও বেশি নিবিষ্ট, প্রশ্নশীল এবং আধ্যাত্মিকতার প্রতি তাঁর ছিল এক অমোঘ আকর্ষণ। সমাজের প্রচলিত রীতিনীতি, ধর্মীয় গোঁড়ামি এবং মানুষের দুঃখ-কষ্ট তাঁকে ব্যথিত করত। এই অধ্যায়ে বর্ণিত হবে কীভাবে তিনি তাঁর পার্থিব জীবনের বন্ধন ছিন্ন করে এক আধ্যাত্মিক সাধকের পথে যাত্রা শুরু করেন। তাঁর প্রথম গুরু কে ছিলেন, অথবা তিনি কীভাবে নিজেই নিজের পথ খুঁজে নিলেন, সেইসব রহস্যময় অধ্যায়গুলি এখানে উন্মোচিত হবে। তাঁর গানের প্রথম সুর কীভাবে তাঁর হৃদয় থেকে উৎসারিত হয়েছিল, সেই অলৌকিক মুহূর্তের সাক্ষী থাকবে এই অধ্যায়। সেই সময়ে বাংলার সামাজিক ও ধর্মীয় প্রেক্ষাপট কেমন ছিল, যেখানে বাউল ও লোক-সাধনার ধারা প্রচলিত ছিল, তার একটি চিত্রও এখানে তুলে ধরা হবে। ভাব পাগলার গানগুলি কেবল তাঁর ব্যক্তিগত অনুভূতির প্রকাশ ছিল না, বরং সেগুলি ছিল সেই সময়ের বাংলার সাধারণ মানুষের আশা-আকাঙ্ক্ষা, দুঃখ-কষ্ট এবং ঈশ্বর অন্বেষণের প্রতিচ্ছবি। তাঁর সরল অথচ গভীর দর্শন, যা জীবনের অর্থ, ঈশ্বরের স্বরূপ এবং আত্মার মুক্তি নিয়ে প্রশ্ন উত্থাপন করত, তা এখানে বিস্তারিতভাবে আলোচনা করা হবে। এই অধ্যায়ের শেষে পাঠক ভাব পাগলার এক উদীয়মান সত্তার সঙ্গে পরিচিত হবেন, যিনি পরবর্তীকালে বাংলার আধ্যাত্মিক সঙ্গীতে এক নতুন দিগন্ত উন্মোচন করবেন।"
+            },
+            "Id": 1,
+            "ParentKey": "d6303e49-5243-40ca-9cd9-223d86e19c20",
+            "Key": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+            "Name": "chapter",
+            "InstanceName": "chapter1",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 1,
+              "InstanceCount": 2,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "MODIRA/book1/chapter1"
+            },
+            "IsDryrun": true,
+            "MaxRetryCount": 3,
+            "SubActivities": [
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 1,
+                  "name": "setting_the_scene",
+                  "segment_title": "পল্লীবাংলার নিভৃত আঙিনায়",
+                  "segment_seed": "ভোরের কুয়াশাচ্ছন্ন পদ্মা নদীর তীর এবং মাটির সোঁদা গন্ধে ঘেরা একটি গ্রাম। যেখানে পাখির ডাক আর খোল-করতালের শব্দে প্রকৃতি জেগে ওঠে, সেখানেই এক আধ্যাত্মিক মহীরুহের অঙ্কুরোদ্গম ঘটে।"
+                },
+                "Id": 1,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "ba2d8564-ffb7-4f28-8fcb-4b66fccb4c6d",
+                "Name": "segment",
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 1,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment1"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 2,
+                  "name": "status_quo_description",
+                  "segment_title": "সংসার ও সরল জীবনযাত্রা",
+                  "segment_seed": "তৎকালীন বাংলার সাধারণ মানুষের জীবন ছিল অত্যন্ত সাদাসিধে। দারিদ্র্য থাকলেও সেখানে ছিল প্রাণের টান। লোক-উৎসব আর কীর্তনের আসরে সাধারণ মানুষের ভক্তিপূর্ণ সহাবস্থানের এক নিখুঁত ছবি।"
+                },
+                "Id": 2,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "066c7c62-9a20-48a6-b14a-9701b74268ab",
+                "Name": "segment",
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment2"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 3,
+                  "name": "character_debut",
+                  "segment_title": "চঞ্চল বালক থেকে ভাবাতুর কিশোর",
+                  "segment_seed": "গ্রামের ধুলোবালিতে খেলে বেড়ানো এক কিশোর, যার চোখে সবসময় এক গভীর রহস্যের ছায়া। সংসারের কাজে মন নেই, বরং সে খুঁজে ফেরে বাতাসের বাঁশি আর উদাসী বাউলের একতারা।"
+                },
+                "Id": 3,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "f27a2e51-6b84-49e2-8756-cc18c0dfc4d6",
+                "Name": "segment",
+                "InstanceName": "segment3",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 3,
+                  "InstanceCount": 3,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment3"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 4,
+                  "name": "establishing_tone",
+                  "segment_title": "মরমী সুরের স্পন্দন",
+                  "segment_seed": "গল্পের মেজাজ এখানে ধীর ও ভাবুক। পার্থিব জগতের কোলাহলের আড়ালে যে এক নিস্তব্ধ আধ্যাত্মিক জগত আছে, তার প্রতি এক সূক্ষ্ম আকর্ষণ ও ভক্তির সুর এখানে ধ্বনিত হবে।"
+                },
+                "Id": 4,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "43cc52e5-3008-45be-86cc-c87754a3e035",
+                "Name": "segment",
+                "InstanceName": "segment4",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 4,
+                  "InstanceCount": 4,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment4"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 5,
+                  "name": "initial_mystery",
+                  "segment_title": "অচিন পাখির ইশারা",
+                  "segment_seed": "মাঝরাতে হঠাৎ শোনা যাওয়া এক অলৌকিক গানের সুর। কোথা থেকে আসে সেই শব্দ? কিশোর ভাব পাগলার মনে প্রশ্ন জাগে—কে সেইজন যে হৃদয়ের গোপন কুঠুরিতে বসে বাঁশি বাজায়?"
+                },
+                "Id": 5,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "eda0e413-bb38-4ae3-babd-c7875149b325",
+                "Name": "segment",
+                "InstanceName": "segment5",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 5,
+                  "InstanceCount": 5,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment5"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 6,
+                  "name": "thematic_glimpse",
+                  "segment_title": "মানব ধর্ম ও আত্মার মুক্তি",
+                  "segment_seed": "মানুষের ভেতরের ভেদাভেদ ও ধর্মীয় গোঁড়ামির ঊর্ধ্বে গিয়ে 'মানুষ ভজা'র প্রাথমিক দর্শন। আত্মার মুক্তি কি কেবল সন্ন্যাসে, নাকি সুরের মাঝে নিজেকে বিলীন করে দেওয়ায়?"
+                },
+                "Id": 6,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "0d5eb55a-64bd-4f4d-b503-8bf030d4e529",
+                "Name": "segment",
+                "InstanceName": "segment6",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 6,
+                  "InstanceCount": 6,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment6"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 7,
+                  "name": "foreshadowing_hint",
+                  "segment_title": "গৃহত্যাগের প্রচ্ছন্ন সংকেত",
+                  "segment_seed": "সংসারের শিকল আলগা হতে শুরু করেছে। একদিন ধুলোমাখা পথে একলা বেরিয়ে পড়ার যে অদম্য ইচ্ছা কিশোর মনে বাসা বাঁধছে, তা ভবিষ্যতে এক মহান সাধকের পথপ্রদর্শক হবে।"
+                },
+                "Id": 7,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "9d4aa5a2-fe68-4d07-8d3b-ec2fba611611",
+                "Name": "segment",
+                "InstanceName": "segment7",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 7,
+                  "InstanceCount": 7,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment7"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 8,
+                  "name": "hook_moment",
+                  "segment_title": "প্রথম সুরের অভিপ্রকাশ",
+                  "segment_seed": "কণ্ঠ দিয়ে বেরিয়ে এলো এক অদ্ভুত গান, যা আগে কেউ শোনেনি। গ্রামের লোক অবাক হয়ে দেখল—এই চেনা ছেলেটি যেন আর আগের মতো নেই, সে এখন 'ভাবের' নেশায় মত্ত এক পাগল।"
+                },
+                "Id": 8,
+                "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+                "Key": "c784ad87-f100-4afc-b3c4-89837d594e4f",
+                "Name": "segment",
+                "InstanceName": "segment8",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 8,
+                  "InstanceCount": 8,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter1/segment8"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              }
+            ],
+            "Tag": {}
+          },
+          {
+            "BookName": null,
+            "ChapterCount": 0,
+            "PageCount": 0,
+            "Pattern": "workflows/book/chapters/chapter(1)",
+            "Model": {
+              "chapter_index": 2,
+              "name": "Chapter 2",
+              "chapter_title": "গানের ঝর্ণাধারা: দর্শন ও লোকজীবনের মেলবন্ধন",
+              "chapter_summary": "এই অধ্যায়টি ভাব পাগলার গীতিকার জীবনের স্বর্ণযুগের উপর আলোকপাত করবে। তাঁর রচিত হাজার হাজার আধ্যাত্মিক গান, যা আজও বাংলার ঘরে ঘরে গীত হয়, সেই গানগুলির অন্তর্নিহিত দর্শন, সুর এবং লোকজীবনের সঙ্গে তাদের নিবিড় সম্পর্ক এখানে বিশ্লেষণ করা হবে। ভাব পাগলার গানের প্রধান বৈশিষ্ট্য ছিল তাঁর সরল, প্রাঞ্জল ভাষা এবং গভীর আধ্যাত্মিক ভাব। তিনি ঈশ্বরকে কোনো বিমূর্ত সত্তা হিসেবে নয়, বরং মানুষের হৃদয়ের কাছাকাছি, প্রেমের এবং মিলনের এক অনির্বচনীয় অনুভূতি হিসেবে চিত্রিত করেছেন। তাঁর গানে প্রকৃতির রূপ, ঋতুচক্র, মানব জীবনের নশ্বরতা এবং ক্ষণস্থায়ী সুখ-দুঃখের এক অপূর্ব সমন্বয় দেখা যায়। এই অধ্যায়ে তাঁর বিখ্যাত কিছু গানের বিশ্লেষণ করা হবে, যেখানে তিনি আধ্যাত্মিকতার সঙ্গে জাগতিক জীবনের নানা দিককে যুক্ত করেছেন। যেমন - 'মন তুই দেখলি না কি', 'আমার এই ঘরখানি', 'আয়রে আয় তোরা' - এই ধরনের গানগুলিতে তিনি কীভাবে জীবনের গভীরতম সত্যগুলিকে সাধারণ মানুষের বোধগম্য ভাষায় প্রকাশ করেছেন, তা ব্যাখ্যা করা হবে। তাঁর গানগুলি কেবল ধর্মীয় বা আধ্যাত্মিক স্তরেই সীমাবদ্ধ ছিল না, বরং সেগুলি ছিল সামাজিক জাগরণেরও এক মাধ্যম। তিনি তাঁর গানের মাধ্যমে কুসংস্কার, ভেদাভেদ এবং অন্যায়ের বিরুদ্ধে এক নীরব প্রতিবাদ গড়ে তুলেছিলেন। এই অধ্যায়ে ভাব পাগলার বাউল সম্প্রদায়ের সঙ্গে সম্পর্ক এবং তাঁদের উপর তাঁর প্রভাব নিয়েও আলোচনা করা হবে। তাঁর আধ্যাত্মিক দর্শন কীভাবে পরবর্তী প্রজন্মের বাউল ও লোক-শিল্পীদের অনুপ্রাণিত করেছে, তার একটি চিত্র এখানে তুলে ধরা হবে। সবশেষে, এই অধ্যায়টি ভাব পাগলার সঙ্গীতকে কেবল তাঁর কালের নয়, বরং চিরন্তন এক উত্তরাধিকার হিসেবে প্রতিষ্ঠা করবে, যা আজও মানুষকে আধ্যাত্মিকতার পথে চালিত করে।"
+            },
+            "Id": 2,
+            "ParentKey": "d6303e49-5243-40ca-9cd9-223d86e19c20",
+            "Key": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+            "Name": "chapter",
+            "InstanceName": "chapter2",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 2,
+              "InstanceCount": 2,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "MODIRA/book1/chapter2"
+            },
+            "IsDryrun": true,
+            "MaxRetryCount": 3,
+            "SubActivities": [
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 1,
+                  "name": "setting_the_scene",
+                  "segment_title": "কলুইবাড়ির আঙিনায় সুরের মেলা",
+                  "segment_seed": "বর্ষাকালের এক স্নিগ্ধ সন্ধ্যা, কলুইবাড়ির আশ্রম প্রাঙ্গণে ধুনির পাশে বসে আছেন ভাব পাগলা। চারিদিকে ভক্তদের ভিড়, খোল-করতালের মৃদু আওয়াজ আর মাটির সোঁদা গন্ধে এক মরমী পরিবেশ তৈরি হয়েছে।"
+                },
+                "Id": 1,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "11a0c72e-cc47-431a-abb4-d759323c78f7",
+                "Name": "segment",
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 1,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment1"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 2,
+                  "name": "character_debut",
+                  "segment_title": "পাগলার ভাবাবেশ",
+                  "segment_seed": "ছিপছিপে গড়ন, এলোমেলো চুল আর চোখে এক অপার্থিব দৃষ্টি নিয়ে ভাব পাগলার প্রবেশ। কোনো প্রথাগত পণ্ডিত নন, বরং এক সহজ মানুষ যার মুখে সারাক্ষণ লেগে আছে এক রহস্যময় আধ্যাত্মিক হাসি।"
+                },
+                "Id": 2,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "71faf1a1-d140-4d00-ae57-99fa267b6d52",
+                "Name": "segment",
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment2"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 3,
+                  "name": "initial_mystery",
+                  "segment_title": "প্রাণের মাঝে অদেখা পাখি",
+                  "segment_seed": "তিনি হঠাৎ গাইতে শুরু করলেন 'মন তুই দেখলি না কি'। গানের কথায় এক গভীর প্রশ্ন—যাকে আমরা খুঁজি সে কি দূরে নাকি শরীরেরই কোনো অজানা কুঠুরিতে লুকিয়ে আছে? এই রহস্যই শ্রোতাদের মনে কৌতূহল জাগায়।"
+                },
+                "Id": 3,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "c7d5430e-de8e-4ace-859b-5027ce411437",
+                "Name": "segment",
+                "InstanceName": "segment3",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 3,
+                  "InstanceCount": 3,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment3"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 4,
+                  "name": "foreshadowing_hint",
+                  "segment_title": "আগামী দিনের বীজবপন",
+                  "segment_seed": "তাঁর প্রতিটি গানের কলি যেন ভবিষ্যৎ বাউলদের জন্য এক একটি দিশারি। এই সুরগুলো যে একদিন কাঁটাতারের বেড়া পেরিয়ে দুই বাংলার একতার মন্ত্র হবে, তার এক ক্ষীণ আভাস পাওয়া যায়।"
+                },
+                "Id": 4,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "3f959fc0-ceca-4ecb-8dbe-7d9ec23a07cd",
+                "Name": "segment",
+                "InstanceName": "segment4",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 4,
+                  "InstanceCount": 4,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment4"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 5,
+                  "name": "establishing_tone",
+                  "segment_title": "সহজ মানুষের সহজ কথা",
+                  "segment_seed": "গদ্যের সুরটি এখানে স্নিগ্ধ অথচ দার্শনিক। কোনো কঠিন তত্ত্ব নয়, বরং সংসারের তুচ্ছ কাজের মাধ্যমেও কীভাবে ঈশ্বরকে পাওয়া যায়, সেই সহজ সুরটিই পুরো অধ্যায়ে আধিপত্য বিস্তার করবে।"
+                },
+                "Id": 5,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "9f936b1c-da1f-4b74-8c66-b1ef19cbb379",
+                "Name": "segment",
+                "InstanceName": "segment5",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 5,
+                  "InstanceCount": 5,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment5"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 6,
+                  "name": "hook_moment",
+                  "segment_title": "ঘরের মাঝে অচিন ঘর",
+                  "segment_seed": "'আমার এই ঘরখানি' গানটি যখন তিনি ধরলেন, উপস্থিত সবার চোখের কোণে জল এল। তিনি দেখালেন, আমাদের দেহ আসলে এক নশ্বর কুটির, কিন্তু তার ভেতরে বাস করেন অবিনশ্বর পরমত্মা।"
+                },
+                "Id": 6,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "8da03e9b-7b5d-40db-bdc6-727dcdf06235",
+                "Name": "segment",
+                "InstanceName": "segment6",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 6,
+                  "InstanceCount": 6,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment6"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 7,
+                  "name": "status_quo_description",
+                  "segment_title": "তৎকালীন লোকসমাজের চিত্র",
+                  "segment_seed": "তৎকালীন গ্রামবাংলার সাধারণ মানুষ যখন শাস্ত্রীয় জটিলতায় দিশেহারা, তখন ভাব পাগলার গান তাদের কাছে জল ও বাতাসের মতো সহজলভ্য আধ্যাত্মিক খাদ্য হিসেবে কাজ করত।"
+                },
+                "Id": 7,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "82ef5f8c-e2d3-4bec-9f36-8909bb1e6ffd",
+                "Name": "segment",
+                "InstanceName": "segment7",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 7,
+                  "InstanceCount": 7,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment7"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              },
+              {
+                "BookName": null,
+                "ChapterCount": 0,
+                "PageCount": 0,
+                "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+                "Model": {
+                  "segment_index": 8,
+                  "name": "thematic_glimpse",
+                  "segment_title": "মানব ধর্মই পরম ধর্ম",
+                  "segment_seed": "অধ্যায়ের শেষে এক ঝলক সত্য প্রকাশিত হয়—ভাব পাগলার কাছে হিন্দু-মুসলমান ভেদ ছিল না। তাঁর গান ছিল কুসংস্কারের বিরুদ্ধে নীরব বিপ্লব এবং প্রেমের মাধ্যমে মানবতার জয়গান।"
+                },
+                "Id": 8,
+                "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+                "Key": "4268b019-9e8c-4dfb-b1a9-4cacd7133a4a",
+                "Name": "segment",
+                "InstanceName": "segment8",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 8,
+                  "InstanceCount": 8,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "MODIRA/book1/chapter2/segment8"
+                },
+                "IsDryrun": true,
+                "MaxRetryCount": 3,
+                "SubActivities": [],
+                "Tag": {}
+              }
+            ],
+            "Tag": {}
+          }
+        ],
+        "Tag": {}
+      }
+    ],
+    "Tag": {}
+  },
+  "ViewBag": {},
+  "Storage": {
+    "MasterDatabase": [],
+    "Name": "workflow",
+    "Type": "Disk",
+    "RootPath": "D:\\lab\\github\\books\\.pkbook\\workspaces"
+  },
+  "Source": {
+    "MasterDatabase": [],
+    "Name": "template",
+    "Type": "Disk",
+    "RootPath": "D:\\lab\\visualstudio\\xzen\\BookWriter\\kobi\\bin\\Debug\\net8.0\\templates\\latest"
+  },
+  "Project": {
+    "ID": "RUN2304202612",
+    "BookName": "MODIRA",
+    "TemplateType": "latest",
+    "ChapterCount": 2,
+    "SegmentCount": 2,
+    "SkipBookLayout": false,
+    "SkipChapterLayout": false,
+    "IterationPattern": "next",
+    "NumberOfWordPerSegment": 1000,
+    "StartRootPath": "D:\\lab\\github\\books",
+    "DateCreated": "2026-04-22T18:45:07.1111634Z",
+    "Location": "BISWAS",
+    "User": "pijush",
+    "WorkspaceRoot": "D:\\lab\\github\\books\\.pkbook\\workspaces",
+    "ConfigFilePath": "D:\\lab\\visualstudio\\xzen\\BookWriter\\kobi\\bin\\Debug\\net8.0\\config.json",
+    "Encoding": "utf-8",
+    "Verbose": true,
+    "Debug": false,
+    "Json": false,
+    "Command": "publish",
+    "Mode": null,
+    "Seed": "Bhaba Pagla was a renowned folk mystic and composer from Bengal whose thousands of spiritual songs, blending deep philosophy with simple language, have left a lasting impact on Baul and devotional music",
+    "NoCache": false,
+    "HumanInLoop": false,
+    "NoRandomizeThoughts": false,
+    "OutputPath": "BookPublished.txt",
+    "SnapshotPath": "D:\\lab\\github\\books\\.pkbook\\workspaces\\snapshots",
+    "SourceBookName": null,
+    "TargetBookName": null,
+    "Yes": false,
+    "ForceRewrite": false,
+    "Version": false,
+    "Skip": "segment",
+    "TemplateRoot": "D:\\lab\\visualstudio\\xzen\\BookWriter\\kobi\\bin\\Debug\\net8.0\\templates\\latest",
+    "ExcludeRule": {}
+  },
+  "Config": {
+    "appname": "book",
+    "owner": "xzen.in@gmail.com",
+    "version": "1.0.1",
+    "website": "https://www.xzen.in",
+    "installed_on": "2026-04-03T00:00:00Z",
+    "licence": "lic",
+    "log": {
+      "level": "info",
+      "file": ".pkbook/_logs/book.log",
+      "file_roling": "daily",
+      "content_type": "json"
+    },
+    "snapshot": {
+      "storage-type": "filesystem",
+      "config": {
+        "base_path": ".pkbook/snapshots"
+      }
+    },
+    "genai": {
+      "credentials": [
+        {
+          "name": "ollama31b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma4:31b-cloud",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "localai1",
+          "email": "localai@gmail.com",
+          "type": null,
+          "sdktype": "localai",
+          "model": "gemma-4-e4b-it",
+          "api_key": null,
+          "key": "fake-key-for-local-testing",
+          "url": "http://localhost:8080",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "geminicli1",
+          "email": "localai@gmail.com",
+          "type": null,
+          "sdktype": "localai",
+          "model": "gemma-4-e4b-it",
+          "api_key": null,
+          "key": "fake-key-for-local-testing",
+          "url": "http://localhost:8080",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "copilot1",
+          "email": "account1@gmail.com",
+          "type": "copilot",
+          "sdktype": null,
+          "model": "gpt-4o",
+          "api_key": null,
+          "key": "copilot_key",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "ollama1b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma3:1b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "ollama1previewloud",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemini-3-flash-preview:latest",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "ollama3",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma3:1b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool10",
+          "email": "yet.agile@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemini-2.5-flash-lite",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool20",
+          "email": "xzen.in@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemini-2.5-flash-lite",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool30",
+          "email": "ankika.oncloud@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemini-2.5-flash-lite",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool40",
+          "email": "pareenaom@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemini-2.5-flash-lite",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        }
+      ],
+      "pools": {
+        "default_client": [
+          "localai1"
+        ],
+        "ollama_local": [
+          "ollama1b"
+        ],
+        "ollama_cloud": [
+          "ollama1previewloud"
+        ],
+        "copilot_pool": [
+          "geminicli1"
+        ],
+        "google_pool": [
+          "pool10",
+          "pool20",
+          "pool30",
+          "pool40"
+        ],
+        "all_pool": [
+          "ollama1b",
+          "pool10",
+          "ollama1previewloud",
+          "pool20",
+          "geminicli1",
+          "pool30",
+          "ollama31b",
+          "pool40"
+        ]
+      },
+      "usecase": {
+        "default": "ollama_local",
+        "segment_generation": "all_pool",
+        "chapter_generation": "ollama_cloud",
+        "book_generation": "google_pool"
+      },
+      "default-pool": null
+    }
+  },
+  "Moods": {
+    "biplobi": {
+      "template": "political",
+      "moods": [
+        {
+          "characteristic": "power_struggle",
+          "mood_description": "ক্ষমতা দখলের তীব্র প্রতিদ্বন্দ্বিতা ও অভ্যন্তরীণ কোন্দল"
+        },
+        {
+          "characteristic": "ideological_clash",
+          "mood_description": "ভিন্ন রাজনৈতিক মতাদর্শের মধ্যে মৌলিক সংঘাত"
+        },
+        {
+          "characteristic": "public_opinion_shift",
+          "mood_description": "জনমতের পরিবর্তন বা গণআন্দোলনের সূচনা"
+        },
+        {
+          "characteristic": "strategic_maneuver",
+          "mood_description": "রাজনৈতিক চাল, জোট গঠন বা কৌশলগত পদক্ষেপ"
+        },
+        {
+          "characteristic": "corruption_unveiled",
+          "mood_description": "রাজনৈতিক দুর্নীতির উন্মোচন বা কেলেঙ্কারির প্রকাশ"
+        },
+        {
+          "characteristic": "policy_debate",
+          "mood_description": "গুরুত্বপূর্ণ নীতিগত বিষয়ে তীব্র বিতর্ক ও পক্ষে-বিপক্ষে যুক্তি"
+        },
+        {
+          "characteristic": "dissent_and_protest",
+          "mood_description": "বিরোধিতা, প্রতিবাদ এবং সরকারের বিরুদ্ধে জনরোষ"
+        },
+        {
+          "characteristic": "diplomatic_tension",
+          "mood_description": "আন্তর্জাতিক সম্পর্কে উত্তেজনা বা কূটনৈতিক সংকট"
+        },
+        {
+          "characteristic": "leadership_challenge",
+          "mood_description": "বর্তমান নেতৃত্বের প্রতি চ্যালেঞ্জ বা ক্ষমতা পরিবর্তনের পূর্বাভাস"
+        },
+        {
+          "characteristic": "election_campaign",
+          "mood_description": "নির্বাচনী প্রচারণার উত্তাপ ও ভবিষ্যৎ নিয়ে অনিশ্চয়তা"
+        }
+      ]
+    },
+    "conclusion": {
+      "template": "conclusion",
+      "moods": [
+        {
+          "characteristic": "resolution_of_conflict",
+          "mood_description": "সকল মূল সংঘাত বা সমস্যার চূড়ান্ত সমাধান বা নিষ্পত্তি"
+        },
+        {
+          "characteristic": "character_arc_completion",
+          "mood_description": "চরিত্রের পরিবর্তন বা বিকাশের চূড়ান্ত পরিণতি"
+        },
+        {
+          "characteristic": "thematic_reinforcement",
+          "mood_description": "গল্পের মূল বার্তা বা শিক্ষামূলক দিকের পুনরাবৃত্তি ও দৃঢ়করণ"
+        },
+        {
+          "characteristic": "loose_ends_tied",
+          "mood_description": "সকল ছোটখাটো প্রশ্নের উত্তর দেওয়া বা অমিমাংসিত বিষয়গুলির নিষ্পত্তি"
+        },
+        {
+          "characteristic": "sense_of_closure",
+          "mood_description": "পাঠক বা শ্রোতার মনে একটি সম্পূর্ণতা বা সমাপ্তির অনুভূতি তৈরি করা"
+        },
+        {
+          "characteristic": "final_reflection",
+          "mood_description": "গল্পের ঘটনা বা চরিত্রের অভিজ্ঞতা থেকে প্রাপ্ত গভীর চিন্তা বা উপলব্ধি"
+        },
+        {
+          "characteristic": "future_implication",
+          "mood_description": "চরিত্র বা জগতের ভবিষ্যতের উপর গল্পের প্রভাবের ইঙ্গিত"
+        },
+        {
+          "characteristic": "lingering_thought",
+          "mood_description": "পাঠকদের মনে একটি প্রশ্ন বা চিন্তা রেখে যাওয়া"
+        },
+        {
+          "characteristic": "impactful_final_statement",
+          "mood_description": "একটি শক্তিশালী, স্মরণীয় বা অনুপ্রেরণামূলক শেষ বাক্য"
+        }
+      ]
+    },
+    "critics": {
+      "template": "critics",
+      "moods": [
+        {
+          "characteristic": "inciting_incident",
+          "mood_description": "গল্পের মোড় ঘোরানো অপ্রত্যাশিত ঘটনা"
+        },
+        {
+          "characteristic": "rising_action",
+          "mood_description": "চ্যালেঞ্জ ও উত্তেজনা বৃদ্ধির পর্যায়"
+        },
+        {
+          "characteristic": "moment_of_doubt",
+          "mood_description": "নায়ক/নায়িকার আত্মবিশ্বাসে চিড় ধরা মুহূর্ত"
+        },
+        {
+          "characteristic": "turning_point",
+          "mood_description": "গল্পের গতিপথ পরিবর্তনকারী নির্ণায়ক ঘটনা"
+        },
+        {
+          "characteristic": "climax",
+          "mood_description": "সর্বোচ্চ উত্তেজনা ও সংঘাতের চূড়ান্ত পর্যায়"
+        },
+        {
+          "characteristic": "falling_action",
+          "mood_description": "সংঘাতের সমাধান ও পরিণতি উন্মোচন"
+        },
+        {
+          "characteristic": "resolution",
+          "mood_description": "গল্পের চূড়ান্ত সমাপ্তি ও সমস্ত প্রশ্নের উত্তর"
+        },
+        {
+          "characteristic": "theme_unveiled",
+          "mood_description": "গল্পের মূল বার্তা বা শিক্ষামূলক দিকের প্রকাশ"
+        }
+      ]
+    },
+    "default": {
+      "template": "default",
+      "moods": [
+        {
+          "characteristic": "goal",
+          "mood_description": "রুদ্র ও মেহেরের প্রথম দেখা ক্লাবে"
+        },
+        {
+          "characteristic": "stakes",
+          "mood_description": "দুই ভিন্ন শ্রেণির মানুষের সম্মান ও ভবিষ্যৎ নির্ধারণ হবে"
+        },
+        {
+          "characteristic": "vulnerability",
+          "mood_description": "রুদ্রের আত্মবিশ্বাসের আড়ালে একাকীত্ব, মেহেরের আত্মসম্মানের দ্বিধা"
+        },
+        {
+          "characteristic": "conflict",
+          "mood_description": "রুদ্রের অর্থের জৌলুস বনাম মেহেরের আত্মমর্যাদা"
+        },
+        {
+          "characteristic": "tension",
+          "mood_description": "দুজনের দৃষ্টিভঙ্গির সংঘর্ষে নীরব অস্বস্তি"
+        },
+        {
+          "characteristic": "rationalize",
+          "mood_description": "রুদ্র মনে করে অর্থই সবকিছু, মেহের বিশ্বাস করে ভালোবাসার সত্যতায়"
+        },
+        {
+          "characteristic": "subversion",
+          "mood_description": "মেহের রুদ্রের প্রস্তাবে সহজে সাড়া দেয় না"
+        },
+        {
+          "characteristic": "catharsis",
+          "mood_description": "দুজনেই অনুভব করে—সমাজের নিয়ম ভাঙা সহজ নয়"
+        },
+        {
+          "characteristic": "foreshadowing",
+          "mood_description": "তাদের অনিশ্চিত ভবিষ্যৎ সম্পর্কের এক ঝলক দেখা যায়"
+        },
+        {
+          "characteristic": "irony",
+          "mood_description": "সম্পর্কের শুরুটা যেখানে, শেষটা ঠিক তার বিপরীত"
+        }
+      ]
+    },
+    "fight": {
+      "template": "ego_clash",
+      "moods": [
+        {
+          "characteristic": "initial_challenge",
+          "mood_description": "প্রথম মুখোমুখি অবস্থান, যেখানে অহংকার বা আত্মসম্মান হুমকির মুখে পড়ে"
+        },
+        {
+          "characteristic": "escalating_pride",
+          "mood_description": "দুজনেরই আত্মগরিমা বৃদ্ধি, হার মানতে নারাজ মনোভাব"
+        },
+        {
+          "characteristic": "verbal_sparring",
+          "mood_description": "কথা কাটাকাটি, তীক্ষ্ণ মন্তব্য বা কটু যুক্তির মাধ্যমে সংঘাত"
+        },
+        {
+          "characteristic": "power_play",
+          "mood_description": "কর্তৃত্ব জাহির করার চেষ্টা, একে অপরের উপর আধিপত্য বিস্তারের প্রতিযোগিতা"
+        },
+        {
+          "characteristic": "misunderstanding_fueled",
+          "mood_description": "অহংকারের কারণে ভুল বোঝাবুঝি বৃদ্ধি এবং ভুল ব্যাখ্যার সৃষ্টি"
+        },
+        {
+          "characteristic": "unyielding_stance",
+          "mood_description": "কেউই নিজের অবস্থান থেকে সরে আসতে রাজি নয়, জেদ বজায় রাখা"
+        },
+        {
+          "characteristic": "underlying_insecurity",
+          "mood_description": "অহংকারের আড়ালে থাকা ভয় বা দুর্বলতা, যা সংঘাতকে আরও তীব্র করে"
+        },
+        {
+          "characteristic": "point_of_no_return",
+          "mood_description": "এমন এক মুহূর্ত যেখানে সম্পর্ক বা পরিস্থিতি অপরিবর্তনীয় হয়ে ওঠে"
+        },
+        {
+          "characteristic": "bitter_resolution",
+          "mood_description": "সংঘাতের তিক্ত পরিণতি, যেখানে জয়ী হলেও অপূরণীয় ক্ষতি হয়"
+        }
+      ]
+    },
+    "introduction": {
+      "template": "introduction",
+      "moods": [
+        {
+          "characteristic": "setting_the_scene",
+          "mood_description": "স্থান, কাল বা পরিবেশের বর্ণনা দিয়ে গল্পের আবহ তৈরি করা"
+        },
+        {
+          "characteristic": "character_debut",
+          "mood_description": "প্রধান চরিত্র বা গুরুত্বপূর্ণ ব্যক্তিত্বের প্রথম উপস্থিতি ও পরিচিতি"
+        },
+        {
+          "characteristic": "initial_mystery",
+          "mood_description": "একটি প্রশ্ন, ধাঁধা বা রহস্যের ইঙ্গিত দিয়ে কৌতূহল জাগানো"
+        },
+        {
+          "characteristic": "foreshadowing_hint",
+          "mood_description": "ভবিষ্যৎ ঘটনার আবছা ইঙ্গিত বা সম্ভাব্য সংঘাতের পূর্বাভাস"
+        },
+        {
+          "characteristic": "establishing_tone",
+          "mood_description": "গল্পের সামগ্রিক মেজাজ বা সুর নির্ধারণ করা (যেমন: নাটকীয়, হাস্যরসাত্মক, রহস্যময়)"
+        },
+        {
+          "characteristic": "hook_moment",
+          "mood_description": "পাঠক বা শ্রোতাকে আকৃষ্ট করার জন্য একটি আকর্ষণীয় বাক্য বা ঘটনা"
+        },
+        {
+          "characteristic": "status_quo_description",
+          "mood_description": "গল্প শুরুর আগে পরিস্থিতি বা সাধারণ জীবনযাত্রার বর্ণনা"
+        },
+        {
+          "characteristic": "thematic_glimpse",
+          "mood_description": "গল্পের মূল বিষয়বস্তু বা বার্তার প্রাথমিক ঝলক"
+        },
+        {
+          "characteristic": "call_to_attention",
+          "mood_description": "গুরুত্বপূর্ণ একটি বিষয় বা ধারণার প্রতি মনোযোগ আকর্ষণ"
+        }
+      ]
+    },
+    "love": {
+      "template": "love",
+      "moods": [
+        {
+          "characteristic": "rising_desire",
+          "mood_description": "ক্রমবর্ধমান আকাঙ্ক্ষা এবং একে অপরের প্রতি শারীরিক আকর্ষণ"
+        },
+        {
+          "characteristic": "tender_anticipation",
+          "mood_description": "কোমল প্রত্যাশা এবং ভালোবাসার উষ্ণ অনুভূতি"
+        },
+        {
+          "characteristic": "sensory_heightening",
+          "mood_description": "স্পর্শ, গন্ধ এবং নৈকট্যের মাধ্যমে ইন্দ্রিয়গ্রাহ্য তীব্রতা"
+        },
+        {
+          "characteristic": "vulnerability_shared",
+          "mood_description": "নিরাপত্তা ও বিশ্বাসের সঙ্গে একে অপরের কাছে নিজেকে উন্মোচন করা"
+        },
+        {
+          "characteristic": "emotional_connection",
+          "mood_description": "শারীরিক মিলনের সাথে মানসিক গভীরতা ও আত্মিক বন্ধন"
+        },
+        {
+          "characteristic": "passion_unleashed",
+          "mood_description": "আবেগের বিস্ফোরণ এবং গভীর ভালোবাসার প্রকাশ"
+        },
+        {
+          "characteristic": "climactic_release",
+          "mood_description": "শারীরিক ও মানসিক চরম পরিতৃপ্তি এবং মুক্তি"
+        },
+        {
+          "characteristic": "afterglow_intimacy",
+          "mood_description": "মিলনের পরের শান্ত ও গভীর অন্তরঙ্গ মুহূর্ত"
+        },
+        {
+          "characteristic": "deep_satisfaction",
+          "mood_description": "ভালোবাসার পরিতৃপ্তি এবং প্রশান্তির অনুভূতি"
+        }
+      ]
+    },
+    "romantic": {
+      "template": "romantic",
+      "moods": [
+        {
+          "characteristic": "initial_spark",
+          "mood_description": "প্রথম দেখা বা পরিচয়ের মুহূর্ত, যেখানে ভালোবাসার প্রথম স্ফুলিঙ্গ জ্বলে ওঠে"
+        },
+        {
+          "characteristic": "growing_affection",
+          "mood_description": "ধীরে ধীরে অনুভূতি গভীর হওয়া, ছোট ছোট ঘটনায় ঘনিষ্ঠতা বৃদ্ধি"
+        },
+        {
+          "characteristic": "confession_of_love",
+          "mood_description": "ভালোবাসার প্রথম স্পষ্ট প্রকাশ বা আবেগপূর্ণ স্বীকারোক্তি"
+        },
+        {
+          "characteristic": "external_obstacle",
+          "mood_description": "সম্পর্কের পথে বাইরের বাধা, যেমন পরিবার বা সামাজিক চাপ"
+        },
+        {
+          "characteristic": "internal_struggle",
+          "mood_description": "প্রেমিক-প্রেমিকার ব্যক্তিগত দ্বিধা, ভয় বা আত্মবিশ্বাসের অভাব"
+        },
+        {
+          "characteristic": "reaffirmation_of_bond",
+          "mood_description": "চ্যালেঞ্জ সত্ত্বেও তাদের বন্ধন আরও দৃঢ় হওয়া বা একে অপরের প্রতি বিশ্বাস স্থাপন"
+        },
+        {
+          "characteristic": "intimate_moment",
+          "mood_description": "দু'জনের মধ্যে গভীর আবেগপূর্ণ বা সংবেদনশীল অন্তরঙ্গ মুহূর্ত"
+        },
+        {
+          "characteristic": "joyful_union",
+          "mood_description": "ভালোবাসার সফল পরিণতি, যেমন মিলন, বিবাহ বা একসঙ্গে নতুন জীবন শুরু"
+        },
+        {
+          "characteristic": "bittersweet_memory",
+          "mood_description": "অতীতের মধুর অথচ বেদনাময় স্মৃতিচারণ"
+        }
+      ]
+    },
+    "sadstory": {
+      "template": "sadstory",
+      "moods": [
+        {
+          "characteristic": "goal",
+          "mood_description": "অতীতে হারানো এক সম্পর্ককে ফিরে পাওয়ার চেষ্টা"
+        },
+        {
+          "characteristic": "stakes",
+          "mood_description": "একাকীত্ব থেকে মুক্তির শেষ সুযোগ নাকি আরও গভীর দুঃখ"
+        },
+        {
+          "characteristic": "vulnerability",
+          "mood_description": "স্মৃতির গভীরে চাপা পড়া বেদনা এবং প্রত্যাখ্যাত হওয়ার ভয়"
+        },
+        {
+          "characteristic": "conflict",
+          "mood_description": "বর্তমান পরিস্থিতির নির্মম বাস্তবতা বনাম অতীতের মিষ্টি স্মৃতি"
+        },
+        {
+          "characteristic": "tension",
+          "mood_description": "না বলা কথা আর নীরব অভিযোগের চাপ"
+        },
+        {
+          "characteristic": "rationalize",
+          "mood_description": "তারা ভাবে বিচ্ছেদই হয়তো ভালো ছিল, কিন্তু হৃদয় মানে না"
+        },
+        {
+          "characteristic": "subversion",
+          "mood_description": "যখন আশা জাগে, তখনই নিয়তি নতুন আঘাত হানে"
+        },
+        {
+          "characteristic": "catharsis",
+          "mood_description": "দীর্ঘদিনের চাপা কান্না অবশেষে মুক্তির পথ খুঁজে পায়"
+        },
+        {
+          "characteristic": "foreshadowing",
+          "mood_description": "আসন্ন বিষাদের সূক্ষ্ম ইঙ্গিত গল্পের পাতায়"
+        },
+        {
+          "characteristic": "irony",
+          "mood_description": "সুখ খুঁজতে গিয়ে আরও গভীরে দুঃখের অতলে তলিয়ে যাওয়া"
+        }
+      ]
+    },
+    "win": {
+      "template": "win",
+      "moods": [
+        {
+          "characteristic": "final_push",
+          "mood_description": "শেষ মুহূর্তের সর্বাত্মক প্রচেষ্টা বা সর্বোচ্চ আত্মত্যাগ"
+        },
+        {
+          "characteristic": "overcoming_adversity",
+          "mood_description": "সকল বাধা-বিপত্তি বা চ্যালেঞ্জ অতিক্রম করে এগিয়ে যাওয়া"
+        },
+        {
+          "characteristic": "moment_of_realization",
+          "mood_description": "সাফল্য আসন্ন বা জয় নিশ্চিত হওয়ার তাৎক্ষণিক উপলব্ধি"
+        },
+        {
+          "characteristic": "exultant_cheer",
+          "mood_description": "বিজয়োল্লাস, করতালি বা সম্মিলিত আনন্দের প্রকাশ"
+        },
+        {
+          "characteristic": "validation_of_effort",
+          "mood_description": "কঠোর পরিশ্রম, অধ্যবসায় ও ত্যাগের সার্থকতা অনুভব"
+        },
+        {
+          "characteristic": "sense_of_accomplishment",
+          "mood_description": "লক্ষ্য পূরণের গভীর তৃপ্তি ও গর্ববোধ"
+        },
+        {
+          "characteristic": "recognition_and_applause",
+          "mood_description": "জনগণ বা প্রতিদ্বন্দ্বীদের কাছ থেকে সম্মান ও প্রশংসা লাভ"
+        },
+        {
+          "characteristic": "new_found_confidence",
+          "mood_description": "বিজয়ের পর আত্মবিশ্বাস এবং ভবিষ্যতের জন্য নতুন প্রেরণা"
+        },
+        {
+          "characteristic": "legacy_established",
+          "mood_description": "একটি স্থায়ী ছাপ বা দৃষ্টান্ত স্থাপন যা স্মরণীয় হয়ে থাকবে"
+        }
+      ]
+    }
+  }
+}

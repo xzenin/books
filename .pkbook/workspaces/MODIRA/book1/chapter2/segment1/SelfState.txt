@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 1,
+    "name": "setting_the_scene",
+    "segment_title": "কলুইবাড়ির আঙিনায় সুরের মেলা",
+    "segment_seed": "বর্ষাকালের এক স্নিগ্ধ সন্ধ্যা, কলুইবাড়ির আশ্রম প্রাঙ্গণে ধুনির পাশে বসে আছেন ভাব পাগলা। চারিদিকে ভক্তদের ভিড়, খোল-করতালের মৃদু আওয়াজ আর মাটির সোঁদা গন্ধে এক মরমী পরিবেশ তৈরি হয়েছে।"
+  },
   "Id": 1,
-  "ParentKey": "feda97f1-0696-49af-b2a1-41721be67929",
-  "Key": "b6f0310e-bc78-4e70-ab0a-167d5f79e8cf",
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "11a0c72e-cc47-431a-abb4-d759323c78f7",
   "Name": "segment",
   "InstanceName": "segment1",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 1,
-    "InstanceCount": 4,
+    "InstanceCount": 1,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "MODIRA/book1/chapter2/segment1"
   },

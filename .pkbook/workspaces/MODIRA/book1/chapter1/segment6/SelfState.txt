@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 6,
+    "name": "thematic_glimpse",
+    "segment_title": "মানব ধর্ম ও আত্মার মুক্তি",
+    "segment_seed": "মানুষের ভেতরের ভেদাভেদ ও ধর্মীয় গোঁড়ামির ঊর্ধ্বে গিয়ে 'মানুষ ভজা'র প্রাথমিক দর্শন। আত্মার মুক্তি কি কেবল সন্ন্যাসে, নাকি সুরের মাঝে নিজেকে বিলীন করে দেওয়ায়?"
+  },
+  "Id": 6,
+  "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+  "Key": "0d5eb55a-64bd-4f4d-b503-8bf030d4e529",
+  "Name": "segment",
+  "InstanceName": "segment6",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 6,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "MODIRA/book1/chapter1/segment6"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

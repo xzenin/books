@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 2,
+    "name": "status_quo_description",
+    "segment_title": "সংসার ও সরল জীবনযাত্রা",
+    "segment_seed": "তৎকালীন বাংলার সাধারণ মানুষের জীবন ছিল অত্যন্ত সাদাসিধে। দারিদ্র্য থাকলেও সেখানে ছিল প্রাণের টান। লোক-উৎসব আর কীর্তনের আসরে সাধারণ মানুষের ভক্তিপূর্ণ সহাবস্থানের এক নিখুঁত ছবি।"
+  },
   "Id": 2,
-  "ParentKey": "bb3a19e8-bf58-4d7e-989d-a4846c1abe1b",
-  "Key": "0db7f8c6-953a-454a-b385-cea8f7400617",
+  "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+  "Key": "066c7c62-9a20-48a6-b14a-9701b74268ab",
   "Name": "segment",
   "InstanceName": "segment2",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 2,
-    "InstanceCount": 4,
+    "InstanceCount": 2,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "MODIRA/book1/chapter1/segment2"
   },

@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 5,
+    "name": "establishing_tone",
+    "segment_title": "সহজ মানুষের সহজ কথা",
+    "segment_seed": "গদ্যের সুরটি এখানে স্নিগ্ধ অথচ দার্শনিক। কোনো কঠিন তত্ত্ব নয়, বরং সংসারের তুচ্ছ কাজের মাধ্যমেও কীভাবে ঈশ্বরকে পাওয়া যায়, সেই সহজ সুরটিই পুরো অধ্যায়ে আধিপত্য বিস্তার করবে।"
+  },
+  "Id": 5,
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "9f936b1c-da1f-4b74-8c66-b1ef19cbb379",
+  "Name": "segment",
+  "InstanceName": "segment5",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 5,
+    "InstanceCount": 5,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "MODIRA/book1/chapter2/segment5"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

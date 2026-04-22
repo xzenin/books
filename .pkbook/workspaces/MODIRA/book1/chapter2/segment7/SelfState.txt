@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 7,
+    "name": "status_quo_description",
+    "segment_title": "তৎকালীন লোকসমাজের চিত্র",
+    "segment_seed": "তৎকালীন গ্রামবাংলার সাধারণ মানুষ যখন শাস্ত্রীয় জটিলতায় দিশেহারা, তখন ভাব পাগলার গান তাদের কাছে জল ও বাতাসের মতো সহজলভ্য আধ্যাত্মিক খাদ্য হিসেবে কাজ করত।"
+  },
+  "Id": 7,
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "82ef5f8c-e2d3-4bec-9f36-8909bb1e6ffd",
+  "Name": "segment",
+  "InstanceName": "segment7",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 7,
+    "InstanceCount": 7,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "MODIRA/book1/chapter2/segment7"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

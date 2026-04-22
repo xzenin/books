@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 4,
+    "name": "establishing_tone",
+    "segment_title": "মরমী সুরের স্পন্দন",
+    "segment_seed": "গল্পের মেজাজ এখানে ধীর ও ভাবুক। পার্থিব জগতের কোলাহলের আড়ালে যে এক নিস্তব্ধ আধ্যাত্মিক জগত আছে, তার প্রতি এক সূক্ষ্ম আকর্ষণ ও ভক্তির সুর এখানে ধ্বনিত হবে।"
+  },
   "Id": 4,
-  "ParentKey": "bb3a19e8-bf58-4d7e-989d-a4846c1abe1b",
-  "Key": "a910d1dd-f421-49bb-8623-1006ffd7c50c",
+  "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+  "Key": "43cc52e5-3008-45be-86cc-c87754a3e035",
   "Name": "segment",
   "InstanceName": "segment4",
   "MetaData": {

@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 8,
+    "name": "thematic_glimpse",
+    "segment_title": "মানব ধর্মই পরম ধর্ম",
+    "segment_seed": "অধ্যায়ের শেষে এক ঝলক সত্য প্রকাশিত হয়—ভাব পাগলার কাছে হিন্দু-মুসলমান ভেদ ছিল না। তাঁর গান ছিল কুসংস্কারের বিরুদ্ধে নীরব বিপ্লব এবং প্রেমের মাধ্যমে মানবতার জয়গান।"
+  },
+  "Id": 8,
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "4268b019-9e8c-4dfb-b1a9-4cacd7133a4a",
+  "Name": "segment",
+  "InstanceName": "segment8",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 8,
+    "InstanceCount": 8,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "MODIRA/book1/chapter2/segment8"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

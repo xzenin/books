@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 2,
+    "name": "character_debut",
+    "segment_title": "পাগলার ভাবাবেশ",
+    "segment_seed": "ছিপছিপে গড়ন, এলোমেলো চুল আর চোখে এক অপার্থিব দৃষ্টি নিয়ে ভাব পাগলার প্রবেশ। কোনো প্রথাগত পণ্ডিত নন, বরং এক সহজ মানুষ যার মুখে সারাক্ষণ লেগে আছে এক রহস্যময় আধ্যাত্মিক হাসি।"
+  },
   "Id": 2,
-  "ParentKey": "feda97f1-0696-49af-b2a1-41721be67929",
-  "Key": "0d0197a3-4379-4255-9be9-5f9cb06d67af",
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "71faf1a1-d140-4d00-ae57-99fa267b6d52",
   "Name": "segment",
   "InstanceName": "segment2",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 2,
-    "InstanceCount": 4,
+    "InstanceCount": 2,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "MODIRA/book1/chapter2/segment2"
   },

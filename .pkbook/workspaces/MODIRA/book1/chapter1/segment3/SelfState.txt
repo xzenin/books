@@ -3,10 +3,15 @@
   "ChapterCount": 0,
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
-  "Model": null,
+  "Model": {
+    "segment_index": 3,
+    "name": "character_debut",
+    "segment_title": "চঞ্চল বালক থেকে ভাবাতুর কিশোর",
+    "segment_seed": "গ্রামের ধুলোবালিতে খেলে বেড়ানো এক কিশোর, যার চোখে সবসময় এক গভীর রহস্যের ছায়া। সংসারের কাজে মন নেই, বরং সে খুঁজে ফেরে বাতাসের বাঁশি আর উদাসী বাউলের একতারা।"
+  },
   "Id": 3,
-  "ParentKey": "bb3a19e8-bf58-4d7e-989d-a4846c1abe1b",
-  "Key": "192b5824-4953-464a-9523-b68980e32c74",
+  "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+  "Key": "f27a2e51-6b84-49e2-8756-cc18c0dfc4d6",
   "Name": "segment",
   "InstanceName": "segment3",
   "MetaData": {
@@ -14,7 +19,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 3,
-    "InstanceCount": 4,
+    "InstanceCount": 3,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "MODIRA/book1/chapter1/segment3"
   },

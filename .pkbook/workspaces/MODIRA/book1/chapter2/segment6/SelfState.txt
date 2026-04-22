@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 6,
+    "name": "hook_moment",
+    "segment_title": "ঘরের মাঝে অচিন ঘর",
+    "segment_seed": "'আমার এই ঘরখানি' গানটি যখন তিনি ধরলেন, উপস্থিত সবার চোখের কোণে জল এল। তিনি দেখালেন, আমাদের দেহ আসলে এক নশ্বর কুটির, কিন্তু তার ভেতরে বাস করেন অবিনশ্বর পরমত্মা।"
+  },
+  "Id": 6,
+  "ParentKey": "8a06da43-5a07-4c7c-b696-b6b837cbef5d",
+  "Key": "8da03e9b-7b5d-40db-bdc6-727dcdf06235",
+  "Name": "segment",
+  "InstanceName": "segment6",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 6,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "MODIRA/book1/chapter2/segment6"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}

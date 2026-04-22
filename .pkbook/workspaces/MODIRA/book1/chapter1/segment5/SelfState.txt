@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Model": {
+    "segment_index": 5,
+    "name": "initial_mystery",
+    "segment_title": "অচিন পাখির ইশারা",
+    "segment_seed": "মাঝরাতে হঠাৎ শোনা যাওয়া এক অলৌকিক গানের সুর। কোথা থেকে আসে সেই শব্দ? কিশোর ভাব পাগলার মনে প্রশ্ন জাগে—কে সেইজন যে হৃদয়ের গোপন কুঠুরিতে বসে বাঁশি বাজায়?"
+  },
+  "Id": 5,
+  "ParentKey": "3f3cfb83-8452-4f5c-93ae-12e03795b6e2",
+  "Key": "eda0e413-bb38-4ae3-babd-c7875149b325",
+  "Name": "segment",
+  "InstanceName": "segment5",
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 5,
+    "InstanceCount": 5,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "MODIRA/book1/chapter1/segment5"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {}
+}
