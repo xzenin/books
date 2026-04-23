@@ -1,0 +1,13 @@
+{
+  "Name": "SegmentWorkflowActivity",
+  "MethodName": "Layout",
+  "ActivityType": "SegmentWorkflowActivity",
+  "Index": 1,
+  "ParentActivity": "Layout",
+  "Stage": 50,
+  "WorkflowActivityType": 0,
+  "Error": null,
+  "ValidReturn": false,
+  "CreatedOn": "2026-04-23T19:01:01.0432394+05:30",
+  "UpdatedOn": "2026-04-23T19:01:02.6026053+05:30"
+}

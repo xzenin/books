@@ -1,0 +1,35 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 7,
+  "ParentKey": "e23ad92b-cb18-431f-9ca5-9e6edbc8c5f4",
+  "Key": "de464b04-aaf9-45c0-8622-f767764c4da9",
+  "Name": "segment",
+  "Model": {
+    "segment_index": 5,
+    "name": "establishing_tone",
+    "segment_title": "সংস্কৃতির নবজাগরণ",
+    "segment_seed": "বল্লাল সেনের রাজসভা ছিল জ্ঞান, শিল্প ও সংস্কৃতির কেন্দ্র। তাঁর শাসনামলে বৌদ্ধ ও হিন্দু ঐতিহ্যের এক অপূর্ব মেলবন্ধন ঘটেছিল। এই অধ্যায়ে আমরা দেখতে পাব কীভাবে তাঁর রাজসভা হয়ে উঠেছিল এক সাংস্কৃতিক মিলনক্ষেত্র, যা বাংলার ঐতিহ্যকে আরও সমৃদ্ধ করেছিল।"
+  },
+  "InstanceName": "segment7",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 7,
+    "InstanceCount": 5,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter1/segment7"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": true,
+  "ValidLayout": false,
+  "ValidDraft": false
+}

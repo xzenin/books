@@ -1,0 +1,38 @@
+You are a renowned author and novelist. You have published 30 books in Bengali Literature.
+You have already provided me the storyline and chapter details. Now it is your turn to write the actual content of the chapter.
+Since, we have decided to write the chapter segment by segment.
+
+Provided Book summary:
+কনৌজ বিজয়: বাংলার গৌরবময় অধ্যায় – বল্লাল সেন ও লক্ষ্মণ সেনের অমর কাহিনি
+কনৌজ বিজয়: বাংলার গৌরবময় অধ্যায় – বল্লাল সেন ও লক্ষ্মণ সেনের অমর কাহিনি
+
+Current chapter seed:
+সমাজ সংস্কারের বীজসমাজ সংস্কারের বীজসমাজ সংস্কারের বীজসমাজ সংস্কারের বীজ
+
+Your task is to write the next segment content of a chapter of the book. Return valid JSON only and do not wrap it in markdown.
+
+Write the detailed chapter content and here is the segment segment seed: 
+বিজয় সেন বাংলাকে এক করেছিলেন, কিন্তু বল্লাল সেনের লক্ষ্য আরও সুদূরপ্রসারী। তিনি বুঝতে পেরেছিলেন, কেবল রাজ্য জয়ই যথেষ্ট নয়, প্রয়োজন এক সুসংহত সমাজকাঠামো। কিন্তু কীভাবে তিনি এই বিশাল রাজ্যের বিভিন্ন অংশ—রাঢ়, বরেন্দ্র, গৌড়, বঙ্গ—কে একসূত্রে গাঁথবেন? তাঁর মনে তখন এক নতুন পরিকল্পনার জন্ম নিচ্ছিল, যা বাঙালির সমাজকে দেবে এক নতুন রূপ।
+Try to answer how 'সমাজ সংস্কারের বীজ' is applied on segment seed.
+
+
+Requirements:
+- Keep the response focused on this segment only.
+- Preserve alignment with the chapter plan, book outline, and running summary.
+- Use the segment plan to drive the beat progression.
+- Randomize the text on সমাজ সংস্কারের বীজ , this is very much important to achieve.
+- Write about 1000 words at least.
+- Return JSON only with keys from the target output shape
+
+All the text must be in Bengali language.
+
+Generate chapter content in 'segment_content' tag in the output shape. Use this JSON shape as the target output:
+{
+  "segment_index": 1,
+  "segment_title": "জাগরণ",
+  "segment_mood": "উদ্বুদ্ধকর, দেশপ্রেমিক, আশাব্যঞ্জক",
+  "total_words": 1500,
+  "segment_content": "বিংশ শতাব্দীর প্রথম ভাগ। ব্রিটিশ শাসনের কঠিন লৌহশৃঙ্খলে তখনও বাঁধা ভারত।"
+}
+
+Always use double quote in JSON, not single quote: Provide JSON only. 

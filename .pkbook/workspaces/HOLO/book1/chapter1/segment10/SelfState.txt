@@ -1,0 +1,35 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 10,
+  "ParentKey": "e23ad92b-cb18-431f-9ca5-9e6edbc8c5f4",
+  "Key": "5a4a1e20-d7ae-4069-90c1-aa05d0df0e5c",
+  "Name": "segment",
+  "Model": {
+    "segment_index": 8,
+    "name": "thematic_glimpse",
+    "segment_title": "কনৌজের স্বপ্ন ও লক্ষ্মণের প্রস্তুতি",
+    "segment_seed": "চূড়ান্ত লক্ষ্য ছিল কনৌজ বিজয়, যা আর্যাবর্তে বাংলার আধিপত্য প্রতিষ্ঠা করবে। বল্লাল সেন এই স্বপ্নকে শুধু নিজের মধ্যেই রাখলেন না, তিনি তাঁর পুত্র লক্ষ্মণ সেনকে সেই স্বপ্নের বাহক হিসেবে প্রস্তুত করতে শুরু করলেন। পিতা-পুত্রের এই গভীর কৌশলগত আলোচনা এবং বাংলার নৌবাহিনীকে শক্তিশালী করার পরিকল্পনা এই অধ্যায়ের শেষে এক নতুন উত্তেজনার সৃষ্টি করবে, যা পরবর্তী অধ্যায়ের মূল কেন্দ্রবিন্দু।"
+  },
+  "InstanceName": "segment10",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 10,
+    "InstanceCount": 8,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter1/segment10"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": true,
+  "ValidLayout": false,
+  "ValidDraft": false
+}

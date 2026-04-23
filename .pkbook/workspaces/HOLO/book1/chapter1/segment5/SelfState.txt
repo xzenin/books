@@ -1,0 +1,35 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 5,
+  "ParentKey": "e23ad92b-cb18-431f-9ca5-9e6edbc8c5f4",
+  "Key": "ac500b1f-95d4-4e86-a5cc-9775392fc3d9",
+  "Name": "segment",
+  "Model": {
+    "segment_index": 3,
+    "name": "initial_mystery",
+    "segment_title": "সমাজ সংস্কারের বীজ",
+    "segment_seed": "বিজয় সেন বাংলাকে এক করেছিলেন, কিন্তু বল্লাল সেনের লক্ষ্য আরও সুদূরপ্রসারী। তিনি বুঝতে পেরেছিলেন, কেবল রাজ্য জয়ই যথেষ্ট নয়, প্রয়োজন এক সুসংহত সমাজকাঠামো। কিন্তু কীভাবে তিনি এই বিশাল রাজ্যের বিভিন্ন অংশ—রাঢ়, বরেন্দ্র, গৌড়, বঙ্গ—কে একসূত্রে গাঁথবেন? তাঁর মনে তখন এক নতুন পরিকল্পনার জন্ম নিচ্ছিল, যা বাঙালির সমাজকে দেবে এক নতুন রূপ।"
+  },
+  "InstanceName": "segment5",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 5,
+    "InstanceCount": 3,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter1/segment5"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": true,
+  "ValidLayout": false,
+  "ValidDraft": false
+}

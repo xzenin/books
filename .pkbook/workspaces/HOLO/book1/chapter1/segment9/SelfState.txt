@@ -1,0 +1,35 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 9,
+  "ParentKey": "e23ad92b-cb18-431f-9ca5-9e6edbc8c5f4",
+  "Key": "56c12aad-ecae-43e4-b32e-f08be0be8a5e",
+  "Name": "segment",
+  "Model": {
+    "segment_index": 7,
+    "name": "status_quo_description",
+    "segment_title": "রাজ্যের সমৃদ্ধি ও স্থিতিশীলতা",
+    "segment_seed": "বল্লাল সেনের শাসনামলে বাংলা এক অভূতপূর্ব সমৃদ্ধি ও স্থিতিশীলতার সাক্ষী হয়েছিল। কৃষি, বাণিজ্য এবং শিল্প—সর্বত্রই এসেছিল এক নবজীবন। রাজ্যের সীমানা প্রসারিত হয়েছিল, কিন্তু অভ্যন্তরীণ শান্তি ও সুশাসন বজায় ছিল অটুট। এই স্থিতিশীলতাই ভবিষ্যতের বড় অভিযানের ভিত্তি স্থাপন করেছিল।"
+  },
+  "InstanceName": "segment9",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 9,
+    "InstanceCount": 7,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter1/segment9"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": true,
+  "ValidLayout": false,
+  "ValidDraft": false
+}

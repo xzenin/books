@@ -1,0 +1,35 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 8,
+  "ParentKey": "e23ad92b-cb18-431f-9ca5-9e6edbc8c5f4",
+  "Key": "b96cf49e-d311-4d9b-8c7b-1e0a8089ef92",
+  "Name": "segment",
+  "Model": {
+    "segment_index": 6,
+    "name": "hook_moment",
+    "segment_title": "কৌলীন্য প্রথার জন্ম",
+    "segment_seed": "সমাজকে সুশৃঙ্খল করার এক যুগান্তকারী পদক্ষেপ নিলেন বল্লাল সেন—প্রবর্তন করলেন 'কৌলীন্য প্রথা'। এই প্রথা কেবল বর্ণব্যবস্থার পুনর্গঠনই করল না, বরং বাঙালির সামাজিক সংহতিকেও এক নতুন উচ্চতায় নিয়ে গেল। কিন্তু এই প্রথার প্রবর্তন কি সকলকেই সমানভাবে গ্রহণীয় হয়েছিল? এই প্রশ্নই পাঠককে পরবর্তী ঘটনার জন্য আগ্রহী করে তুলবে।"
+  },
+  "InstanceName": "segment8",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 8,
+    "InstanceCount": 6,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter1/segment8"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": true,
+  "ValidLayout": false,
+  "ValidDraft": false
+}

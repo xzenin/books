@@ -1,0 +1,35 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 10,
+  "ParentKey": "2e267107-5584-48ba-a0ce-0ba41aabc612",
+  "Key": "c6b62f03-e8ee-4d50-bf28-9d894878c51f",
+  "Name": "segment",
+  "Model": {
+    "segment_index": 8,
+    "name": "segment-8",
+    "segment_title": "আর্যাবর্তের শ্রেষ্ঠ শক্তি",
+    "segment_seed": "লক্ষ্মণ সেনের বিজয়গাথা। তাঁকে 'অশ্বপতি গজপতি নরপতি রাজত্রয়াধিপতি' উপাধিতে ভূষিত করা। বঙ্গোপসাগর থেকে গঙ্গা-যমুনার সঙ্গমস্থল পর্যন্ত সেন সাম্রাজ্যের বিস্তার এবং বাঙালির আর্যাবর্তের প্রধান শক্তি হিসেবে আত্মপ্রকাশ। এটি অধ্যায়ের চূড়ান্ত পর্যায়, যেখানে লক্ষ্মণ সেনের মহত্ত্ব প্রতিষ্ঠিত হবে।"
+  },
+  "InstanceName": "segment10",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 10,
+    "InstanceCount": 8,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter2/segment10"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": true,
+  "ValidLayout": false,
+  "ValidDraft": false
+}

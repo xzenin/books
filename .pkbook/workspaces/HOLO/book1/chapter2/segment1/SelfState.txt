@@ -4,8 +4,8 @@
   "PageCount": 0,
   "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
   "Id": 1,
-  "ParentKey": "5cd723a3-bc7b-482a-923a-4476810f649f",
-  "Key": "50a39202-f148-476a-adf7-820faf18c197",
+  "ParentKey": "2e267107-5584-48ba-a0ce-0ba41aabc612",
+  "Key": "bc8bc493-d98b-4b83-af66-afb664d424ff",
   "Name": "segment",
   "Model": null,
   "InstanceName": "segment1",
@@ -16,7 +16,7 @@
     "Description": "",
     "Type": "segment",
     "Index": 1,
-    "InstanceCount": 4,
+    "InstanceCount": 0,
     "SourceRelativeKey": "/book/chapter/segment",
     "TargetRelativeKey": "HOLO/book1/chapter2/segment1"
   },
@@ -24,7 +24,7 @@
   "MaxRetryCount": 3,
   "SubActivities": [],
   "Tag": {},
-  "ValidInit": false,
+  "ValidInit": true,
   "ValidLayout": false,
   "ValidDraft": false
 }
