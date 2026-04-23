@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 4,
+  "ParentKey": "5cd723a3-bc7b-482a-923a-4476810f649f",
+  "Key": "65eff17d-8531-4b89-8348-91c7ee161df8",
+  "Name": "segment",
+  "Model": null,
+  "InstanceName": "segment4",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 4,
+    "InstanceCount": 4,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "HOLO/book1/chapter2/segment4"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": false,
+  "ValidLayout": false,
+  "ValidDraft": false
+}
