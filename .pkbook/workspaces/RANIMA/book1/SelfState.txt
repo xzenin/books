@@ -74,7 +74,7 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         },
@@ -104,7 +104,7 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         },
@@ -134,7 +134,7 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         },
@@ -164,13 +164,13 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         }
       ],
       "Tag": {},
-      "ValidInit": false,
+      "ValidInit": true,
       "ValidLayout": false,
       "ValidDraft": false
     },
@@ -225,7 +225,7 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         },
@@ -255,7 +255,7 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         },
@@ -285,7 +285,7 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         },
@@ -315,19 +315,19 @@
           "MaxRetryCount": 3,
           "SubActivities": [],
           "Tag": {},
-          "ValidInit": false,
+          "ValidInit": true,
           "ValidLayout": false,
           "ValidDraft": false
         }
       ],
       "Tag": {},
-      "ValidInit": false,
+      "ValidInit": true,
       "ValidLayout": false,
       "ValidDraft": false
     }
   ],
   "Tag": {},
-  "ValidInit": false,
+  "ValidInit": true,
   "ValidLayout": false,
   "ValidDraft": false
 }

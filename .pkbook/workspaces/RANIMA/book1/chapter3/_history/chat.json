@@ -1,0 +1,18 @@
+{
+  "_storage": {
+    "MasterDatabase": [],
+    "Name": "Cache",
+    "Type": "Disk",
+    "RootPath": "D:/lab/github/books/.pkbook/workspaces/RANIMA/book1/chapter3\\_history"
+  },
+  "Messages": [
+    {
+      "Role": "user",
+      "Content": ""
+    },
+    {
+      "Role": "assistant",
+      "Content": "{\"placeholder\":true,\"error\":\"HTTP InternalServerError: {\\n  \\\"error\\\": {\\n    \\\"code\\\": 500,\\n    \\\"message\\\": \\\"An internal error has occurred. Please retry or report in https://developers.generativeai.google/guide/troubleshooting\\\",\\n    \\\"status\\\": \\\"INTERNAL\\\"\\n  }\\n}\\n\"}"
+    }
+  ]
+}
