@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 2,
+  "ParentKey": "ae3b5da5-6acf-4b67-9ad9-2d3e6f136be3",
+  "Key": "b2b2065f-d466-4bba-b63a-0b0fc6f8cd3e",
+  "Name": "segment",
+  "Model": null,
+  "InstanceName": "segment2",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 2,
+    "InstanceCount": 4,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "BOKACHUDA/book1/chapter2/segment2"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": false,
+  "ValidLayout": false,
+  "ValidDraft": false
+}
