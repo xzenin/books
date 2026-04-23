@@ -1,0 +1,10 @@
+Thanks for writing the previous segment of the chapter.
+Can you write the next detailed segment content. Here is the segment seeds: {segment_seed}
+
+Try to answer how '{segment_title}' is applied on segment seed.
+Randomize the text on {segment_title} , this is very much important to achieve.
+
+Generate chapter content in 'segment_content' tag in the output shape. Use this JSON shape as the target output:
+{segment_template_json}
+
+Always use double quote in JSON, not single quote: Provide JSON only. 
