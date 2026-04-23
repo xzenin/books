@@ -1,0 +1,30 @@
+{
+  "BookName": null,
+  "ChapterCount": 0,
+  "PageCount": 0,
+  "Pattern": "workflows/book/chapters/chapter(1)/segments/segment(2)",
+  "Id": 3,
+  "ParentKey": "8edb6a92-b9a8-4d0e-8b03-13a9e0045cb1",
+  "Key": "8422d76a-369f-4ba7-9b60-c0c4bb8b4e65",
+  "Name": "segment",
+  "Model": null,
+  "InstanceName": "segment3",
+  "Title": null,
+  "Summary": null,
+  "MetaData": {
+    "Name": "segment",
+    "Description": "",
+    "Type": "segment",
+    "Index": 3,
+    "InstanceCount": 4,
+    "SourceRelativeKey": "/book/chapter/segment",
+    "TargetRelativeKey": "RANIMA/book1/chapter1/segment3"
+  },
+  "IsDryrun": true,
+  "MaxRetryCount": 3,
+  "SubActivities": [],
+  "Tag": {},
+  "ValidInit": false,
+  "ValidLayout": false,
+  "ValidDraft": false
+}
