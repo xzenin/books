@@ -1,0 +1,36 @@
+CONTINUE COMPOSING THE NEXT STANZA.
+
+### OBJECTIVE
+You have to write a specific part of poem number 5 of the collection. 
+- **Current Part:** Stanza/Section 2 of 3.
+- **Goal:** This section will be created based on the thematic summary: .
+- **Lyrical Continuity:** Here are the previous lines to ensure rhythmic and thematic flow: 
+অন্ধকারের গভীরে, যেখানে নেমে আসে বিষাদের স্তব্ধতা, মনসার অভিশাপের অন্ধকারই হয়ে ওঠে আত্মশক্তির মশাল। সেই মশাল জ্বলে ওঠে, যেখানে প্রতিটি অশ্রুবিন্দু এক নতুন অঙ্গীকার, যেখানে অন্ধকার আর আলোর মিলন ঘটে এক পবিত্র, চিরন্তন সত্যে। এই অন্ধকারই তখন এক নতুন সৃষ্টির পটভূমি, যেখানে প্রেম অমরত্বের স্বাক্ষর রাখে।
+
+### TECHNICAL CONSTRAINTS (FOR AGENTIC PARSING)
+1. **Output Format:** Return ONLY a valid JSON object. 
+2. **No Markdown:** Do not use ```json blocks or any introductory text.
+3. **JSON Schema:** Follow this shape: {
+  "total_words": "Count of total words. Integer type.",
+  "segment_content": "Full content of the segment. This is a long text. String type",
+  "language": "Language of the content String type."
+}
+4. **Data Integrity:** 
+   - Escape all Newlines with `\n` and double quotes with `\"` within the 'segment_content' field.
+   - This is extremely important for C# deserialization. Use double quotes (") for all keys and values.
+5. **No Preamble:** Do not say "Here is the JSON" or "Sure" etc.
+
+### JSON Shape Structure to return:** 
+{
+  "total_words": "Count of total words. Integer type.",
+  "segment_content": "Full content of the segment. This is a long text. String type",
+  "language": "Language of the content String type."
+} 
+
+### OUTPUT
+- **Language:** Generate text in each tag in Bengali language.
+- **Poetic Quality:** Ensure the content maintains the meter, rhyme (if applicable), and metaphorical depth of the preceding sections.
+- **Exact JSON shape to return:** Do not wrap with "content" wrapper. Only valid tags: "total_words", "segment_content", "last_two_sentences" (Note: In 'last_two_sentences', provide the final two lines of the newly generated stanza).
+- **Output Format:** Return ONLY a valid JSON object. 
+
+Now provide the JSON.

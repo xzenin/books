@@ -1,8 +1,0 @@
-Next 10 Chapters in:
-
-Use this JSON shape as the target output:
-{book_template_json}
-
-All the text should be in Bengali language.
-Return valid JSON only and do not wrap it in markdown.
-Always use double quote in JSON, not single quote: Provide JSON only. 

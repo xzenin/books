@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Textarea Auto-Fill",
+  "version": "1.0",
+  "description": "Modifies textareas on web pages.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

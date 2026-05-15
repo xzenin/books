@@ -1,0 +1,101 @@
+### ROLE
+You are a master poet and a titan of modern Bengali Literature, a visionary lyricist with a legacy of 30 acclaimed collections. Your work is characterized by profound spiritual depth, visceral imagery, and a mastery of metaphorical resonance that captures the human condition through the lens of history.
+
+### TASK
+Write a complete poem (or poetic cycle) divided into exactly 2 stanzas/sections based on the provided context. 
+
+### CONTEXT
+- **Poetry Collection Overview:** এই মহাকাব্যে মনসামঙ্গল কাব্যের পটভূমিতে একটি আধুনিক বাঙালি নারীর জীবন, বিবাহ, সংসার এবং স্বামিভক্তির গভীর দার্শনিক দিকগুলি অনুসন্ধান করা হয়েছে। বেহুলা চরিত্রটিকে কেন্দ্র করে সতীত্ব, ধৈর্য, আত্মশক্তি এবং অপ্রতিরোধ্য প্রেম কীভাবে সামাজিক ও দৈব বাধা অতিক্রম করে এক নারীর জীবনের পরম সম্পদ স্বামী-অনুসন্ধানে প্রতিফলিত হয়, তা বর্ণিত হয়েছে। এটি বাঙালি নারীর শাশ্বত স্বামিভক্তির এক অসাধারণ চিত্রায়ণ।
+- **Thematic Objective:** স্বামী-মৃত্যুর পর বেহুলার মানসিক অবস্থা এবং স্বামীর পুনর্জীবনের জন্য যে দুর্গম পথ বেছে নেওয়া হয়, তার বর্ণনা। সর্পদংশনের পর স্বামীর শব নিয়ে কলাগাছের ভেলায় গাঙ্গুরের জলে ভেসে দেবপুরীর উদ্দেশ্যে যাত্রা করার সেই যাত্রা ও পথিকের আত্মত্যাগ এখানে প্রতিফলিত হয়েছে।
+- **Structural Blueprint:** 
+  - opening_with_disturbance : Drawing the reader in instantly by placing an unusual or unsettling event at the very start of each chapter
+  - cliffhanger_closure : Pushing the reader into the next chapter by leaving an unresolved question, a new mystery, or a surprise at the end of each chapter
+  - layered_mystery : Making the story multi-layered by creating multiple small mysteries alongside the main murder mystery
+  - controlled_revelation : Sustaining tension through gradual revelation of information, partial truths, misconceptions, and delayed disclosures
+  - parallel_timeline_interlock : Connecting the present investigation with past events in such a way that each flashback deepens the current mystery
+  - social_ecosystem_flow : Creating a natural flow of information and gossip through the village's social spaces—tea stalls, fairs, festivals, fields
+  - hidden_secrets_per_character : Making dialogue tense by hiding secret information or personal truths within each character
+  - symbolic_object_tracking : Advancing the story by repeatedly using physical evidence such as broken bangles, mud, letters, etc.
+  - escalating_stakes : Intensifying the narrative by gradually increasing risk, fear, and conflict in each chapter
+  - investigator_vulnerability : Making the investigator character human and compelling by placing them under pressure, conflict, and personal vulnerability (Follow this thematic progression for each stanza/section).
+- **Establish the Essence:** This is the opening of the collection. It must set the tone, capturing the weight of the 1947 Partition. Each stanza should be rich in sensory symbolism, emotionally piercing, and culturally authentic, reflecting the trauma, displacement, and spiritual crisis of that era.
+
+### POETIC REQUIREMENTS
+1. **Tone & Style:** Maintain a high-literary, elegiac, and atmospheric tone. Infuse the verses with spiritual reflections and lyrical density appropriate for the gravity of the 1947 Partition.
+2. **Imagery & Symbolism:** Use powerful metaphors and historical motifs. Prioritize the "weight" of words over narrative exposition. 
+3. **Flow & Rhythm:** Ensure a seamless transition between stanzas. The poem should possess an internal cadence and a thematic bridge that connects the beginning to the end.
+4. **Language:** Use high-quality, elegant, and sophisticated Bengali (untranslated, original composition), utilizing the full phonetic and emotional range of the language.
+
+### TECHNICAL CONSTRAINTS (CRITICAL)
+1. **Output Format:** Return ONLY a valid JSON object. 
+2. **No Markdown:** Do not use ```json blocks or any introductory/concluding text.
+3. **JSON Structure:** Follow this schema for return: {
+  "chapter_index": 1,
+  "chapter_segments": [
+    {
+      "segment_index": 1,
+      "name": "segment-1",
+      "segment_title": "Goal - What is the aim of the segment",
+      "segment_summay": "Create segment Summary with minimum 400 words. Mention the characters to play here."
+    },
+    {
+      "segment_index": 2,
+      "name": "segment-2",
+      "segment_title": "Stakes - What is the aim of the segment",
+      "segment_summay": "Create segment Summary with minimum 400 words. Mention the characters to play here."
+    },
+    {
+      "segment_index": 3,
+      "name": "segment-3",
+      "segment_title": "Atmospheric - What is the aim of the segment",
+      "segment_summay": "Create segment Summary with minimum 400 words. Mention the characters to play here."
+    }
+  ],
+  "references": [
+    {
+      "no": "1",
+      "reference": "Get the reference from internet",
+      "weblink": "actual url"
+    },
+    {
+      "no": "2",
+      "reference": "Get the reference from internet",
+      "weblink": "actual url"
+    }
+  ],
+  "included_characters": [
+    {
+      "character_id": 1,
+      "friendly_name": "Name of something",
+      "role": "What that character does",
+      "identity": {
+        "age": 45,
+        "sex": "Male",
+        "caste": "Brahmin"
+      },
+      "psychological_depth": "Fearless warrior, shrewd diplomat."
+    },
+    {
+      "character_id": 2,
+      "friendly_name": "Another name",
+      "role": "What that character does",
+      "identity": {
+        "age": 32,
+        "sex": "Male",
+        "caste": "Kshatriya"
+      },
+      "psychological_depth": "Brave warrior."
+    }
+  ]
+}
+4. **Escaping:** All newlines within the content must be represented as `\n`. All double quotes within the poem must be escaped as `\"`.
+
+### INPUT DATA
+- **Target Stanzas/Sections:** 2
+- **Thematic Summary:** স্বামী-মৃত্যুর পর বেহুলার মানসিক অবস্থা এবং স্বামীর পুনর্জীবনের জন্য যে দুর্গম পথ বেছে নেওয়া হয়, তার বর্ণনা। সর্পদংশনের পর স্বামীর শব নিয়ে কলাগাছের ভেলায় গাঙ্গুরের জলে ভেসে দেবপুরীর উদ্দেশ্যে যাত্রা করার সেই যাত্রা ও পথিকের আত্মত্যাগ এখানে প্রতিফলিত হয়েছে।
+
+### OUTPUT
+- **Language:** Generate text in each tag in Bengali language.
+- **Output Format:** Return ONLY a valid JSON object.
+
+Now provide the JSON.

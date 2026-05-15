@@ -1,0 +1,1155 @@
+{
+  "Name": "kovi",
+  "Template": "prose",
+  "ViewBag": {},
+  "TokenInstance": {
+    "Token": {
+      "IsCancellationRequested": false,
+      "CanBeCanceled": true,
+      "WaitHandle": {
+        "Handle": {
+          "value": 3524
+        },
+        "SafeWaitHandle": {
+          "IsInvalid": false,
+          "IsClosed": false
+        }
+      }
+    }
+  },
+  "Cache": {},
+  "RootActivity": {
+    "Id": 0,
+    "ParentKey": null,
+    "Key": "cf5c3b02-c5d1-46c8-8962-d2332e69e144",
+    "Name": "kovi",
+    "Model": null,
+    "InstanceName": "Trigger1",
+    "MetaData": {
+      "Name": "kovi",
+      "Description": "This is the root activity of the workflow",
+      "Type": "Trigger",
+      "Index": 1,
+      "InstanceCount": 1,
+      "SourceRelativeKey": "",
+      "TargetRelativeKey": "kovi"
+    },
+    "SubActivities": [
+      {
+        "Id": 1,
+        "ParentKey": "cf5c3b02-c5d1-46c8-8962-d2332e69e144",
+        "Key": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+        "Name": "book",
+        "Model": null,
+        "InstanceName": "book1",
+        "MetaData": {
+          "Name": "book",
+          "Description": "",
+          "Type": "book",
+          "Index": 1,
+          "InstanceCount": 1,
+          "SourceRelativeKey": "/book",
+          "TargetRelativeKey": "kovi/book1"
+        },
+        "SubActivities": [
+          {
+            "Id": 1,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "71b42ab2-8915-4e05-90c3-0fe1310f4b63",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter1",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 1,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter1"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "71b42ab2-8915-4e05-90c3-0fe1310f4b63",
+                "Key": "0f8b3658-753e-4cfc-b794-583dcde84a64",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter1/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "71b42ab2-8915-4e05-90c3-0fe1310f4b63",
+                "Key": "2db0c673-2597-4d1e-8acc-4551645a7d97",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter1/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 2,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "7b3ac1eb-37bd-4a7e-9055-31c6cab75783",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter2",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 2,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter2"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "7b3ac1eb-37bd-4a7e-9055-31c6cab75783",
+                "Key": "f8a1e4fd-ae6a-4438-87a4-d8cc60d47b2d",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter2/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "7b3ac1eb-37bd-4a7e-9055-31c6cab75783",
+                "Key": "6ecd6ea9-a822-4f6f-a12a-fe56e0c73432",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter2/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 3,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "d4426174-4759-4117-9e5d-120485d81238",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter3",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 3,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter3"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "d4426174-4759-4117-9e5d-120485d81238",
+                "Key": "f406da6e-049f-478f-9b91-ffd7747b883a",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter3/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "d4426174-4759-4117-9e5d-120485d81238",
+                "Key": "ef2797ff-305e-4a08-9ab7-71f0363f6d4b",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter3/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 4,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "b75fc1fe-13e6-4f65-8743-79968948fe92",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter4",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 4,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter4"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "b75fc1fe-13e6-4f65-8743-79968948fe92",
+                "Key": "2e3d5f4c-fa18-4b2d-9cde-007ac7feea58",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter4/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "b75fc1fe-13e6-4f65-8743-79968948fe92",
+                "Key": "4f66bf0d-1362-4c54-bdc0-9caa45c1ccb7",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter4/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 5,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "e92463d1-39a3-4c64-9de1-5510cb495e62",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter5",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 5,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter5"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "e92463d1-39a3-4c64-9de1-5510cb495e62",
+                "Key": "56e7f1c6-20d9-4cb8-a216-c83721743390",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter5/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "e92463d1-39a3-4c64-9de1-5510cb495e62",
+                "Key": "99baef86-43be-41f5-a981-d60d5a7f08c4",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter5/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 6,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "4823bde9-a079-4723-98b2-3cee1b74bf8c",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter6",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 6,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter6"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "4823bde9-a079-4723-98b2-3cee1b74bf8c",
+                "Key": "0bb19cba-2b6e-4fce-bdd0-74c956422872",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter6/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "4823bde9-a079-4723-98b2-3cee1b74bf8c",
+                "Key": "46f24f16-50fa-4d0f-a91c-2be627ebd352",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter6/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 7,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "df67e958-c182-4a96-a9cd-0d85dc98897c",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter7",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 7,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter7"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "df67e958-c182-4a96-a9cd-0d85dc98897c",
+                "Key": "88e6914f-2670-428b-8eed-fbe13b30009a",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter7/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "df67e958-c182-4a96-a9cd-0d85dc98897c",
+                "Key": "9a3cd3d1-438b-4425-b733-5336c4574709",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter7/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 8,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "91eb1c73-9c5e-4915-8d11-78381f00e4b1",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter8",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 8,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter8"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "91eb1c73-9c5e-4915-8d11-78381f00e4b1",
+                "Key": "e42afa14-ecbd-4bac-8114-d889c92b3cd5",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter8/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "91eb1c73-9c5e-4915-8d11-78381f00e4b1",
+                "Key": "8ec91b1c-b577-423a-9009-ed29c1f7a3d0",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter8/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 9,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "c53699a5-f2aa-449f-b325-cc76ba933808",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter9",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 9,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter9"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "c53699a5-f2aa-449f-b325-cc76ba933808",
+                "Key": "80e379cc-d094-4322-b361-2e65768aa009",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter9/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "c53699a5-f2aa-449f-b325-cc76ba933808",
+                "Key": "e56530ca-a979-4a6f-a92b-1291aa8ce496",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter9/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          },
+          {
+            "Id": 10,
+            "ParentKey": "5c413f37-c0a0-4b2d-bbe4-8fdeae41c76c",
+            "Key": "ded208de-24c3-4975-bfb2-d9d8c9511f55",
+            "Name": "chapter",
+            "Model": null,
+            "InstanceName": "chapter10",
+            "MetaData": {
+              "Name": "chapter",
+              "Description": "",
+              "Type": "chapter",
+              "Index": 10,
+              "InstanceCount": 10,
+              "SourceRelativeKey": "/book/chapter",
+              "TargetRelativeKey": "kovi/book1/chapter10"
+            },
+            "SubActivities": [
+              {
+                "Id": 1,
+                "ParentKey": "ded208de-24c3-4975-bfb2-d9d8c9511f55",
+                "Key": "e6466f3b-8c39-47ab-b0b3-5e7f8e28f26c",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment1",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 1,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter10/segment1"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              },
+              {
+                "Id": 2,
+                "ParentKey": "ded208de-24c3-4975-bfb2-d9d8c9511f55",
+                "Key": "68b2e4b5-6d15-477c-bfb5-af3c77238cd2",
+                "Name": "segment",
+                "Model": null,
+                "InstanceName": "segment2",
+                "MetaData": {
+                  "Name": "segment",
+                  "Description": "",
+                  "Type": "segment",
+                  "Index": 2,
+                  "InstanceCount": 2,
+                  "SourceRelativeKey": "/book/chapter/segment",
+                  "TargetRelativeKey": "kovi/book1/chapter10/segment2"
+                },
+                "SubActivities": [],
+                "ValidInit": true,
+                "ValidLayout": false,
+                "ValidDraft": false
+              }
+            ],
+            "ValidInit": true,
+            "ValidLayout": false,
+            "ValidDraft": false
+          }
+        ],
+        "ValidInit": true,
+        "ValidLayout": false,
+        "ValidDraft": false
+      }
+    ],
+    "ValidInit": false,
+    "ValidLayout": false,
+    "ValidDraft": false
+  },
+  "Storage": {
+    "MasterDatabase": [],
+    "Name": "workflow",
+    "Type": "Disk",
+    "RootPath": "D:\\lab\\github\\books\\.pkbook\\workspaces"
+  },
+  "Source": {
+    "MasterDatabase": [],
+    "Name": "template",
+    "Type": "Disk",
+    "RootPath": "D:\\lab\\visualstudio\\xzen\\BookWriter\\Book.Web\\bin\\Debug\\net8.0\\templates\\prose"
+  },
+  "Project": {
+    "ID": "B13052026115245",
+    "BookName": "kovi",
+    "TemplateType": "prose",
+    "Language": "Bengali",
+    "MaxChapterCount": 10,
+    "MaxSegmentCount": 2,
+    "SkipBookLayout": false,
+    "CopySeedToBookLayout": false,
+    "SkipChapterLayout": false,
+    "ContinuityPattern": "half_content",
+    "NumberOfRetry": 10,
+    "NoRandomizeThoughts": false,
+    "NumberOfWordPerSegment": 100,
+    "ProjectRootPath": "D:\\lab\\github\\books",
+    "DateCreated": "2026-05-13T18:22:45.9918691Z",
+    "Location": "BISWAS",
+    "User": "pijush",
+    "WorkspaceRoot": "D:\\lab\\github\\books\\.pkbook\\workspaces",
+    "ConfigFilePath": "D:\\Deployment\\KeysSecret\\config.json",
+    "Encoding": "utf-8",
+    "Verbose": false,
+    "Debug": false,
+    "Json": true,
+    "Command": "init",
+    "Mode": "",
+    "Summary": "আপনি একজন মহাকবি । মেঘনাদবধ কাব্যের মতো একটি কাব্য লিখতে চান । সেই কাব্য একজন বঙ্গনারীর জীবনে আশা আকাংখার অপরগাথা হয়ে থাকবে । একজন বঙ্গনারী তার স্বামীকে দেবতার জায়গা দেন । তাকে জীবনের অঙ্গ মনে করে । সাতজনমের জন্য অঙ্গীকার করে । স্বামীই তার স্বর্গ । \n\nএই চরিত্রে বেহুলা একটি নান্দনিক চরিত্র । তাকে প্রধান চরিত্র করে একটা মডার্ণ বাঙালি নারীর জীবন , বিবাহ, সংসার, ও অন্যান্য কি কি পর্যায় নিয়ে আলোচোনা করা যায় ? ২০  পর্যায় নিয়ে একটি স্টোরি-লাইন দিন । \n\nবেহুলা নিয়ে কিছু তথ্য দেওয়া হলো । আপনার পক্ষ থেকেও কিছু যুক্ত করুন । \n\n\n\nবেহুলা  মনসামঙ্গল কাব্যের অন্যতম প্রধান চরিত্র, যাঁকে কেন্দ্র করে বাংলার লোকসমাজে প্রচলিত আছে এক জনপ্রিয় কাহিনী।  পুরাণ কাহিনীতে বেহুলা স্বর্গের অনিরুদ্ধের স্ত্রী ঊষা, আর লোককাহিনী অনুযায়ী তিনি ছিলেন উজানীনগরের সায়বেনের কন্যা এবং চম্পকনগরের চাঁদ সওদাগরের কনিষ্ঠ পুত্র  মনসামঙ্গল কাব্যের নায়ক লখিন্দরের (লক্ষীন্দর/ লক্ষ্মীন্দর) স্ত্রী।\n\nবেহুলা ছিলেন সতী-সাধ্বী, পরমাসুন্দরী এবং সর্বগুণে গুণাম্বিতা। সর্পদেবী মনসার আক্রোশে বিবাহ-রজনীতে লৌহবাসরে সর্পদংশনে স্বামীর মৃত্যু হলে স্বামীর পুনর্জীবন কামনায় বেহুলা কলাগাছের ভেলায় স্বামীর শব নিয়ে গাঙ্গুরের জলে ভেসে দেবপুরীর উদ্দেশ্যে এক অজানা দুর্গম পথে যাত্রা করেন। তখন তিনি কেবল যৌবনে পদার্পণ করেছেন। এ অবস্থায় এই দুর্গম পথে স্বামিপ্রেমই ছিল তাঁর একমাত্র সহায়। পথিমধ্যে গোদা ও আপু ডোম বেহুলাকে বিবাহের প্রস্তাব দিলে তিনি তাদের অভিশাপ দেন। পরে মনসার নির্দেশে নেতা (মনসার পাত্র ও স্বর্গের নিতাই ধোবিন) বাঘ ও চিলের রূপ ধরে তাঁর স্বামীর মৃতদেহ আক্রমণ করলে বেহুলা প্রাণপণে তা রক্ষা করেন। অবশেষে স্বর্গের ধোবিন নেতার ঘাটে ভেলা ভিড়লে নেতার পুনঃআত্মা প্রদানের অলৌকিক ক্ষমতা দেখে বেহুলা স্বামীর প্রাণ ফিরে পাওয়ার আশায় নেতার আশ্রয় নেন এবং নেতাই বেহুলাকে স্বর্গের দেবতাদের নিকট নিয়ে যায়। এভাবে অনেক বাধা-বিপত্তি অতিক্রম করে বেহুলা দেবপুরীতে পৌঁছান এবং নৃত্যগীতে মহাদেব ও অন্যান্য দেবতাকে তুষ্ট করে স্বামীর পুনর্জীবন লাভ করেন। \n\nবাঙালি সনাতন নারী সমাজের অন্যতম আদর্শ চরিত্র এই বেহুলা। এর মাধ্যমে বাঙালি রমণীদের শাশ্বত স্বামিভক্তির এক অসাধারণ চিত্র ফুটে উঠেছে। একই সঙ্গে বাংলার সহনশীল ও কোমলস্বভাব নারীদের মধ্যেও যে একটি সুপ্ত বিদ্রোহ ক্রিয়াশীল, তারও প্রকাশ ঘটেছে এই বেহুলা চরিত্রের মধ্য দিয়ে। তাই বিদায়কালে আপনজনের অনুনয়-বিনয় ও সস্নেহ-অনুরোধ বেহুলাকে তাঁর লক্ষ্য থেকে বিচলিত করতে পারেনি। সব রকম প্রলোভন, ভয় ও অবর্ণনীয় দুঃখ-কষ্ট জয় করে তিনি তাঁর জীবনের পরম সম্পদ স্বামী লখিন্দরকে বাঁচিয়ে তুলেছেন।\n\nশবানুগামিনী এই যুবতী পত্নীর প্রবাস-জীবন ছিল পবিত্র। সতীত্ব রক্ষায় তিনি অসাধারণ চারিত্রিক দৃঢ়তার পরিচয় দিয়েছেন। সতীত্ববলেই স্বামীর পুনর্জীবন লাভের আশায় বেহুলা অনেক দুর্জনের পাপ-অভিলাষ ব্যর্থ করে নিজের গন্তব্যে পৌঁছতে সমর্থ হন। বাল্য-বৈধব্যের প্রতি উদাসীন থেকে পরিস্ফুট যৌবনে মৃত স্বামীর সঙ্গিনী হয়ে সুদূর প্রবাস থেকে স্বামীর পুনর্জীবন নিয়ে ফিরে আসায় বেহুলা চরিত্রটি বিশেষভাবে গৌরবান্বিত। বেহুলার দুঃখ-সহনশীলতার চেয়ে তাঁর এই নির্ভীক তেজস্বিতাই সবাইকে মুগ্ধ করে। আত্মশক্তিতে বলীয়ান বেহুলার একাগ্র সাধনার নিকট অত্যাচারী দৈব শক্তিও মাথা নত করেছে, এখানেই বেহুলা চরিত্রের শ্রেষ্ঠত্ব। নারীত্বের মহিমায় বেহুলা সীতা-সাবিত্রী-দময়ন্তীর মতোই বাংলা সাহিত্যের এক উজ্জ্বল চরিত্র।\n\n\n\n\n\nচাঁদ সওদাগর মনসাকে পূজা দেবে এই শর্তে বেহুলা স্বামী এবং মনসার কোপে অতীতে নিহত সওদাগরের অন্য ছয়পুত্রের জীবন ও সম্পদ-সম্ভারসহ সপ্তডিঙ্গা উদ্ধার করে শ্বশুরালয়ে প্রত্যাবর্তন করেন। কিন্তু শিবভক্ত চাঁদ মনসার পূজা দিতে অস্বীকৃতি জানান। শেষ পর্যন্ত বেহুলার অনেক অনুনয়-বিনয়ে তিনি মনসার পূজা দেন। এভাবে মর্ত্যে মনসার পূজা প্রচলিত হয় এবং এতে  মনসা সন্তুষ্ট হন। মর্ত্যে মনসার পূজা প্রচলন করে লখিন্দর-বেহুলারূপী স্বর্গের দম্পতি অনিরুদ্ধ-ঊষা শাপান্তে স্বর্গে গমন করেন। উল্লেখ্য যে, বণিক চাঁদ ছিলেন শিবের ভক্ত, তাই মনসার পূজা দিতে নারাজ ছিলেন বলেই দেবীর কোপে তিনি সপ্তপুত্র ও সপ্তডিঙ্গা হারান এবং নিজেও জীবনান্ত দুর্ভোগ পোহান।",
+    "NoCache": false,
+    "HumanInLoop": false,
+    "OutputPath": "BookPublished.html",
+    "SnapshotPath": "D:\\lab\\github\\books\\.pkbook\\workspaces\\snapshots",
+    "SourceBookName": "",
+    "TargetBookName": "",
+    "Yes": false,
+    "ForceRewrite": false,
+    "Version": false,
+    "TemplateRoot": "D:\\lab\\visualstudio\\xzen\\BookWriter\\Book.Web\\bin\\Debug\\net8.0\\templates\\prose",
+    "ApplicationRoot": "D:\\lab\\visualstudio\\xzen\\BookWriter\\Book.Web\\bin\\Debug\\net8.0\\",
+    "IsDryrun": false,
+    "TargetChapterIndex": 0,
+    "TargetSegmentIndex": 0,
+    "EnsureQuality": false
+  },
+  "Config": {
+    "appname": "book",
+    "owner": "xzen.in@gmail.com",
+    "version": "1.0.1",
+    "website": "https://www.xzen.in",
+    "installed_on": "2026-04-03T00:00:00Z",
+    "licence": "lic",
+    "log": {
+      "level": "info",
+      "file": ".pkbook/_logs/book.log",
+      "file_roling": "daily",
+      "content_type": "json"
+    },
+    "snapshot": {
+      "storage-type": "filesystem",
+      "config": {
+        "base_path": ".pkbook/snapshots"
+      }
+    },
+    "genai": {
+      "credentials": [
+        {
+          "name": "Nvidia-Qwen",
+          "email": "your-email@gmail.com",
+          "type": null,
+          "sdktype": "zen",
+          "model": "qwen/qwen3-coder-480b-a35b-instruct",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://integrate.api.nvidia.com/v1",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "Nvidia-Qwen",
+          "email": "your-email@gmail.com",
+          "type": null,
+          "sdktype": "nvidia",
+          "model": "qwen/qwen3-coder-480b-a35b-instruct",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://integrate.api.nvidia.com/v1",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "wslgemma4:e2b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma4:e2b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "gpt-oss:20b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "llama3.2:3b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "wslllama3.2:3b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "llama3.2:3b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "OllamaColabgemma4",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma4:e4b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "https://wellness-peace-examines-nokia.trycloudflare.com",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "OllamaColabmistral",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "mistral-nemo:12b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "https://wellness-peace-examines-nokia.trycloudflare.com",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "OllamaColabsarvam-1",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "mashriram/sarvam-1",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "https://wellness-peace-examines-nokia.trycloudflare.com",
+          "timeout_seconds": 300,
+          "config": null
+        },
+        {
+          "name": "ollama31b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma3:1b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "openrouter1oss120",
+          "email": "xzen.in@gmail.com",
+          "type": null,
+          "sdktype": "openrouter",
+          "model": "openai/gpt-oss-120b:free",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://openrouter.ai/api/v1",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "openrouter2oss120",
+          "email": "with.pijush.biswas@gmail.com",
+          "type": null,
+          "sdktype": "openrouter",
+          "model": "openai/gpt-oss-120b:free",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://openrouter.ai/api/v1",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "openrouter3oss120",
+          "email": "ankita.oncloud@gmail.com",
+          "type": null,
+          "sdktype": "openrouter",
+          "model": "openai/gpt-oss-120b:free",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://openrouter.ai/api/v1",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "openrouter4lhoss120",
+          "email": "lipika.xzen@gmail.com",
+          "type": null,
+          "sdktype": "openrouter",
+          "model": "openai/gpt-oss-120b:free",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://openrouter.ai/api/v1",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "openrouter5lhoss120",
+          "email": "pareenaom@gmail.com",
+          "type": null,
+          "sdktype": "openrouter",
+          "model": "openai/gpt-oss-120b:free",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://openrouter.ai/api/v1",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "openrouter2gemma4",
+          "email": "with.pijush.biswas@gmail.com",
+          "type": null,
+          "sdktype": "openrouter",
+          "model": "google/gemma-4-31b-it:free",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://openrouter.ai/api/v1",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "localai1",
+          "email": "localai@gmail.com",
+          "type": null,
+          "sdktype": "localai",
+          "model": "gemma-4-e4b-it",
+          "api_key": null,
+          "key": "fake-key-for-local-testing",
+          "url": "http://localhost:8080",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "geminicli1",
+          "email": "localai@gmail.com",
+          "type": null,
+          "sdktype": "localai",
+          "model": "gemma-4-e4b-it",
+          "api_key": null,
+          "key": "fake-key-for-local-testing",
+          "url": "http://localhost:8080",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "copilot1",
+          "email": "account1@gmail.com",
+          "type": "copilot",
+          "sdktype": null,
+          "model": "gpt-4o",
+          "api_key": null,
+          "key": "copilot_key",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "ollama1b",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma3:1b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "ollama1previewloud",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemini-3-flash-preview:cloud",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "ollama3",
+          "email": "account1@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "gemma3:1b",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool10",
+          "email": "yet.agile@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemini-2.5-flash-lite",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool20",
+          "email": "xzen.in@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemma-4-26b-a4b-it",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool30",
+          "email": "ankika.oncloud@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemini-2.5-flash-lite",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "pool40",
+          "email": "pareenaom@gmail.com",
+          "type": null,
+          "sdktype": "google",
+          "model": "gemma-4-31b-it",
+          "api_key": null,
+          "key": "REDACTED",
+          "url": "https://api.copilot.xzen.in/v1/generate",
+          "timeout_seconds": 240,
+          "config": null
+        },
+        {
+          "name": "onlineollama1",
+          "email": "pareenaom@gmail.com",
+          "type": null,
+          "sdktype": "ollama",
+          "model": "qwen3-coder-next:cloud",
+          "api_key": null,
+          "key": "ollama_key",
+          "url": "http://localhost:11434",
+          "timeout_seconds": 240,
+          "config": null
+        }
+      ],
+      "pools": {
+        "default_client": [
+          "wslgemma4:e2b"
+        ],
+        "openrouter_google": [
+          "openrouter2gemma4"
+        ],
+        "openrouter_oss": [
+          "openrouter1oss120",
+          "openrouter2oss120",
+          "openrouter3oss120",
+          "openrouter4oss120",
+          "wslgemma4:e2b"
+        ],
+        "ollama_local": [
+          "wslllama3.2:3b"
+        ],
+        "ollama_dokcer": [
+          "ollama1b"
+        ],
+        "nvidia": [
+          "Nvidia-Qwen"
+        ],
+        "ubuntu_oss": [
+          "gpt-oss-agent1"
+        ],
+        "ollama_cloud": [
+          "ollama1previewloud"
+        ],
+        "copilot_pool": [
+          "geminicli1"
+        ],
+        "google_pool": [
+          "pool10",
+          "pool20",
+          "pool30",
+          "pool40"
+        ],
+        "all_pool": [
+          "ollama1b",
+          "pool10",
+          "ollama1previewloud",
+          "pool20",
+          "ollama3",
+          "pool30",
+          "ollama31b",
+          "pool40"
+        ]
+      },
+      "usecase": {
+        "default": "default_client",
+        "segment_summary": "default_client",
+        "segment_review": "default_client",
+        "segment_write": "default_client",
+        "chapter_layout": "default_client",
+        "book_layout": "default_client"
+      },
+      "default-pool": null
+    }
+  },
+  "GenaiFactory": {}
+}

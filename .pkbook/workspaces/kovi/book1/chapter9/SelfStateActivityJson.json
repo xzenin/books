@@ -1,0 +1,12 @@
+{
+  "Name": "Trigger1",
+  "MethodName": "ChapterWorkflowActivity",
+  "ActivityType": "None",
+  "Error": null,
+  "ValidInit": true,
+  "ValidLayout": true,
+  "ValidDraft": true,
+  "ValidPublish": false,
+  "CreatedOn": "2026-05-13T23:53:14.4122818+05:30",
+  "UpdatedOn": "2026-05-14T00:00:20.0444143+05:30"
+}

@@ -1,0 +1,67 @@
+{
+  "book_name": "SOMEENGLISH",
+  "book_long_title": "Provide a long title",
+  "generic": "Historical Epic / Nationalist Literature",
+  "era": "590AD-625AD",
+  "language": "Bengali",
+  "target_audience": "general public, history enthusiasts, students",
+  "chapter_count": 2,
+  "created_at": "2026-04-22",
+  "user_name": "pijush",
+  "book_summary": "We will get this line from the user",
+  "chapters": [
+    {
+      "chapter_index": 1,
+      "name": "Chapter 1",
+      "chapter_title": "The first part of the chapter",
+      "chapter_summary": "Summary of the description of the first part of the chapter."
+    },
+    {
+      "chapter_index": 2,
+      "name": "Chapter 2",
+      "chapter_title": "The second part of the chapter",
+      "chapter_summary": "Summary of the description of the second part of the chapter."
+    }
+  ],
+  "all_characters": [
+    {
+      "character_id": 1,
+      "friendly_name": "Name of something",
+      "role": "What that character does",
+      "identity": {
+        "age": 45,
+        "sex": "Male",
+        "caste": "Brahmin"
+      },
+      "psychological_depth": "Fearless warrior, shrewd diplomat."
+    },
+    {
+      "character_id": 2,
+      "friendly_name": "Another name",
+      "role": "What that character does",
+      "identity": {
+        "age": 32,
+        "sex": "Male",
+        "caste": "Kshatriya"
+      },
+      "psychological_depth": "Brave warrior."
+    },
+    {
+      "character_id": 3,
+      "friendly_name": "Name of something",
+      "role": "What that character does",
+      "identity": {
+        "age": 38,
+        "sex": "Male",
+        "caste": "Gupta"
+      },
+      "personality": "Trusted friend and strategic ally."
+    }
+  ],
+  "history": [
+    {
+      "chapter_count": 2,
+      "running_summary": "The following chapters"
+    }
+  ]
+}

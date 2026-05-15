@@ -1,0 +1,5 @@
+{
+  "total_words": "Count of total words. Integer type.",
+  "segment_content": "Full content of the segment. This is a long text. String type",
+  "language": "Language of the content String type."
+}

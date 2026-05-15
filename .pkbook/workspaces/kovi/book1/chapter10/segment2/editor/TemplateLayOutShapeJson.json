@@ -1,0 +1,13 @@
+{
+  "scores": {
+    "language": 0.0,
+    "clarity": 0.0,
+    "style": 0.0,
+    "quality": 0.0,
+    "length_score": 0.0
+  },
+  "total_score_percentage": 0.0,
+  "status": "string",
+  "critique_en": "Short explanation of the score in English",
+  "critique_bn": "Short explanation of the score in Bengali"
+}

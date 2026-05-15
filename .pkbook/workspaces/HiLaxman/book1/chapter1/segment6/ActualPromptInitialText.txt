@@ -1,2 +1,0 @@
-Write the next chapter segment: লক্ষ্মণ সেনের প্রথম অভিযানের বিস্তারিত বিবরণ এবং সম্ভাব্য ফলাফল সম্পর্কে আলোচনা।  
-Output as same as previous JSON Format.

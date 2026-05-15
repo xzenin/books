@@ -1,2 +1,0 @@
-Write the next chapter segment: তৎকালীন বাংলার রাজনৈতিক পরিস্থিতি এবং সেন রাজবংশের বংশগত পরম্পরার ঐতিহাসিক তথ্যের বিশ্লেষণ এখানে দিতে হবে।  
-Output as same as previous JSON Format.

@@ -1,0 +1,12 @@
+{
+  "Name": "Trigger1",
+  "MethodName": "BookWorkflowActivity",
+  "ActivityType": "None",
+  "Error": null,
+  "ValidInit": true,
+  "ValidLayout": true,
+  "ValidDraft": true,
+  "ValidPublish": false,
+  "CreatedOn": "2026-05-13T23:53:14.4106847+05:30",
+  "UpdatedOn": "2026-05-14T00:00:38.593471+05:30"
+}

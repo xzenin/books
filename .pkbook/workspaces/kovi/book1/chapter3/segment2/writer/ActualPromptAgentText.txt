@@ -1,0 +1,43 @@
+CONTINUE COMPOSING THE NEXT STANZA.
+
+### OBJECTIVE
+You have to write a specific part of poem number 3 of the collection. 
+- **Current Part:** Stanza/Section 2 of 3.
+- **Goal:** This section will be created based on the thematic summary: .
+- **Lyrical Continuity:** Here are the previous lines to ensure rhythmic and thematic flow: কলাগাছের ভেলায় ভেসে যাওয়া, গাঙ্গুরের জলে আজ পথিকের যাত্রা,
+সে যাত্রা শুধু দেহের নয়, আত্মার মুক্তি, যেখানে বিষাদ ম dissolves হয়।
+অন্ধকার ভেদ করে নামে এক জ্যোতি, সেই বিষাদই হয়ে ওঠে আলোর উৎস,
+যেখানে মৃতদেহ ও বিষাদ মিলেমিশে এক অমর স্বপ্ন রচনা করে।
+
+এই বিষাদই এক বাঁধন, যা ছিন্ন করে সামাজিক ও দৈব বাধা,
+স্বামীর শব ও সর্পদংশনের বিষাদ, এক নারীত্বের চরম আত্মশক্তি;
+সেখানে জন্ম নেয় এক নতুন জীবন, যেখানে প্রেম ও ধৈর্যের জয়;
+এই বিষাদই হয়ে ওঠে সেই মহাকাব্যের নীরবতম ঘোষণা।
+
+### TECHNICAL CONSTRAINTS (FOR AGENTIC PARSING)
+1. **Output Format:** Return ONLY a valid JSON object. 
+2. **No Markdown:** Do not use ```json blocks or any introductory text.
+3. **JSON Schema:** Follow this shape: {
+  "total_words": "Count of total words. Integer type.",
+  "segment_content": "Full content of the segment. This is a long text. String type",
+  "language": "Language of the content String type."
+}
+4. **Data Integrity:** 
+   - Escape all Newlines with `\n` and double quotes with `\"` within the 'segment_content' field.
+   - This is extremely important for C# deserialization. Use double quotes (") for all keys and values.
+5. **No Preamble:** Do not say "Here is the JSON" or "Sure" etc.
+
+### JSON Shape Structure to return:** 
+{
+  "total_words": "Count of total words. Integer type.",
+  "segment_content": "Full content of the segment. This is a long text. String type",
+  "language": "Language of the content String type."
+} 
+
+### OUTPUT
+- **Language:** Generate text in each tag in Bengali language.
+- **Poetic Quality:** Ensure the content maintains the meter, rhyme (if applicable), and metaphorical depth of the preceding sections.
+- **Exact JSON shape to return:** Do not wrap with "content" wrapper. Only valid tags: "total_words", "segment_content", "last_two_sentences" (Note: In 'last_two_sentences', provide the final two lines of the newly generated stanza).
+- **Output Format:** Return ONLY a valid JSON object. 
+
+Now provide the JSON.

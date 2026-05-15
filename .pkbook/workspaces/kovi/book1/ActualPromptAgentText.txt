@@ -1,0 +1,115 @@
+### ROLE
+You are a master literary architect and a renowned Bengali novelist. Your specialty is designing complex narrative structures for historical and philosophical fiction.
+
+### TASK
+Architect a complete, structured book layout based on the provided "Book Summary." You must transform the Summary into a cohesive multi-chapter narrative.
+
+### NARRATIVE SPECIFICATIONS
+1. **Chapter Count:** You must generate exactly 10 chapters. No more, no less.
+2. **Narrative Arc:** Design a clear progression\u2014Introduction, Rising Action, Climax, and Resolution\u2014spread across the 10 chapters.
+3. **Tone:** Maintain a sophisticated, literary, and philosophical tone consistent with the best of Bengali literature.
+4. **Content:** Each chapter title and summary must be evocative, historically grounded, and emotionally resonant.
+
+### TECHNICAL REQUIREMENTS
+1. **Language:** Write all chapter titles and summaries in Bengali language script. JSON keys must remain in English as per the schema.
+2. **Format:** Return ONLY valid JSON.
+3. **Strict JSON Rules:**
+    - No markdown formatting (no ```json).
+    - No preamble, introductions, or post-JSON explanations.
+    - Use double quotes (`"`) for all keys and string values.
+    - **CRITICAL:** Escape all newlines (`\n`) and internal double quotes (`\"`) within the Bengali language text.
+4. **Target Schema:** {
+  "book_name": "SOMEENGLISH",
+  "book_long_title": "Provide a long title",
+  "generic": "Historical Epic / Nationalist Literature",
+  "era": "590AD-625AD",
+  "language": "Bengali",
+  "target_audience": "general public, history enthusiasts, students",
+  "chapter_count": 2,
+  "created_at": "2026-04-22",
+  "user_name": "pijush",
+  "book_summary": "We will get this line from the user",
+  "chapters": [
+    {
+      "chapter_index": 1,
+      "name": "Chapter 1",
+      "chapter_title": "The first part of the chapter",
+      "chapter_summary": "Summary of the description of the first part of the chapter."
+    },
+    {
+      "chapter_index": 2,
+      "name": "Chapter 2",
+      "chapter_title": "The second part of the chapter",
+      "chapter_summary": "Summary of the description of the second part of the chapter."
+    }
+  ],
+  "all_characters": [
+    {
+      "character_id": 1,
+      "friendly_name": "Name of something",
+      "role": "What that character does",
+      "identity": {
+        "age": 45,
+        "sex": "Male",
+        "caste": "Brahmin"
+      },
+      "psychological_depth": "Fearless warrior, shrewd diplomat."
+    },
+    {
+      "character_id": 2,
+      "friendly_name": "Another name",
+      "role": "What that character does",
+      "identity": {
+        "age": 32,
+        "sex": "Male",
+        "caste": "Kshatriya"
+      },
+      "psychological_depth": "Brave warrior."
+    },
+    {
+      "character_id": 3,
+      "friendly_name": "Name of something",
+      "role": "What that character does",
+      "identity": {
+        "age": 38,
+        "sex": "Male",
+        "caste": "Gupta"
+      },
+      "personality": "Trusted friend and strategic ally."
+    }
+  ],
+  "history": [
+    {
+      "chapter_count": 2,
+      "running_summary": "The following chapters"
+    }
+  ]
+}
+
+### INPUT DATA
+- **Book Summary:** আপনি একজন মহাকবি । মেঘনাদবধ কাব্যের মতো একটি কাব্য লিখতে চান । সেই কাব্য একজন বঙ্গনারীর জীবনে আশা আকাংখার অপরগাথা হয়ে থাকবে । একজন বঙ্গনারী তার স্বামীকে দেবতার জায়গা দেন । তাকে জীবনের অঙ্গ মনে করে । সাতজনমের জন্য অঙ্গীকার করে । স্বামীই তার স্বর্গ । 
+
+এই চরিত্রে বেহুলা একটি নান্দনিক চরিত্র । তাকে প্রধান চরিত্র করে একটা মডার্ণ বাঙালি নারীর জীবন , বিবাহ, সংসার, ও অন্যান্য কি কি পর্যায় নিয়ে আলোচোনা করা যায় ? ২০  পর্যায় নিয়ে একটি স্টোরি-লাইন দিন । 
+
+বেহুলা নিয়ে কিছু তথ্য দেওয়া হলো । আপনার পক্ষ থেকেও কিছু যুক্ত করুন । 
+
+
+
+বেহুলা  মনসামঙ্গল কাব্যের অন্যতম প্রধান চরিত্র, যাঁকে কেন্দ্র করে বাংলার লোকসমাজে প্রচলিত আছে এক জনপ্রিয় কাহিনী।  পুরাণ কাহিনীতে বেহুলা স্বর্গের অনিরুদ্ধের স্ত্রী ঊষা, আর লোককাহিনী অনুযায়ী তিনি ছিলেন উজানীনগরের সায়বেনের কন্যা এবং চম্পকনগরের চাঁদ সওদাগরের কনিষ্ঠ পুত্র  মনসামঙ্গল কাব্যের নায়ক লখিন্দরের (লক্ষীন্দর/ লক্ষ্মীন্দর) স্ত্রী।
+
+বেহুলা ছিলেন সতী-সাধ্বী, পরমাসুন্দরী এবং সর্বগুণে গুণাম্বিতা। সর্পদেবী মনসার আক্রোশে বিবাহ-রজনীতে লৌহবাসরে সর্পদংশনে স্বামীর মৃত্যু হলে স্বামীর পুনর্জীবন কামনায় বেহুলা কলাগাছের ভেলায় স্বামীর শব নিয়ে গাঙ্গুরের জলে ভেসে দেবপুরীর উদ্দেশ্যে এক অজানা দুর্গম পথে যাত্রা করেন। তখন তিনি কেবল যৌবনে পদার্পণ করেছেন। এ অবস্থায় এই দুর্গম পথে স্বামিপ্রেমই ছিল তাঁর একমাত্র সহায়। পথিমধ্যে গোদা ও আপু ডোম বেহুলাকে বিবাহের প্রস্তাব দিলে তিনি তাদের অভিশাপ দেন। পরে মনসার নির্দেশে নেতা (মনসার পাত্র ও স্বর্গের নিতাই ধোবিন) বাঘ ও চিলের রূপ ধরে তাঁর স্বামীর মৃতদেহ আক্রমণ করলে বেহুলা প্রাণপণে তা রক্ষা করেন। অবশেষে স্বর্গের ধোবিন নেতার ঘাটে ভেলা ভিড়লে নেতার পুনঃআত্মা প্রদানের অলৌকিক ক্ষমতা দেখে বেহুলা স্বামীর প্রাণ ফিরে পাওয়ার আশায় নেতার আশ্রয় নেন এবং নেতাই বেহুলাকে স্বর্গের দেবতাদের নিকট নিয়ে যায়। এভাবে অনেক বাধা-বিপত্তি অতিক্রম করে বেহুলা দেবপুরীতে পৌঁছান এবং নৃত্যগীতে মহাদেব ও অন্যান্য দেবতাকে তুষ্ট করে স্বামীর পুনর্জীবন লাভ করেন। 
+
+বাঙালি সনাতন নারী সমাজের অন্যতম আদর্শ চরিত্র এই বেহুলা। এর মাধ্যমে বাঙালি রমণীদের শাশ্বত স্বামিভক্তির এক অসাধারণ চিত্র ফুটে উঠেছে। একই সঙ্গে বাংলার সহনশীল ও কোমলস্বভাব নারীদের মধ্যেও যে একটি সুপ্ত বিদ্রোহ ক্রিয়াশীল, তারও প্রকাশ ঘটেছে এই বেহুলা চরিত্রের মধ্য দিয়ে। তাই বিদায়কালে আপনজনের অনুনয়-বিনয় ও সস্নেহ-অনুরোধ বেহুলাকে তাঁর লক্ষ্য থেকে বিচলিত করতে পারেনি। সব রকম প্রলোভন, ভয় ও অবর্ণনীয় দুঃখ-কষ্ট জয় করে তিনি তাঁর জীবনের পরম সম্পদ স্বামী লখিন্দরকে বাঁচিয়ে তুলেছেন।
+
+শবানুগামিনী এই যুবতী পত্নীর প্রবাস-জীবন ছিল পবিত্র। সতীত্ব রক্ষায় তিনি অসাধারণ চারিত্রিক দৃঢ়তার পরিচয় দিয়েছেন। সতীত্ববলেই স্বামীর পুনর্জীবন লাভের আশায় বেহুলা অনেক দুর্জনের পাপ-অভিলাষ ব্যর্থ করে নিজের গন্তব্যে পৌঁছতে সমর্থ হন। বাল্য-বৈধব্যের প্রতি উদাসীন থেকে পরিস্ফুট যৌবনে মৃত স্বামীর সঙ্গিনী হয়ে সুদূর প্রবাস থেকে স্বামীর পুনর্জীবন নিয়ে ফিরে আসায় বেহুলা চরিত্রটি বিশেষভাবে গৌরবান্বিত। বেহুলার দুঃখ-সহনশীলতার চেয়ে তাঁর এই নির্ভীক তেজস্বিতাই সবাইকে মুগ্ধ করে। আত্মশক্তিতে বলীয়ান বেহুলার একাগ্র সাধনার নিকট অত্যাচারী দৈব শক্তিও মাথা নত করেছে, এখানেই বেহুলা চরিত্রের শ্রেষ্ঠত্ব। নারীত্বের মহিমায় বেহুলা সীতা-সাবিত্রী-দময়ন্তীর মতোই বাংলা সাহিত্যের এক উজ্জ্বল চরিত্র।
+
+
+
+
+
+চাঁদ সওদাগর মনসাকে পূজা দেবে এই শর্তে বেহুলা স্বামী এবং মনসার কোপে অতীতে নিহত সওদাগরের অন্য ছয়পুত্রের জীবন ও সম্পদ-সম্ভারসহ সপ্তডিঙ্গা উদ্ধার করে শ্বশুরালয়ে প্রত্যাবর্তন করেন। কিন্তু শিবভক্ত চাঁদ মনসার পূজা দিতে অস্বীকৃতি জানান। শেষ পর্যন্ত বেহুলার অনেক অনুনয়-বিনয়ে তিনি মনসার পূজা দেন। এভাবে মর্ত্যে মনসার পূজা প্রচলিত হয় এবং এতে  মনসা সন্তুষ্ট হন। মর্ত্যে মনসার পূজা প্রচলন করে লখিন্দর-বেহুলারূপী স্বর্গের দম্পতি অনিরুদ্ধ-ঊষা শাপান্তে স্বর্গে গমন করেন। উল্লেখ্য যে, বণিক চাঁদ ছিলেন শিবের ভক্ত, তাই মনসার পূজা দিতে নারাজ ছিলেন বলেই দেবীর কোপে তিনি সপ্তপুত্র ও সপ্তডিঙ্গা হারান এবং নিজেও জীবনান্ত দুর্ভোগ পোহান।
+- **Required Chapters:** 10
+
+### OUTPUT
+Generate text in each tag in Bengali language 
+Return the completed JSON structure now.
