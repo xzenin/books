@@ -1,3 +1,11 @@
+# Secrets / local state
+.pkbook/
+_storage_keys.txt
+colab/keys.txt
+config.json
+*.env
+.env
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
