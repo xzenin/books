@@ -1,0 +1,33 @@
+{
+  "title": "বাউল",
+  "language": "bn",
+  "source_terms": "bookseed.txt",
+  "context": "../context/qualities/aurilus.md + ../context/themes/gosai_bangla.md",
+  "total_chapters": 22,
+  "completed_chapters": 6,
+  "current_chapter": 6,
+  "chapters": [
+    { "chapter_number": 1, "topic": "ইলেকট্রন", "category": "অন্তরের দুর্গ", "status": "completed", "file_path": "chapters\\Chapter_001_ইলেকট্রন.md", "completed_date": "2026-08-29T00:00:00Z" },
+    { "chapter_number": 2, "topic": "প্রোটন", "category": "এক রক্তের বিধান", "status": "completed", "file_path": "chapters\\Chapter_002_প্রোটন.md", "completed_date": "2026-08-29T00:00:00Z" },
+    { "chapter_number": 3, "topic": "নিউট্রন", "category": "ক্ষণস্থায়ী নাম", "status": "completed", "file_path": "chapters\\Chapter_003_নিউট্রন.md", "completed_date": "2026-08-29T00:00:00Z" },
+    { "chapter_number": 4, "topic": "কোয়ার্ক", "category": "একমাত্র বর্তমান", "status": "completed", "file_path": "chapters\\Chapter_004_কোয়ার্ক.md", "completed_date": "2026-08-29T00:00:00Z" },
+    { "chapter_number": 5, "topic": "বোসন", "category": "প্রিয় অনিবার্যতা", "status": "completed", "file_path": "chapters\\Chapter_005_বোসন.md", "completed_date": "2026-08-29T00:00:00Z" },
+    { "chapter_number": 6, "topic": "ফার্মিয়ন", "category": "শেষ রূপান্তর", "status": "completed", "file_path": "chapters\\Chapter_006_ফার্মিয়ন.md", "completed_date": "2026-08-29T00:00:00Z" },
+    { "chapter_number": 7, "topic": "গ্র্যাভিটন", "category": "রাজসেবা", "status": "pending", "file_path": "chapters\\Chapter_007_গ্র্যাভিটন.md" },
+    { "chapter_number": 8, "topic": "নিউট্রিনো", "category": "অভারাক্রান্ত আত্মা", "status": "pending", "file_path": "chapters\\Chapter_008_নিউট্রিনো.md" },
+    { "chapter_number": 9, "topic": "আইসোটোপ", "category": "বোনা সমগ্র", "status": "pending", "file_path": "chapters\\Chapter_009_আইসোটোপ.md" },
+    { "chapter_number": 10, "topic": "ক্ষয়", "category": "অজেয় গুণ", "status": "pending", "file_path": "chapters\\Chapter_010_ক্ষয়.md" },
+    { "chapter_number": 11, "topic": "বিভাজন", "category": "অন্তরের দুর্গ", "status": "pending", "file_path": "chapters\\Chapter_011_বিভাজন.md" },
+    { "chapter_number": 12, "topic": "সংযোজন", "category": "এক রক্তের বিধান", "status": "pending", "file_path": "chapters\\Chapter_012_সংযোজন.md" },
+    { "chapter_number": 13, "topic": "স্থিতিশক্তি", "category": "ক্ষণস্থায়ী নাম", "status": "pending", "file_path": "chapters\\Chapter_013_স্থিতিশক্তি.md" },
+    { "chapter_number": 14, "topic": "গতিশক্তি", "category": "একমাত্র বর্তমান", "status": "pending", "file_path": "chapters\\Chapter_014_গতিশক্তি.md" },
+    { "chapter_number": 15, "topic": "অবিচ্ছিন্নতা", "category": "প্রিয় অনিবার্যতা", "status": "pending", "file_path": "chapters\\Chapter_015_অবিচ্ছিন্নতা.md" },
+    { "chapter_number": 16, "topic": "সাম্যাবস্থা", "category": "শেষ রূপান্তর", "status": "pending", "file_path": "chapters\\Chapter_016_সাম্যাবস্থা.md" },
+    { "chapter_number": 17, "topic": "অতিপরিবাহিতা", "category": "রাজসেবা", "status": "pending", "file_path": "chapters\\Chapter_017_অতিপরিবাহিতা.md" },
+    { "chapter_number": 18, "topic": "চুম্বকায়ন", "category": "অভারাক্রান্ত আত্মা", "status": "pending", "file_path": "chapters\\Chapter_018_চুম্বকায়ন.md" },
+    { "chapter_number": 19, "topic": "তড়িৎভেদ্যতা", "category": "বোনা সমগ্র", "status": "pending", "file_path": "chapters\\Chapter_019_তড়িৎভেদ্যতা.md" },
+    { "chapter_number": 20, "topic": "চৌম্বকভেদ্যতা", "category": "অজেয় গুণ", "status": "pending", "file_path": "chapters\\Chapter_020_চৌম্বকভেদ্যতা.md" },
+    { "chapter_number": 21, "topic": "পরিবাহিতা", "category": "অন্তরের দুর্গ", "status": "pending", "file_path": "chapters\\Chapter_021_পরিবাহিতা.md" },
+    { "chapter_number": 22, "topic": "প্রতিবাধা", "category": "এক রক্তের বিধান", "status": "pending", "file_path": "chapters\\Chapter_022_প্রতিবাধা.md" }
+  ]
+}

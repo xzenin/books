@@ -1,0 +1,217 @@
+{
+  "total_chapters": 30,
+  "completed_chapters": 30,
+  "current_chapter": 30,
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "topic": "The Modern Job",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_01_The_Modern_Job.md",
+      "completed_date": "2026-01-08T12:00:00Z"
+    },
+    {
+      "chapter_number": 2,
+      "topic": "The Talking Mirrors (Uncontrolled Media)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_02_The_Talking_Mirrors.md",
+      "completed_date": "2026-01-08T12:15:00Z"
+    },
+    {
+      "chapter_number": 3,
+      "topic": "The Death of 'Perhaps' (Intolerance)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_03_The_Death_of_Perhaps.md",
+      "completed_date": "2026-01-08T12:30:00Z"
+    },
+    {
+      "chapter_number": 4,
+      "topic": "Digital Outrage (Instant Malice)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_04_Digital_Outrage.md",
+      "completed_date": "2026-01-08T12:45:00Z"
+    },
+    {
+      "chapter_number": 5,
+      "topic": "The Fragmented Truth",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_05_The_Fragmented_Truth.md",
+      "completed_date": "2026-01-08T13:00:00Z"
+    },
+    {
+      "chapter_number": 6,
+      "topic": "The Echoing Cave (Echo Chambers)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_06_The_Echoing_Cave.md",
+      "completed_date": "2026-01-08T13:15:00Z"
+    },
+    {
+      "chapter_number": 7,
+      "topic": "Ambition",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_07_Ambition.md",
+      "completed_date": "2026-01-08T13:30:00Z"
+    },
+    {
+      "chapter_number": 8,
+      "topic": "Regret",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_08_Regret.md",
+      "completed_date": "2026-01-08T13:45:00Z"
+    },
+    {
+      "chapter_number": 9,
+      "topic": "Technology and Tools",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_09_Technology_and_Tools.md",
+      "completed_date": "2026-01-08T14:00:00Z"
+    },
+    {
+      "chapter_number": 10,
+      "topic": "Personal Sacrifice",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_10_Personal_Sacrifice.md",
+      "completed_date": "2026-01-08T14:15:00Z"
+    },
+    {
+      "chapter_number": 11,
+      "topic": "Loneliness",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_11_Loneliness.md",
+      "completed_date": "2026-01-08T15:00:00Z"
+    },
+    {
+      "chapter_number": 12,
+      "topic": "Patience",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_12_Patience.md",
+      "completed_date": "2026-01-08T15:15:00Z"
+    },
+    {
+      "chapter_number": 13,
+      "topic": "Memory",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_13_Memory.md",
+      "completed_date": "2026-01-08T15:30:00Z"
+    },
+    {
+      "chapter_number": 14,
+      "topic": "Hope",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_14_Hope.md",
+      "completed_date": "2026-01-08T15:45:00Z"
+    },
+    {
+      "chapter_number": 15,
+      "topic": "Leadership",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_15_Leadership.md",
+      "completed_date": "2026-01-08T16:00:00Z"
+    },
+    {
+      "chapter_number": 16,
+      "topic": "The Body (Health)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_16_The_Body.md",
+      "completed_date": "2026-01-08T16:15:00Z"
+    },
+    {
+      "chapter_number": 17,
+      "topic": "Travel (The Journey)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_17_Travel.md",
+      "completed_date": "2026-01-08T16:30:00Z"
+    },
+    {
+      "chapter_number": 18,
+      "topic": "Art and Creativity",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_18_Art_and_Creativity.md",
+      "completed_date": "2026-01-08T16:45:00Z"
+    },
+    {
+      "chapter_number": 19,
+      "topic": "War and Conflict",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_19_War_and_Conflict.md",
+      "completed_date": "2026-01-08T17:00:00Z"
+    },
+    {
+      "chapter_number": 20,
+      "topic": "Aging",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_20_Aging.md",
+      "completed_date": "2026-01-08T17:15:00Z"
+    },
+    {
+      "chapter_number": 21,
+      "topic": "Identity and Names",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_21_Identity_and_Names.md",
+      "completed_date": "2026-01-08T18:00:00Z"
+    },
+    {
+      "chapter_number": 22,
+      "topic": "Curiosity",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_22_Curiosity.md",
+      "completed_date": "2026-01-08T18:15:00Z"
+    },
+    {
+      "chapter_number": 23,
+      "topic": "Betrayal",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_23_Betrayal.md",
+      "completed_date": "2026-01-08T18:30:00Z"
+    },
+    {
+      "chapter_number": 24,
+      "topic": "Home and Exile",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_24_Home_and_Exile.md",
+      "completed_date": "2026-01-08T18:45:00Z"
+    },
+    {
+      "chapter_number": 25,
+      "topic": "The Unknown",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_25_The_Unknown.md",
+      "completed_date": "2026-01-08T19:00:00Z"
+    },
+    {
+      "chapter_number": 26,
+      "topic": "Political Banners",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_26_Political_Banners.md",
+      "completed_date": "2026-01-08T19:15:00Z"
+    },
+    {
+      "chapter_number": 27,
+      "topic": "The Mask of the Profile",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_27_The_Mask_of_the_Profile.md",
+      "completed_date": "2026-01-08T19:30:00Z"
+    },
+    {
+      "chapter_number": 28,
+      "topic": "Thirst for Judgment (Cancel Culture)",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_28_Thirst_for_Judgment.md",
+      "completed_date": "2026-01-08T19:45:00Z"
+    },
+    {
+      "chapter_number": 29,
+      "topic": "Forgiveness",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_29_Forgiveness.md",
+      "completed_date": "2026-01-08T20:00:00Z"
+    },
+    {
+      "chapter_number": 30,
+      "topic": "The Great Silence",
+      "status": "completed",
+      "file_path": "c:\\Lab\\k\\source\\chapters\\Chapter_30_The_Great_Silence.md",
+      "completed_date": "2026-01-08T20:15:00Z"
+    }
+  ]
+}

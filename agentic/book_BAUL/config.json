@@ -1,0 +1,29 @@
+{
+  "bookname": "BAUL",
+  "title": "বাউল",
+  "language": "bn",
+  "register": "archaic/literary",
+  "quality": "../context/qualities/aurilus.md",
+  "themes": "../context/themes/gosai_bangla.md",
+  "reference": "../context/references/aurilus.txt",
+  "index": "bookseed.txt",
+  "sacred_vocabulary": {
+    "inner_citadel": "অন্তরের দুর্গ / মনের মাঝি",
+    "one_blood": "এক রক্ত / সকলের মাঝে এক",
+    "fading_name": "ক্ষণস্থায়ী নাম / নামহীন পথিক",
+    "only_present": "একমাত্র বর্তমান / আজি এই দিন",
+    "amor_fati": "প্রিয় অনিবার্যতা / কপালের লেখা",
+    "last_change": "শেষ রূপান্তর / মহামিলন",
+    "royal_service": "রাজসেবা / সেবার সিংহাসন",
+    "uncluttered_soul": "অভারাক্রান্ত আত্মা / হালকা ঝোলা",
+    "woven_whole": "বোনা সমগ্র / একই শ্বাস",
+    "undefeated_virtue": "অজেয় গুণ / অদম্য শিখা",
+    "man_of_heart": "মনের মানুষ",
+    "one_string": "একতারা",
+    "leaving_home": "ঘরছাড়া",
+    "detached": "উদাস",
+    "fakir": "ফকির",
+    "gosai": "গোঁসাই"
+  },
+  "translation_guide": {}
+}

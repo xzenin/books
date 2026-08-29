@@ -1,0 +1,51 @@
+{
+  "title": "অদৃশ্য বিধান: বিজ্ঞান ও আত্মার নবী",
+  "language": "bn",
+  "source_terms": "bookseed.txt",
+  "context": "../context/qualities/aurilus.md + writer.md",
+  "total_chapters": 199,
+  "completed_chapters": 5,
+  "current_chapter": 5,
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "topic": "মহাকর্ষ",
+      "category": "এক রক্তের বিধান",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_001_মহাকর্ষ.md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 2,
+      "topic": "এনট্রপি",
+      "category": "শেষ রূপান্তর",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_002_এনট্রপি.md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 3,
+      "topic": "ফোটন",
+      "category": "অন্তরের দুর্গ",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_003_ফোটন.md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 4,
+      "topic": "অনুনাদ",
+      "category": "বোনা সমগ্র",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_004_অনুনাদ.md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 5,
+      "topic": "সাম্যাবস্থা",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_005_সাম্যাবস্থা.md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    }
+  ]
+}

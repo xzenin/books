@@ -1,0 +1,11 @@
+{
+  "bookname": "Muktii",
+  "title": "মুক্তি",
+  "language": "bn",
+  "register": "archaic/literary",
+  "quality": "../context/qualities/aurilus.md",
+  "themes": "../context/themes/generic.md",
+  "reference": "../context/references/aurilus.txt",
+  "index": "bookseed.txt",
+  "scaffolded_date": "2026-08-29T00:00:00Z"
+}
