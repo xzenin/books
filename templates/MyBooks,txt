@@ -1,0 +1,23 @@
+Book File Navigation
+Root:
+  - Settings.json
+  - BookPrompt.txt
+  - BookOutline.json
+  - BookRunningSummary.txt
+  - BookChapters:
+    - Chapter1:
+      - ChapterParameter.json
+      - ChapterPrompt.txt
+      - ChapterOut:        
+        - ChapterSummary.txt
+        - ChapterCharacters.txt
+        - ChapterGenerated.txt
+        - ChapterRunningSummary.txt
+    - Chapter2:
+      - ChapterParameter.json
+      - ChapterPrompt.txt
+      - ChapterOut:        
+        - ChapterSummary.txt
+        - ChapterCharacters.txt
+        - ChapterGenerated.txt
+        - ChapterRunningSummary.txt

@@ -1,0 +1,79 @@
+Can you create a root folder in _workspace directory for book name "majar' as per the navigation provided in MyBooks.txt
+
+
+Create a single python file init.py to create complete folder & file structure. First ceate a json structure for files and folder, then parse the json structure and then run a loop to create the folder and file structure 
+
+
+
+Work on generateprompt.ps1, it should take a input from user and then put some sample text to each file based on the input. If it is json, create sample json. Get the content from naming convention. It is text file, just append some text to the target file. For each file create seperate function and create parameter suitable for it.
+
+
+After init, keep the intial project settings saved to settings.json in _workspace/<bookname>/settings.json file. The exampple:
+{
+    "book_name": "<bookname>",
+    "chapter_count": 5,
+    "root_folder": "<_workspace>",
+    "date_created": <date>,
+    "location": <machinename>,
+    "user": <username from environment>
+}
+Get these informations from arguments and environment and the create a class model. Then serialze the same model into a string, the same string must go to snapshot as well as to persisted file.
+
+
+create a config.json in .pkbook folder 
+{
+    "appname": "book",
+    "owner": "xzen.in@gmail.com",
+    "version": 1.0.1,
+    "website": "https://www.xzen.in",
+    "installed_on": <date>,
+    "licence": "lic"
+}
+
+
+
+
+Keep the dummy content writing intact. I want to try new things here. 
+Now you have the folder and file structure and python models and manager in place.
+
+You will be provided with a book-name which you have inited earlier and created basic folder and file structure.
+We need to create two kind of prompt here. a) Novel Prompt b) Chapter prompt.
+
+Now, Impliment the usecase in write.py, which takes parameters from "<workspace>/<bookname>/Settings.json"
+
+1) Take an input from user as novel gist.
+2) After you get a gist, based on the gist, you need to call a GenAIChat 'send' method to create a novel layout. The output format is provided in "./templates/book.json"
+3) The prompt can be like: You are a renowned author and novelist. You have published 30 novels in Bengali Literature. Create a JSON for novel layout. Please generate <chapter_count> chapters.
+4) When create the prompt , save the prompt in "<workspace>/<bookname>/BookPrompt.txt" file.  
+5) Save the output layout JSON to "<workspace>/<bookname>/BookOutline.json"
+
+
+When you finish these activity, do the following:
+1) Read and parse "<workspace>/<bookname>/BookOutline.json" and iterate over number of chapters.
+2) For each chapters, call a GenAIChat 'send' method to create the chapter. The output JSON is at: ./templates/chapter.json
+4) After created the prompt , save the prompt in "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterPrompt.txt" file.  
+5) Save the output layout JSON to "<workspace>/<bookname>/BookChapters/Chapter<chapter-counter>/ChapterParameter.json" file.
+
+
+
+
+
+
+
+
+
+
+Now use claude model, the usecase need strong reasoning capability. 
+You are a renowned author and novelist. You have published 30 novels in Bengali Literature.
+You are expert and SME for language development and master or poetic prose. Have sigfinant experience in high level of syntax development.
+
+Your task here include:
+    - Understand the basic text provided by user as prompt.
+    - Extract contextual information from wiki, internet, history, geography, hidden pdf, attached document ( RAG)  if any
+    - Write a layout of novel at least 5 chapters. Guess the actual number of chapters from the given prompt.
+    - Finalize suitable book title and produce a summary of the storyline.
+
+Your outout is expected as JSON format. 
+      
+
+
