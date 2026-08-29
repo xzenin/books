@@ -1,0 +1,68 @@
+{
+  "title": "বাউলা",
+  "language": "bn",
+  "source_terms": "bookseed.txt",
+  "context": "../context/qualities/aurilus.md + ../context/themes/generic.md",
+  "total_chapters": 8,
+  "completed_chapters": 1,
+  "current_chapter": 1,
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "topic": "প্যাসকেল (Pascal)",
+      "category": "অন্তরের দুর্গ",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_001_প্যাসকেল (Pascal).md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 2,
+      "topic": "ওয়াট (Watt)",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_002_ওয়াট (Watt).md"
+    },
+    {
+      "chapter_number": 3,
+      "topic": "দ্রুতি (Velocity)",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_003_দ্রুতি (Velocity).md"
+    },
+    {
+      "chapter_number": 4,
+      "topic": "ভরবেগ (Momentum)",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_004_ভরবেগ (Momentum).md"
+    },
+    {
+      "chapter_number": 5,
+      "topic": "মহাকর্ষ (Gravity)",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_005_মহাকর্ষ (Gravity).md"
+    },
+    {
+      "chapter_number": 6,
+      "topic": "ভর (Mass)",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_006_ভর (Mass).md"
+    },
+    {
+      "chapter_number": 7,
+      "topic": "ক্যালোরি (Calorie)",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_007_ক্যালোরি (Calorie).md"
+    },
+    {
+      "chapter_number": 8,
+      "topic": "এনট্রপি (Entropy)।",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_008_এনট্রপি (Entropy)।.md"
+    }
+  ]
+}

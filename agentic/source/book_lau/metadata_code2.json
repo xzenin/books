@@ -1,0 +1,45 @@
+{
+  "run_type": "write",
+  "timestamp": "2026-08-29T00:00:00Z",
+  "book": {
+    "bookname": "lau",
+    "title": "লাউ",
+    "language": "bn",
+    "register": "archaic/literary"
+  },
+  "config_paths": {
+    "quality": "../context/qualities/aurilus.md",
+    "themes": "../context/themes/generic.md",
+    "reference": "../context/references/aurilus.txt",
+    "index": "bookseed.txt",
+    "override": "override.md"
+  },
+  "requested_chapter_numbers": [1, 2],
+  "override_summary": "Transform into Lalon Shah/Baul voice; answer with questions; deny caste, creed, sect, and name; point toward মনের মানুষ; use boat, river, crossing, Padma/Bengali landscapes; end in riddle/question; weave Baul/Fakir/Sufi address particles and one-blood refrain.",
+  "chapters_planned": [
+    {
+      "chapter_number": 1,
+      "topic": "ত্বরণ (Acceleration)",
+      "category": "অন্তরের দুর্গ",
+      "metaphor_plan": [
+        "Acceleration as the quickening of a boat under the unseen current",
+        "Inner citadel as the still room that chooses direction before speed",
+        "Baul seeker asking whether haste without মনের মানুষ is movement or wandering"
+      ],
+      "sacred_vocabulary": ["অন্তরের শাসক / বিবেচনাশক্তি", "অন্তরের দুর্গ", "নীরব বিধান / মহা যুক্তি", "মনের মানুষ"],
+      "revision_notes": "Write as riverbank Baul song in Bengali, with question-as-answer and open-ended riddle close."
+    },
+    {
+      "chapter_number": 2,
+      "topic": "বল (Force)",
+      "category": "এক রক্তের বিধান",
+      "metaphor_plan": [
+        "Force as the unseen hand/oar that moves stillness",
+        "One blood as the common river pressure through many bodies",
+        "Ethical warning that the hand striking another pushes against itself"
+      ],
+      "sacred_vocabulary": ["এক মহা দেহ / এক রক্তের বিধান", "একই রক্ত, একই মানুষ", "নীরব বিধান / মহা যুক্তি", "মনের মানুষ"],
+      "revision_notes": "Emphasize Hindu-Muslim unity, body/limbs imagery, boatman and crossing, ending in a riddle."
+    }
+  ]
+}

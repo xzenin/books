@@ -20,7 +20,7 @@ This file only supplies the **subject-specific inputs** for this particular book
    - List of physics/science terms in Bengali, one per line (e.g. `ত্বরণ (Acceleration)`, `বল (Force)`)
    - Each term becomes one chapter
 
-3. **Reference book**: `../context/references/aurilus_book_reference.txt`
+3. **Reference book**: `../context/references/aurilus.txt`
    - The source text of *The Meditations* for stylistic grounding
 
 ## Subject-Specific Configuration
@@ -80,7 +80,7 @@ Assign each term to one of these Stoic categories, cycling through them:
 > "Writer, use the dynamic agent at `write.md` with these inputs:
 > - **Seed file**: `../context/qualities/aurilus.md`
 > - **Index file**: `bookseed.txt`
-> - **Reference book**: `../context/references/aurilus_book_reference.txt`
+> - **Reference book**: `../context/references/aurilus.txt`
 >
 > Write [N] chapters on the next [N] topics from the index."
 

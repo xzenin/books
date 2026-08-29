@@ -10,13 +10,13 @@ The writer agent reads this registry to discover available references, then read
 
 | # | Reference File | Work | Author | Format | Language | Status |
 |---|---------------|------|--------|--------|----------|--------|
-| 1 | [`aurilus_book_reference.txt`](aurilus_book_reference.txt) | *The Meditations* | Marcus Aurelius | Plain text (full text) | English | ✅ Active |
+| 1 | [`aurilus.txt`](aurilus.txt) | *The Meditations* | Marcus Aurelius | Plain text (full text) | English | ✅ Active |
 
 ---
 
 ## Reference Details
 
-### 1. `aurilus_book_reference.txt` — The Meditations of Marcus Aurelius
+### 1. `aurilus.txt` — The Meditations of Marcus Aurelius
 
 - **Work:** *The Meditations of Marcus Aurelius*
 - **Author:** Marcus Aurelius (121–180 CE), Roman Emperor and Stoic philosopher

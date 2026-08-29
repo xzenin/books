@@ -13,12 +13,12 @@ The system is split into two layers:
 | File | Role |
 |------|------|
 | `write.md` | **The writing engine.** Defines the voice, structural formula, style rules, and execution steps. Subject-agnostic — never changes between books. |
-| `book_speed/writer.md` | **A book-specific instance.** Supplies the subject inputs (seed file, index file, reference book) and the subject-specific configuration (language, title, sacred vocabulary, thematic categories, translation table). |
+| `source/book_speed/config.json` | **A book-specific instance.** Supplies the subject inputs (seed file, index file, reference book) and the subject-specific configuration (language, title, sacred vocabulary, thematic categories, translation table). |
 | `context/qualities/aurilus.md` | **The seed file.** An analysis of a reference book, defining the philosophical framework, themes, metaphors, and quality metrics. |
-| `book_speed/bookseed.txt` | **The index file.** The list of topics/terms, one per line. Each becomes one chapter. |
-| `context/references/aurilus_book_reference.txt` | **The reference book** (optional). The source text for direct stylistic grounding. |
+| `source/book_speed/bookseed.txt` | **The index file.** The list of topics/terms, one per line. Each becomes one chapter. |
+| `context/references/aurilus.txt` | **The reference book** (optional). The source text for direct stylistic grounding. |
 
-To write a *new* book on a *new* subject, you only create a new book folder with a new `writer.md` instance, a new seed file, and a new index file. The engine in `write.md` stays untouched.
+To write a *new* book on a *new* subject, you only create a new book folder under `source/` with a new `config.json`, a new seed file, and a new index file. The engine in `write.md` stays untouched.
 
 ---
 
@@ -49,8 +49,8 @@ Once the system prompt is set, invoke the agent with the three inputs:
 
 > "Writer, here are my inputs:
 > - **Seed file**: `context/qualities/aurilus.md`
-> - **Index file**: `book_speed/bookseed.txt`
-> - **Reference book**: `context/references/aurilus_book_reference.txt`
+> - **Index file**: `source/book_speed/bookseed.txt`
+> - **Reference book**: `context/references/aurilus.txt`
 >
 > Write [N] chapters on the next [N] topics from the index, conforming to the seed file's themes and quality metrics."
 
@@ -84,7 +84,7 @@ The list of topics/terms, one per line. Each becomes one chapter. For example:
 ...
 ```
 
-### Reference Book (`context/references/aurilus_book_reference.txt`)
+### Reference Book (`context/references/aurilus.txt`)
 The source text itself (optional), for direct stylistic and thematic reference.
 
 ---
@@ -107,7 +107,7 @@ The source text itself (optional), for direct stylistic and thematic reference.
 ## Recommended Workflow
 
 1. **Feed the System Prompt** — tell the AI who it is (using `write.md`).
-2. **Create the book instance** — a new `writer.md` in a new book folder, pointing to its seed file, index file, and reference book.
+2. **Create the book instance** — a new `config.json` in a new `source/book_<bookname>/` folder, pointing to its seed file, index file, and reference book.
 3. **Upload the inputs** — provide the seed file, index file, and (optionally) the reference book.
 4. **Batch Generate** — ask the AI to write 3 chapters at a time to ensure quality control.
 5. **Refine** — if the AI becomes too "modern," say: *"More metaphors, less logic. Speak to me as if we are standing on the hills of Orphalese."*
@@ -121,6 +121,7 @@ For each book, the agent writes directly to disk:
 - **Individual chapters**: `chapters\Chapter_XXX_[term].md` — one file per chapter, starting with the heading `# অধ্যায় XXX: [term]` (or the target-language equivalent).
 - **Consolidated book**: `book.md` — the assembled book (title, introduction, and every chapter in order).
 - **Progress tracking**: `progress.json` — tracks completed chapters, current chapter, and per-chapter status.
+- **Run metadata**: `metadata_code<number>.json` — records the plan for each writing or revision run before the text is written.
 
 ---
 
@@ -151,3 +152,60 @@ The agent maintains a `progress.json` at the book's root level:
 ```
 
 The agent always checks `progress.json` first to **resume** from where it left off — never restarting from Chapter 1 unless explicitly asked.
+
+---
+
+## Run Metadata (`metadata_code<number>.json`)
+
+Before writing or revising chapters, create the next numbered metadata file in the book folder. Never overwrite an existing metadata file.
+
+Use it as the pre-writing plan and revision memory for the run:
+
+```json
+{
+  "run_type": "write",
+  "created_at": "2026-08-29T00:00:00Z",
+  "bookname": "Muktii",
+  "title": "মুক্তি",
+  "language": "bn",
+  "quality": "../context/qualities/aurilus.md",
+  "themes": "../context/themes/generic.md",
+  "reference": "../context/references/aurilus.txt",
+  "chapters_planned": [
+    {
+      "chapter_number": 7,
+      "topic": "ধারকত্ব",
+      "category": "রাজসেবা",
+      "metaphor_plan": ["vessel", "empty cup", "servant's lamp"],
+      "sacred_vocabulary": ["রাজসেবা", "শূন্য পাত্র", "নীরব বিধান"],
+      "revision_notes": []
+    }
+  ]
+}
+```
+
+For revision runs, set `"run_type": "revision"` and record the requested transformation, the files to be changed, and the audit findings that caused the revision.
+
+---
+
+## Revision Workflow
+
+Use revision mode when a chapter already exists and the user asks to improve it, tighten it, shift its voice, make it more archaic, make it more Baul, or audit completed chapters.
+
+Recommended revision commands:
+
+```text
+revise chapter 7: more Baul, less Stoic
+tighten chapter 3
+make chapter 5 more archaic Bengali
+audit completed chapters
+```
+
+Revision rules:
+
+1. Read `config.json`, the relevant chapter file, `progress.json`, and the latest metadata file.
+2. Create a new `metadata_code<number>.json` with `"run_type": "revision"` before editing.
+3. Preserve the chapter number, topic, and completed status unless the user asks to change them.
+4. Update both the individual chapter file and its corresponding section in `book.md`.
+5. Add revision notes to the new metadata file, including the user's instruction and a short before/after rationale.
+6. Do not mark new chapters completed during a revision-only run.

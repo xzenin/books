@@ -1,0 +1,755 @@
+{
+  "title": "লাউ",
+  "language": "bn",
+  "source_terms": "bookseed.txt",
+  "context": "../context/qualities/aurilus.md + ../context/themes/generic.md",
+  "total_chapters": 106,
+  "completed_chapters": 2,
+  "current_chapter": 2,
+  "chapters": [
+    {
+      "chapter_number": 1,
+      "topic": "ত্বরণ (Acceleration),",
+      "category": "অন্তরের দুর্গ",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_001_ত্বরণ (Acceleration).md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 2,
+      "topic": "বল (Force),",
+      "category": "এক রক্তের বিধান",
+      "status": "completed",
+      "file_path": "chapters\\Chapter_002_বল (Force).md",
+      "completed_date": "2026-08-29T00:00:00Z"
+    },
+    {
+      "chapter_number": 3,
+      "topic": "শক্তি (Energy),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_003_শক্তি (Energy).md"
+    },
+    {
+      "chapter_number": 4,
+      "topic": "ক্ষমতা (Power),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_004_ক্ষমতা (Power).md"
+    },
+    {
+      "chapter_number": 5,
+      "topic": "ঘর্ষণ (Friction),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_005_ঘর্ষণ (Friction).md"
+    },
+    {
+      "chapter_number": 6,
+      "topic": "ঘনত্ব (Density),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_006_ঘনত্ব (Density).md"
+    },
+    {
+      "chapter_number": 7,
+      "topic": "চাপ (Pressure),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_007_চাপ (Pressure).md"
+    },
+    {
+      "chapter_number": 8,
+      "topic": "আয়তন (Volume),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_008_আয়তন (Volume).md"
+    },
+    {
+      "chapter_number": 9,
+      "topic": "টর্ক / ঘূর্ণনবল (Torque),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_009_টর্ক / ঘূর্ণনবল (Torque).md"
+    },
+    {
+      "chapter_number": 10,
+      "topic": "টান (Tension),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_010_টান (Tension).md"
+    },
+    {
+      "chapter_number": 11,
+      "topic": "কম্পাঙ্ক (Frequency),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_011_কম্পাঙ্ক (Frequency).md"
+    },
+    {
+      "chapter_number": 12,
+      "topic": "তরঙ্গদৈর্ঘ্য (Wavelength),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_012_তরঙ্গদৈর্ঘ্য (Wavelength).md"
+    },
+    {
+      "chapter_number": 13,
+      "topic": "বিস্তার (Amplitude),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_013_বিস্তার (Amplitude).md"
+    },
+    {
+      "chapter_number": 14,
+      "topic": "তড়িৎপ্রবাহ (Current),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_014_তড়িৎপ্রবাহ (Current).md"
+    },
+    {
+      "chapter_number": 15,
+      "topic": "ভোল্টেজ / বিভবপ্রভেদ (Voltage),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_015_ভোল্টেজ / বিভবপ্রভেদ (Voltage).md"
+    },
+    {
+      "chapter_number": 16,
+      "topic": "রোধ (Resistance),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_016_রোধ (Resistance).md"
+    },
+    {
+      "chapter_number": 17,
+      "topic": "ধারকত্ব (Capacitance),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_017_ধারকত্ব (Capacitance).md"
+    },
+    {
+      "chapter_number": 18,
+      "topic": "আবেশাঙ্ক (Inductance),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_018_আবেশাঙ্ক (Inductance).md"
+    },
+    {
+      "chapter_number": 19,
+      "topic": "আধান (Charge),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_019_আধান (Charge).md"
+    },
+    {
+      "chapter_number": 20,
+      "topic": "ফ্লাক্স / প্রবাহ ঘনত্ব (Flux),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_020_ফ্লাক্স / প্রবাহ ঘনত্ব (Flux).md"
+    },
+    {
+      "chapter_number": 21,
+      "topic": "ঔজ্জ্বল্য / দীপ্তি (Luminosity),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_021_ঔজ্জ্বল্য / দীপ্তি (Luminosity).md"
+    },
+    {
+      "chapter_number": 22,
+      "topic": "তাপমাত্রা (Temperature),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_022_তাপমাত্রা (Temperature).md"
+    },
+    {
+      "chapter_number": 23,
+      "topic": "তাপ (Heat),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_023_তাপ (Heat).md"
+    },
+    {
+      "chapter_number": 24,
+      "topic": "এনথ্যালপি (Enthalpy),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_024_এনথ্যালপি (Enthalpy).md"
+    },
+    {
+      "chapter_number": 25,
+      "topic": "কাজ / কার্য (Work),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_025_কাজ / কার্য (Work).md"
+    },
+    {
+      "chapter_number": 26,
+      "topic": "ঘাত / আবেগ (Impulse),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_026_ঘাত / আবেগ (Impulse).md"
+    },
+    {
+      "chapter_number": 27,
+      "topic": "জড়তা (Inertia),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_027_জড়তা (Inertia).md"
+    },
+    {
+      "chapter_number": 28,
+      "topic": "সান্দ্রতা (Viscosity),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_028_সান্দ্রতা (Viscosity).md"
+    },
+    {
+      "chapter_number": 29,
+      "topic": "স্থিতিস্থাপকতা (Elasticity),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_029_স্থিতিস্থাপকতা (Elasticity).md"
+    },
+    {
+      "chapter_number": 30,
+      "topic": "চুম্বকত্ব (Magnetism),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_030_চুম্বকত্ব (Magnetism).md"
+    },
+    {
+      "chapter_number": 31,
+      "topic": "বিকিরণ (Radiation),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_031_বিকিরণ (Radiation).md"
+    },
+    {
+      "chapter_number": 32,
+      "topic": "পরিবহন (Conduction),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_032_পরিবহন (Conduction).md"
+    },
+    {
+      "chapter_number": 33,
+      "topic": "পরিচলন (Convection),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_033_পরিচলন (Convection).md"
+    },
+    {
+      "chapter_number": 34,
+      "topic": "প্রতিসরণ (Refraction),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_034_প্রতিসরণ (Refraction).md"
+    },
+    {
+      "chapter_number": 35,
+      "topic": "অপবর্তন (Diffraction),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_035_অপবর্তন (Diffraction).md"
+    },
+    {
+      "chapter_number": 36,
+      "topic": "প্রতিফলন (Reflection),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_036_প্রতিফলন (Reflection).md"
+    },
+    {
+      "chapter_number": 37,
+      "topic": "বিচ্ছুরণ (Dispersion),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_037_বিচ্ছুরণ (Dispersion).md"
+    },
+    {
+      "chapter_number": 38,
+      "topic": "সমবর্তন (Polarization),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_038_সমবর্তন (Polarization).md"
+    },
+    {
+      "chapter_number": 39,
+      "topic": "অনুনাদ (Resonance),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_039_অনুনাদ (Resonance).md"
+    },
+    {
+      "chapter_number": 40,
+      "topic": "দোলন (Oscillation),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_040_দোলন (Oscillation).md"
+    },
+    {
+      "chapter_number": 41,
+      "topic": "প্লবতা (Buoyancy),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_041_প্লবতা (Buoyancy).md"
+    },
+    {
+      "chapter_number": 42,
+      "topic": "ওজন / ভার (Weight),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_042_ওজন / ভার (Weight).md"
+    },
+    {
+      "chapter_number": 43,
+      "topic": "সরণ (Displacement),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_043_সরণ (Displacement).md"
+    },
+    {
+      "chapter_number": 44,
+      "topic": "ভেক্টর (Vector),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_044_ভেক্টর (Vector).md"
+    },
+    {
+      "chapter_number": 45,
+      "topic": "স্কেলার (Scalar),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_045_স্কেলার (Scalar).md"
+    },
+    {
+      "chapter_number": 46,
+      "topic": "শূন্যস্থান (Vacuum),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_046_শূন্যস্থান (Vacuum).md"
+    },
+    {
+      "chapter_number": 47,
+      "topic": "প্লাজমা (Plasma),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_047_প্লাজমা (Plasma).md"
+    },
+    {
+      "chapter_number": 48,
+      "topic": "ফোটন (Photon),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_048_ফোটন (Photon).md"
+    },
+    {
+      "chapter_number": 49,
+      "topic": "ইলেকট্রন (Electron),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_049_ইলেকট্রন (Electron).md"
+    },
+    {
+      "chapter_number": 50,
+      "topic": "প্রোটন (Proton),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_050_প্রোটন (Proton).md"
+    },
+    {
+      "chapter_number": 51,
+      "topic": "নিউট্রন (Neutron),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_051_নিউট্রন (Neutron).md"
+    },
+    {
+      "chapter_number": 52,
+      "topic": "কোয়ার্ক (Quark),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_052_কোয়ার্ক (Quark).md"
+    },
+    {
+      "chapter_number": 53,
+      "topic": "বোসন (Boson),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_053_বোসন (Boson).md"
+    },
+    {
+      "chapter_number": 54,
+      "topic": "ফার্মিয়ন (Fermion),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_054_ফার্মিয়ন (Fermion).md"
+    },
+    {
+      "chapter_number": 55,
+      "topic": "গ্র্যাভিটন (Graviton),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_055_গ্র্যাভিটন (Graviton).md"
+    },
+    {
+      "chapter_number": 56,
+      "topic": "নিউট্রিনো (Neutrino),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_056_নিউট্রিনো (Neutrino).md"
+    },
+    {
+      "chapter_number": 57,
+      "topic": "আইসোটোপ (Isotope),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_057_আইসোটোপ (Isotope).md"
+    },
+    {
+      "chapter_number": 58,
+      "topic": "ক্ষয় (Decay),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_058_ক্ষয় (Decay).md"
+    },
+    {
+      "chapter_number": 59,
+      "topic": "বিভাজন / ফিশন (Fission),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_059_বিভাজন / ফিশন (Fission).md"
+    },
+    {
+      "chapter_number": 60,
+      "topic": "সংযোজন / ফিউশন (Fusion),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_060_সংযোজন / ফিউশন (Fusion).md"
+    },
+    {
+      "chapter_number": 61,
+      "topic": "স্থিতিশক্তি / বিভব (Potential),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_061_স্থিতিশক্তি / বিভব (Potential).md"
+    },
+    {
+      "chapter_number": 62,
+      "topic": "গতিশক্তি (Kinetic),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_062_গতিশক্তি (Kinetic).md"
+    },
+    {
+      "chapter_number": 63,
+      "topic": "অবিচ্ছিন্নতা (Continuum),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_063_অবিচ্ছিন্নতা (Continuum).md"
+    },
+    {
+      "chapter_number": 64,
+      "topic": "সাম্যাবস্থা (Equilibrium),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_064_সাম্যাবস্থা (Equilibrium).md"
+    },
+    {
+      "chapter_number": 65,
+      "topic": "অতিপরিবাহিতা (Superconductivity),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_065_অতিপরিবাহিতা (Superconductivity).md"
+    },
+    {
+      "chapter_number": 66,
+      "topic": "চুম্বকায়ন (Magnetization),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_066_চুম্বকায়ন (Magnetization).md"
+    },
+    {
+      "chapter_number": 67,
+      "topic": "তড়িৎভেদ্যতা (Permittivity),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_067_তড়িৎভেদ্যতা (Permittivity).md"
+    },
+    {
+      "chapter_number": 68,
+      "topic": "চৌম্বকভেদ্যতা (Permeability),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_068_চৌম্বকভেদ্যতা (Permeability).md"
+    },
+    {
+      "chapter_number": 69,
+      "topic": "পরিবাহিতা (Conductance),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_069_পরিবাহিতা (Conductance).md"
+    },
+    {
+      "chapter_number": 70,
+      "topic": "প্রতিবাধা (Impedance),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_070_প্রতিবাধা (Impedance).md"
+    },
+    {
+      "chapter_number": 71,
+      "topic": "প্রতিঘাত / রিঅ্যাক্ট্যান্স (Reactance),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_071_প্রতিঘাত / রিঅ্যাক্ট্যান্স (Reactance).md"
+    },
+    {
+      "chapter_number": 72,
+      "topic": "প্রবেশ্যতা / অ্যাডমিট্যান্স (Admittance),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_072_প্রবেশ্যতা / অ্যাডমিট্যান্স (Admittance).md"
+    },
+    {
+      "chapter_number": 73,
+      "topic": "চৌম্বক প্রতিরোধ / রিলাকট্যান্স (Reluctance),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_073_চৌম্বক প্রতিরোধ / রিলাকট্যান্স (Reluctance).md"
+    },
+    {
+      "chapter_number": 74,
+      "topic": "চৌম্বক প্রবণতা / Susceptibility,",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_074_চৌম্বক প্রবণতা / Susceptibility.md"
+    },
+    {
+      "chapter_number": 75,
+      "topic": "বিকিরণ তীব্রতা (Radiance),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_075_বিকিরণ তীব্রতা (Radiance).md"
+    },
+    {
+      "chapter_number": 76,
+      "topic": "বিকিরণ প্রবাহ (Irradiance),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_076_বিকিরণ প্রবাহ (Irradiance).md"
+    },
+    {
+      "chapter_number": 77,
+      "topic": "তীব্রতা (Intensity),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_077_তীব্রতা (Intensity).md"
+    },
+    {
+      "chapter_number": 78,
+      "topic": "গুণাঙ্ক (Modulus),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_078_গুণাঙ্ক (Modulus).md"
+    },
+    {
+      "chapter_number": 79,
+      "topic": "পীড়ন (Stress),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_079_পীড়ন (Stress).md"
+    },
+    {
+      "chapter_number": 80,
+      "topic": "বিকৃতি (Strain),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_080_বিকৃতি (Strain).md"
+    },
+    {
+      "chapter_number": 81,
+      "topic": "নমনীয়তা (Ductility),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_081_নমনীয়তা (Ductility).md"
+    },
+    {
+      "chapter_number": 82,
+      "topic": "ঘাতসহনশীলতা (Malleability),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_082_ঘাতসহনশীলতা (Malleability).md"
+    },
+    {
+      "chapter_number": 83,
+      "topic": "দৃঢ়তা / কাঠিন্য (Hardness),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_083_দৃঢ়তা / কাঠিন্য (Hardness).md"
+    },
+    {
+      "chapter_number": 84,
+      "topic": "ভঙ্গুরতা (Brittleness),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_084_ভঙ্গুরতা (Brittleness).md"
+    },
+    {
+      "chapter_number": 85,
+      "topic": "বিশৃঙ্খলা / অশান্ত প্রবাহ (Turbulence),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_085_বিশৃঙ্খলা / অশান্ত প্রবাহ (Turbulence).md"
+    },
+    {
+      "chapter_number": 86,
+      "topic": "গতিপথ (Trajectory),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_086_গতিপথ (Trajectory).md"
+    },
+    {
+      "chapter_number": 87,
+      "topic": "কক্ষপথ (Orbit),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_087_কক্ষপথ (Orbit).md"
+    },
+    {
+      "chapter_number": 88,
+      "topic": "লম্বন (Parallax),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_088_লম্বন (Parallax).md"
+    },
+    {
+      "chapter_number": 89,
+      "topic": "লোহিত সরণ / Redshift,",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_089_লোহিত সরণ / Redshift.md"
+    },
+    {
+      "chapter_number": 90,
+      "topic": "নীল সরণ / Blueshift,",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_090_নীল সরণ / Blueshift.md"
+    },
+    {
+      "chapter_number": 91,
+      "topic": "সিঙ্গুলারিটি / পরম বিন্দু (Singularity),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_091_সিঙ্গুলারিটি / পরম বিন্দু (Singularity).md"
+    },
+    {
+      "chapter_number": 92,
+      "topic": "স্থান-কাল (Spacetime),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_092_স্থান-কাল (Spacetime).md"
+    },
+    {
+      "chapter_number": 93,
+      "topic": "জিওডেসিক / ভূগাণিতিক রেখা (Geodesic),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_093_জিওডেসিক / ভূগাণিতিক রেখা (Geodesic).md"
+    },
+    {
+      "chapter_number": 94,
+      "topic": "কোয়ান্টাম (Quantum),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_094_কোয়ান্টাম (Quantum).md"
+    },
+    {
+      "chapter_number": 95,
+      "topic": "স্পিন / ঘূর্ণন (Spin),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_095_স্পিন / ঘূর্ণন (Spin).md"
+    },
+    {
+      "chapter_number": 96,
+      "topic": "সুসংগতি (Coherence),",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_096_সুসংগতি (Coherence).md"
+    },
+    {
+      "chapter_number": 97,
+      "topic": "এনট্যাঙ্গলমেন্ট / জড়ানো অবস্থা (Entanglement),",
+      "category": "রাজসেবা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_097_এনট্যাঙ্গলমেন্ট / জড়ানো অবস্থা (Entanglement).md"
+    },
+    {
+      "chapter_number": 98,
+      "topic": "জুল (Joule),",
+      "category": "অভারাক্রান্ত আত্মা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_098_জুল (Joule).md"
+    },
+    {
+      "chapter_number": 99,
+      "topic": "প্যাসকেল (Pascal),",
+      "category": "বোনা সমগ্র",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_099_প্যাসকেল (Pascal).md"
+    },
+    {
+      "chapter_number": 100,
+      "topic": "ওয়াট (Watt),",
+      "category": "অজেয় গুণ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_100_ওয়াট (Watt).md"
+    },
+    {
+      "chapter_number": 101,
+      "topic": "দ্রুতি (Velocity),",
+      "category": "অন্তরের দুর্গ",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_101_দ্রুতি (Velocity).md"
+    },
+    {
+      "chapter_number": 102,
+      "topic": "ভরবেগ (Momentum),",
+      "category": "এক রক্তের বিধান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_102_ভরবেগ (Momentum).md"
+    },
+    {
+      "chapter_number": 103,
+      "topic": "মহাকর্ষ (Gravity),",
+      "category": "ক্ষণস্থায়ী নাম",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_103_মহাকর্ষ (Gravity).md"
+    },
+    {
+      "chapter_number": 104,
+      "topic": "ভর (Mass),",
+      "category": "একমাত্র বর্তমান",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_104_ভর (Mass).md"
+    },
+    {
+      "chapter_number": 105,
+      "topic": "ক্যালোরি (Calorie),",
+      "category": "প্রিয় অনিবার্যতা",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_105_ক্যালোরি (Calorie).md"
+    },
+    {
+      "chapter_number": 106,
+      "topic": "এনট্রপি (Entropy)।",
+      "category": "শেষ রূপান্তর",
+      "status": "pending",
+      "file_path": "chapters\\Chapter_106_এনট্রপি (Entropy)।.md"
+    }
+  ]
+}

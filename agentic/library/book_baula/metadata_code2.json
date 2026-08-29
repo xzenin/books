@@ -1,0 +1,37 @@
+{
+  "run_type": "write",
+  "timestamp": "2026-08-29T00:00:00Z",
+  "book": {
+    "bookname": "baula",
+    "title": "বাউলা",
+    "language": "bn",
+    "register": "archaic/literary"
+  },
+  "config_paths": {
+    "quality": "../context/qualities/aurilus.md",
+    "themes": "../context/themes/generic.md",
+    "reference": "../context/references/aurilus.txt",
+    "index": "bookseed.txt",
+    "override": "override.md"
+  },
+  "requested_chapter_numbers": [1],
+  "chapters_planned": [
+    {
+      "chapter_number": 1,
+      "topic": "প্যাসকেল (Pascal)",
+      "category": "অন্তরের দুর্গ",
+      "metaphor_plan": [
+        "চাপকে নীরব ঘরের ওপর রাখা অদৃশ্য হাত হিসেবে দেখা",
+        "জল, পাত্র, বুক, দরজা, দুর্গ ও শ্বাসের ছবিতে প্যাসকেলের বিধান অনুবাদ",
+        "বাহিরের ভারকে অন্তরের শাসকের কাছে ফিরিয়ে দেওয়া"
+      ],
+      "sacred_vocabulary": [
+        "অন্তরের শাসক / বিবেচনাশক্তি",
+        "অন্তরের দুর্গ",
+        "নীরব বিধান / মহা যুক্তি",
+        "অভারাক্রান্ত আত্মা"
+      ],
+      "revision_notes": "No override instructions supplied in book_baula/override.md; write in the configured Bengali archaic/literary register."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "run_type": "reframe",
+  "timestamp": "2026-08-29T00:00:00Z",
+  "book": {
+    "bookname": "lau",
+    "title": "লাউ",
+    "language": "bn",
+    "register": "archaic/literary"
+  },
+  "config_paths": {
+    "quality": "../context/qualities/aurilus.md",
+    "themes": "../context/themes/generic.md",
+    "reference": "../context/references/aurilus.txt",
+    "index": "bookseed.txt",
+    "override": "override.md"
+  },
+  "source_chapter": "chapters/Chapter_002_বল (Force).md",
+  "output_file": "chapters/Chapter_002_বল (Force)2.md",
+  "ideas": [
+    "Use Rabindranath Tagore's style of writing",
+    "Convert to lyrics"
+  ],
+  "reframe_plan": {
+    "developed_context": "Reframe the Baul-sermon chapter on Force into a Rabindra-sangeet lyric. Tagore's lyric voice is intimate, devotional, and nature-drenched — the 'কে জানে গো' (who knows) refrain, the address to an unseen beloved, the soft wonder at the hidden force that moves the world. The philosophical core (force as the unseen hand, one blood, the ethical warning against the hand that strikes another) is preserved, but re-rendered as a song with a ধ্রুবপদ (refrain) and অন্তরা (verses), each closing on the open question 'কে জানে গো'.",
+    "metaphor_plan": [
+      "Force as the unseen hand that stirs the river's wave and swells the sail",
+      "The mother waking to the child's cry, the farmer to hunger's call — force as the hidden mover",
+      "One blood: the right hand striking the left wounds the one body",
+      "The lamp lit by compassion vs. the blind storm that breaks the brother's house",
+      "The small canal carrying the sea's news — force as compassion's current"
+    ],
+    "sacred_vocabulary": [
+      "নীরব বিধান / মহা যুক্তি",
+      "একই রক্ত, একই প্রাণ",
+      "হিন্দু কি মুসলিম, মানুষ আগে",
+      "করুণা",
+      "কে জানে গো"
+    ],
+    "frame": {
+      "voice": "Rabindranath Tagore's lyrical, devotional song-voice",
+      "perspective": "first-person wonder addressed to an unseen beloved",
+      "register": "lyrical Bengali (Rabindra-sangeet)",
+      "structure": "ধ্রুবপদ (refrain) + four অন্তরা (verses) + refrain reprise, each verse closing on 'কে জানে গো'"
+    }
+  },
+  "transformation_applied": "Converted the Baul-sermon prose into a Rabindra-sangeet lyric: added a recurring ধ্রুবপদ refrain, split the oration into four অন্তরা verses, replaced the riddle-close with the open devotional question 'কে জানে গো', and softened the Baul address particles into Tagore's intimate wonder. Preserved the philosophical core (force as unseen hand, one blood, compassion over domination)."
+}

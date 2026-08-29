@@ -1,0 +1,8 @@
+প্যাসকেল (Pascal),
+ওয়াট (Watt),
+দ্রুতি (Velocity),
+ভরবেগ (Momentum),
+মহাকর্ষ (Gravity),
+ভর (Mass),
+ক্যালোরি (Calorie),
+এনট্রপি (Entropy)।

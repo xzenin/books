@@ -1,0 +1,22 @@
+{
+  "run_type": "scaffold",
+  "timestamp": "2026-08-29T00:00:00Z",
+  "book": {
+    "bookname": "lau",
+    "title": "লাউ",
+    "language": "bn",
+    "register": "archaic/literary"
+  },
+  "config_paths": {
+    "quality": "../context/qualities/aurilus.md",
+    "themes": "../context/themes/generic.md",
+    "reference": "../context/references/aurilus.txt",
+    "index": "bookseed.txt",
+    "override": "override.md"
+  },
+  "source_template": "templates\\poetry\\default",
+  "total_seed_terms": 106,
+  "requested_chapter_numbers": [],
+  "chapters_planned": [],
+  "scaffold_notes": "Created from the default poetry template for /write lau aurilus generic aurilus.txt. No chapters written in this scaffold-only run."
+}

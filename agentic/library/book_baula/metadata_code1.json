@@ -1,0 +1,18 @@
+{
+  "run_type": "scaffold",
+  "created_at": "2026-08-29T00:00:00Z",
+  "bookname": "baula",
+  "folder": "book_baula",
+  "title": "বাউলা",
+  "language": "bn",
+  "register": "archaic/literary",
+  "quality": "../context/qualities/aurilus.md",
+  "themes": "../context/themes/generic.md",
+  "reference": "../context/references/aurilus.txt",
+  "index": "bookseed.txt",
+  "chapters_planned": [],
+  "notes": [
+    "Scaffolded from templates/poetry/book_speed using /write baula aurilus generic aurilus.txt.",
+    "bookseed.txt is intentionally blank; the human fills it with one subject per line before writing chapters."
+  ]
+}

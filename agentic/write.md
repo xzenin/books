@@ -115,7 +115,7 @@ The context defines the thematic categories. Assign each term to one of these ca
 
 ### Inputs (Provided at Runtime)
 
-You receive a single **`<bookname>`**, which points to a book folder containing a **`config.json`**. Read `book_<bookname>\config.json` to discover everything you need:
+You receive a single **`<bookname>`**, which points to a book folder containing a **`config.json`**. Read `source\book_<bookname>\config.json` to discover everything you need:
 
 - **`title`** — the book's title
 - **`language`** and **`register`** — the target language and its register. **`language` is the authoritative source for the output language.** Whatever value it holds (e.g. `bn`, `en`, `hi`, `es`), the generated chapter text MUST be written in that language. If the human changes `language`, the next run writes in the new language — no other file needs to change.
@@ -220,7 +220,7 @@ When the user supplies a `<bookname>`, you MUST first scaffold a new book before
 
 ### The Template
 
-Every new book is scaffolded from the canonical template at **`templates\poetry\book_speed\`**. This folder is the reference structure for what a complete book looks like. Read it first, then reproduce its shape for the new book.
+Every new book is scaffolded from the canonical template at **`templates\poetry\default\`**. This folder is the reference structure for what a complete book looks like. Read it first, then reproduce its shape for the new book.
 
 The template contains:
 
@@ -235,41 +235,46 @@ The template contains:
 
 ### What `<bookname>` does
 
-Given a `<bookname>` (e.g. `speed`, `light`, `ocean`), you create a folder named **`book_<bookname>`** (note the underscore):
+Given a `<bookname>` (e.g. `speed`, `light`, `ocean`), you create a folder named **`book_<bookname>`** (note the underscore) **inside the `source\` folder**:
 
-1. **`book_<bookname>\`** — the book's root folder (e.g. `book_speed\`, `book_light\`).
-2. **`book_<bookname>\chapters\`** — the folder that will hold the individual chapter files.
-3. **`book_<bookname>\config.json`** — the book's identity and input paths (replaces the old per-book `writer.md`).
+1. **`source\book_<bookname>\`** — the book's root folder (e.g. `source\book_speed\`, `source\book_light\`).
+2. **`source\book_<bookname>\chapters\`** — the folder that will hold the individual chapter files.
+3. **`source\book_<bookname>\config.json`** — the book's identity and input paths (replaces the old per-book `writer.md`).
+
+**All books live under `source\`.** Always create a new book at `source\book_<bookname>\` — never at the workspace root.
 
 ### Scaffolding steps
 
 1. **Read the template**:
-   - Read `templates\poetry\book_speed\config.json` to learn the config schema
-   - Read `templates\poetry\book_speed\progress.json` to learn the progress schema
-   - Read `templates\poetry\book_speed\bookseed.txt` to learn the index format
+   - Read `templates\poetry\default\config.json` to learn the config schema
+   - Read `templates\poetry\default\progress.json` to learn the progress schema
+   - Read `templates\poetry\default\bookseed.txt` to learn the index format
 
 2. **Create the folders**:
-   - Create `book_<bookname>\`
-   - Create `book_<bookname>\chapters\`
+   - Create `source\book_<bookname>\`
+   - Create `source\book_<bookname>\chapters\`
 
-3. **Create the config** `book_<bookname>\config.json`:
+3. **Create the config** `source\book_<bookname>\config.json`:
    - Fill in the book's title, language, register, and the paths to its quality, themes, reference, and index
    - Include the subject-specific **sacred vocabulary** and **translation guide** (the only book-specific writing data)
 
-4. **Create the index file** `book_<bookname>\bookseed.txt`:
-   - Create a **blank** `bookseed.txt` as a template — the human fills it in later with the list of subjects (one per line)
-   - Do NOT copy any index into it during scaffolding; the human provides the subjects at write time
+4. **Create the index file** `source\book_<bookname>\bookseed.txt`:
+   - **Copy** `templates\poetry\default\bookseed.txt` into `source\book_<bookname>\bookseed.txt` — reproduce the template's index (the list of subjects, one per line) as the starting point
+   - The human may edit it later; the copied subjects seed the book's initial chapter list
 
-5. **Create the override file** `book_<bookname>\override.md`:
-   - Create a **blank** `override.md` template (the transformation layer) — the human fills it in later with review notes, prompt shifts, local preferences, dialects, and place/era context
-   - It is optional; if left empty, the agent writes the base chapter unchanged
+5. **Create the override file** `source\book_<bookname>\override.md`:
+   - **Copy** `templates\poetry\default\override.md` into `source\book_<bookname>\override.md` — reproduce the template's four-section transformation layer (Prompt Transformation, Local Preferences, Local Dialects, Slug/Location/Era)
+   - The human may edit it later; it is optional — if left empty, the agent writes the base chapter unchanged
 
-6. **Create the metadata file** `book_<bookname>\metadata_code<number>.json`:
+6. **Create the metadata file** `source\book_<bookname>\metadata_code<number>.json`:
    - Save your meta data here **before** you write the text (book title, language, quality, theme, index, reference, and any other book-level metadata)
    - **Never overwrite.** Each run creates the **next** numbered file. Check the book folder for existing `metadata_code*.json` files and increment the number (e.g. if `metadata_code1.json` and `metadata_code2.json` exist, create `metadata_code3.json`).
+   - Treat this file as the pre-writing plan for the run, not as an afterthought. Include the run type (`write`, `scaffold`, `revision`, or `audit`), timestamp, config paths, requested chapter numbers, selected topics, assigned categories, metaphor plan, sacred vocabulary to emphasize, and any human instruction from `override.md`.
+   - For chapter-writing runs, record a `chapters_planned` array before producing text. Each item should include `chapter_number`, `topic`, `category`, `metaphor_plan`, `sacred_vocabulary`, and `revision_notes`.
+   - For revision runs, record the existing file path, the user's revision request, audit findings, and the intended transformation before editing any chapter.
 
 7. **Initialize `progress.json`** (optional, at write time):
-   - Create `book_<bookname>\progress.json` with `total_chapters` from the index, all terms "pending"
+   - Create `source\book_<bookname>\progress.json` with `total_chapters` from the index, all terms "pending"
 
 ### The `config.json` schema
 
@@ -283,7 +288,7 @@ The generated `book_<bookname>\config.json` must follow this shape:
   "register": "archaic/literary",
   "quality": "../context/qualities/aurilus.md",
   "themes": "../context/themes/generic.md",
-  "reference": "../context/references/aurilus_book_reference.txt",
+  "reference": "../context/references/aurilus.txt",
   "index": "bookseed.txt",
   "sacred_vocabulary": {
     "guiding_principle": "অন্তরের শাসক",
@@ -342,21 +347,21 @@ This gives the human a lightweight, in-the-loop way to steer the poetry's voice,
 ### When invoked to write chapters:
 
 1. **Read the config**:
-   - Read `book_<bookname>\config.json` to get the title, language, register, and the paths to quality, themes, reference, and index
+   - Read `source\book_<bookname>\config.json` to get the title, language, register, and the paths to quality, themes, reference, and index
    - Read the **quality** file (e.g. `context/qualities/aurilus.md`) to understand the reference book, themes, categories, and quality metrics
    - Read the **themes** file (e.g. `context/themes/generic.md`) for the thematic categories
    - Read the **reference** book (if provided) for stylistic grounding
 
 2. **Read the Index**:
-   - Read `book_<bookname>\bookseed.txt` to get the list of subjects/titles (one per line)
+   - Read `source\book_<bookname>\bookseed.txt` to get the list of subjects/titles (one per line)
 
 3. **Read the Override** (optional):
-   - Read `book_<bookname>\override.md` if it exists
+   - Read `source\book_<bookname>\override.md` if it exists
    - Note the four sections: Prompt Transformation, Local Preferences, Local Dialects, Slug/Location/Era
    - If empty or absent, skip the transformation pass
 
 4. **Reconcile `progress.json` with `bookseed.txt`**:
-   - Check if `book_<bookname>\progress.json` exists
+   - Check if `source\book_<bookname>\progress.json` exists
    - If not, create it by reading `bookseed.txt` and initializing all subjects as "pending"
    - If it exists, compare it against `bookseed.txt`:
      - Add new subjects as "pending"
@@ -385,16 +390,16 @@ This gives the human a lightweight, in-the-loop way to steer the poetry's voice,
    - Apply in that order; skip any empty section
 
 8. **Save the chapter**:
-   - Write the full chapter to `book_<bookname>\chapters\Chapter_XXX_[Term].md`
+   - Write the full chapter to `source\book_<bookname>\chapters\Chapter_XXX_[Term].md`
    - Create the chapters directory if it doesn't exist
    - Start the file with the heading `# অধ্যায় XXX: [term]` (or target-language equivalent)
 
 9. **Append to the book**:
-   - Append the chapter to `book_<bookname>\book.md` after a `---` separator
+   - Append the chapter to `source\book_<bookname>\book.md` after a `---` separator
    - If `book.md` does not exist yet, create it with the title, introduction, and this first chapter
 
 10. **Update progress**:
-   - Mark the chapter as "completed" in `book_<bookname>\progress.json`
+   - Mark the chapter as "completed" in `source\book_<bookname>\progress.json`
    - Add completion timestamp
    - Update `completed_chapters` and `current_chapter` counters
 
@@ -417,6 +422,29 @@ The user may request chapters in **any quantity or form**. Interpret the request
 - For a specific number, write that chapter even if earlier ones are still pending; mark only it as completed.
 - Repeat steps 4-8 for each requested chapter, then provide a summary report (e.g. "Chapters 6–15 of 199 completed").
 
+### Revision Mode:
+Use revision mode when the requested chapter already exists and the human asks to improve, tighten, audit, or transform it rather than write a new chapter. Interpret requests flexibly:
+
+- **A specific chapter** — "revise chapter 7: more Baul, less Stoic" → revise only chapter 7.
+- **A style adjustment** — "make chapter 5 more archaic Bengali" → preserve the chapter's meaning and structure while changing register.
+- **A tightening pass** — "tighten chapter 3" → reduce looseness, repetition, and explanatory prose while preserving the prophetic cadence.
+- **An audit** — "audit completed chapters" → inspect completed chapters and report issues; only edit if the human also asks for revision.
+
+Revision rules:
+- Read `config.json`, `progress.json`, the target chapter file, `book.md`, the applicable quality/theme/reference files, and the latest `metadata_code*.json` before revising.
+- Create the next `metadata_code<number>.json` before editing, with `"run_type": "revision"` or `"run_type": "audit"`.
+- Preserve chapter number, topic, category, and completed status unless the human explicitly requests a structural change.
+- Update the individual chapter file and the corresponding chapter section in `book.md` so they do not diverge.
+- Add revision notes to the metadata file: user request, audit findings, transformation plan, and what changed.
+- Do not advance `current_chapter` or mark additional pending chapters completed during a revision-only run.
+
+Revision quality checks:
+- The chapter still follows Question → Oration → Benediction.
+- The language still matches `config.json`.
+- The theme is more embodied in image and cadence than in direct explanation.
+- The scientific or subject term is translated into soul-language, not textbook language.
+- The revised chapter keeps the requested register while remaining coherent with the surrounding book.
+
 ### Resume Mode:
 Always check progress.json first to continue from where you left off. Never restart from Chapter 1 unless explicitly asked.
 
@@ -434,11 +462,11 @@ Usage: /write <bookname> <quality> <theme> <reference>  # scaffold a new book
 
 Commands:
   scaffold   /write <bookname> <quality> <theme> <reference>
-             Creates book_<bookname>/ with config.json, a blank bookseed.txt,
+             Creates source/book_<bookname>/ with config.json, a blank bookseed.txt,
              metadata_code<number>.json, and an empty chapters/ folder.
 
   write      /write <bookname> [<book_seed>]
-             Writes chapters. Reads book_<bookname>/bookseed.txt (the human's
+             Writes chapters. Reads source/book_<bookname>/bookseed.txt (the human's
              list of subjects) and generates text from the quality, theme, and
              reference in config.json. Supports counts ("10 chapters"),
              "5 more", a specific number ("chapter 34"), or a range ("20-25").
@@ -454,7 +482,7 @@ Commands:
              Shows this usage.
 
 Arguments:
-  <bookname>   The book's name (folder becomes book_<bookname>/).
+  <bookname>   The book's name (folder becomes source/book_<bookname>/).
   <quality>    Path to a quality file in context/qualities/ (e.g. aurilus).
   <theme>      Path to a theme file in context/themes/ (e.g. generic).
   <reference>  Path to a reference file in context/references/ (e.g. aurilus.txt).
@@ -497,14 +525,14 @@ Provide a `<bookname>` and the book's identity (title, language, and the paths t
 > Write [N] chapters on the first [N] topics from the index."
 
 The agent will then:
-1. Read the template at `templates\poetry\book_speed\`
-2. Create `book_<bookname>\` and `book_<bookname>\chapters\`
-3. Create `book_<bookname>\config.json` (the book's identity and input paths)
-4. Create a blank `book_<bookname>\bookseed.txt` (the human fills it in later)
-5. Create a blank `book_<bookname>\override.md` (the transformation layer — optional)
-6. Create `book_<bookname>\metadata_code<number>.json` (next numbered file — never overwrite)
-7. Initialize `book_<bookname>\progress.json`
-8. Begin writing chapters into `book_<bookname>\chapters\`
+1. Read the template at `templates\poetry\default\`
+2. Create `source\book_<bookname>\` and `source\book_<bookname>\chapters\`
+3. Create `source\book_<bookname>\config.json` (the book's identity and input paths)
+4. Create a blank `source\book_<bookname>\bookseed.txt` (the human fills it in later)
+5. Create a blank `source\book_<bookname>\override.md` (the transformation layer — optional)
+6. Create `source\book_<bookname>\metadata_code<number>.json` (next numbered file — never overwrite)
+7. Initialize `source\book_<bookname>\progress.json`
+8. Begin writing chapters into `source\book_<bookname>\chapters\`
 
 ### To resume an existing book
 
@@ -516,8 +544,9 @@ If the book folder already exists, the agent skips scaffolding and resumes from 
 >
 > "Writer, continue writing chapters for `<bookname>` — write chapter 34."
 
-**`<book_seed>` is optional.** If `book_<bookname>\bookseed.txt` already exists, the agent uses it as-is — you do not need to pass `<book_seed>` again. Simply run:
+**`<book_seed>` is optional.** If `source\book_<bookname>\bookseed.txt` already exists, the agent uses it as-is — you do not need to pass `<book_seed>` again. Simply run:
 
 > "Writer, write chapters for `<bookname>`."
 
-The agent will then read `book_<bookname>\config.json`, read the existing `bookseed.txt`, initialize progress, and begin writing chapters dynamically — the same Gibran-esque voice, but grounded in whatever subject and language the config defines.
+The agent will then read `source\book_<bookname>\config.json`, read the existing `bookseed.txt`, initialize progress, and begin writing chapters dynamically — the same Gibran-esque voice, but grounded in whatever subject and language the config defines.
+

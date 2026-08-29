@@ -1,0 +1,51 @@
+{
+  "run_type": "reframe",
+  "timestamp": "2026-08-29T00:00:00Z",
+  "book": {
+    "bookname": "lau",
+    "title": "লাউ",
+    "language": "bn",
+    "register": "archaic/literary"
+  },
+  "config_paths": {
+    "quality": "../context/qualities/aurilus.md",
+    "themes": "../context/themes/generic.md",
+    "reference": "../context/references/aurilus.txt",
+    "index": "bookseed.txt",
+    "override": "override.md"
+  },
+  "source_chapter": "chapters/Chapter_001_ত্বরণ (Acceleration).md",
+  "output_file": "chapters/Chapter_001_ত্বরণ (Acceleration)2.md",
+  "stereotype": "templates/stereotypes/jibanananda.md",
+  "ideas": [
+    "Reframe in the voice of Jibanananda Das"
+  ],
+  "reframe_plan": {
+    "developed_context": "Reframe the Baul-sermon chapter on Acceleration (ত্বরণ) into Jibanananda Das's quiet, elegiac free-verse. Jibanananda's voice is solitary, melancholy, and surreal — a man walking alone through the Bengal landscape (ধানসিঁড়ি, কুয়াশা, গোধূলি, জোনাকি, কাক, নক্ষত্র), speaking in a whisper of longing and loss. The philosophical core (acceleration as the unseen quickening, the inner citadel's stillness, one blood, the warning against blind haste) is preserved, but re-rendered as flowing free-verse with the signature motifs 'হাজার বছর ধরে' and 'আবার আসিব ফিরে'.",
+    "metaphor_plan": [
+      "Acceleration as the river's sudden quickening, the unseen current",
+      "The boatman at the ধানসিঁড়ি ঘাট, rain pooling on the deck",
+      "The crow on the dry branch as witness of solitude",
+      "The firefly as the small light that does not surrender to darkness",
+      "The seed still in the earth, the river slowing at the bend — stillness as hidden speed",
+      "The star as the distant, eternal, unreachable"
+    ],
+    "sacred_vocabulary": [
+      "ধানসিঁড়ি",
+      "গোধূলি",
+      "কুয়াশা",
+      "জোনাকি",
+      "কাক",
+      "নক্ষত্র",
+      "হাজার বছর ধরে",
+      "আবার আসিব ফিরে"
+    ],
+    "frame": {
+      "voice": "Jibanananda Das's quiet, elegiac, surreal free-verse",
+      "perspective": "the solitary walker observing the Bengal landscape",
+      "register": "lyrical Bengali free-verse",
+      "structure": "flowing free-verse stanzas, no rhyme, enjambment, closing on the eternal return 'আবার আসিব ফিরে'"
+    }
+  },
+  "transformation_applied": "Converted the Baul-sermon prose into Jibanananda's free-verse: removed the question-and-answer frame and the Baul address particles, replaced them with the solitary walker's quiet observation; wove in the Bengal landscape (ধানসিঁড়ি, কুয়াশা, গোধূলি, জোনাকি, কাক, নক্ষত্র); opened with 'হাজার বছর ধরে' and closed on 'আবার আসিব ফিরে'. Preserved the philosophical core (acceleration as unseen quickening, inner stillness, one blood, the warning against blind haste)."
+}
